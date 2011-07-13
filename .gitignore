@@ -1,0 +1,5 @@
+.metadata/*
+**/*.jar
+**/*.zip
+*.jar
+*.zip
