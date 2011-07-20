@@ -2,28 +2,32 @@ package eu.choreos.utils;
 
 import javax.xml.ws.Endpoint;
 
-
 import eu.choreos.roles.SupermarketCustomerRole;
 import eu.choreos.roles.SupermarketRole;
 import eu.choreos.services.FutureMartWS;
+import eu.choreos.services.SMRegistryWS;
 
 public class RunWS {
 	
-	private static Endpoint supermarketEndpoint;
-	private static Endpoint customerEndpoint;
-	private static Endpoint futureMartEndpoint;
-
+	private static Endpoint supermarket;
+	private static Endpoint customer;
+	private static Endpoint futureMart;
+	private static Endpoint smRegistry;
 	
 	public static void startSupermarketWS(){
-		supermarketEndpoint = startWS(new SupermarketRole(), "supermarketRole");
+		supermarket = startWS(new SupermarketRole(), "supermarketRole");
 	}
 	
 	public static void startSupermarketCustomerWS() {
-		customerEndpoint = startWS(new SupermarketCustomerRole(), "supermarketCustomerRole");	
+		customer = startWS(new SupermarketCustomerRole(), "supermarketCustomerRole");	
 	}
 	
 	public static void startFutureMartWS() {
-		futureMartEndpoint = startWS(new FutureMartWS(), "futureMartWS");	
+		futureMart = startWS(new FutureMartWS(), "futureMartWS");	
+	}
+	
+	public static void startSMRegistryWS() {
+		smRegistry = startWS(new SMRegistryWS(), "smregistry");	
 	}
 	
 	
@@ -36,21 +40,26 @@ public class RunWS {
 	
 	
 	public static void stopSupermarketWS(){
-		supermarketEndpoint.stop();
+		supermarket.stop();
 	}
 	
 	public static void stopSupermarketCustomerWS(){
-		customerEndpoint.stop();
+		customer.stop();
 	}
 	
 	public static void stopFutureMartWS(){
-		futureMartEndpoint.stop();
+		futureMart.stop();
+	}
+	
+	public static void stopSMRegistryWS(){
+		smRegistry.stop();
 	}
 	
 	public static void main(String[] args) {
 		RunWS.startSupermarketCustomerWS();
 		RunWS.startSupermarketWS();
 		RunWS.startFutureMartWS();
+		RunWS.startSMRegistryWS();
 	}
 
 }

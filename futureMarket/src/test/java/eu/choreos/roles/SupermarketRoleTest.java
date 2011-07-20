@@ -36,5 +36,6 @@ public class SupermarketRoleTest {
 		assertNotNull(product.getChild("name"));
 		assertNotNull(product.getChild("price"));
 	}
+	
 
 }

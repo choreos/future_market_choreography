@@ -2,12 +2,26 @@ package eu.choreos.roles;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import eu.choreos.utils.RunWS;
 
 import br.usp.ime.choreos.vv.Item;
 import br.usp.ime.choreos.vv.WSClient;
 
 public class SupermarketImplementationTest {
+	
+	@BeforeClass
+	public static void setUp(){
+		RunWS.startFutureMartWS();
+	}
+	
+	@AfterClass
+	public static void tearDown(){
+		RunWS.stopSupermarketCustomerWS();
+	}
 
 	@Test
 	public void futureMartShouldPlayTheSupermarketRole() throws Exception {
