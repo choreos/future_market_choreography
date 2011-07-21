@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;su-BPEL-futureMart-provide&apos;" deleteContents="true" description="Delete resource &apos;su-BPEL-futureMart-provide&apos;" element1="/su-BPEL-futureMart-provide" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1310587474020"/>
-</session>

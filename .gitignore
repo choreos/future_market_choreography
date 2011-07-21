@@ -1,5 +1,9 @@
-.metadata/*
+target/
+.metadata/
 **/*.jar
 **/*.zip
+**/*.class
 *.jar
 *.zip
+*.class
+.DS_Store

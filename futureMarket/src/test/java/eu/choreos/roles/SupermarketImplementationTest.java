@@ -20,12 +20,12 @@ public class SupermarketImplementationTest {
 	
 	@AfterClass
 	public static void tearDown(){
-		RunWS.stopSupermarketCustomerWS();
+		RunWS.stopFutureMartWS();
 	}
 
 	@Test
 	public void futureMartShouldPlayTheSupermarketRole() throws Exception {
-		WSClient futureMartWS = new WSClient("http://192.168.32.102:8084/petals/services/futureMart?wsdl");
+		WSClient futureMartWS = new WSClient("http://localhost:8084/petals/services/futureMart?wsdl");
 		Item response = futureMartWS.request("searchForProduct", "milk");
 		Item product = response.getChild("return");
 		assertEquals("milk", product.getChild("name").getContent());
