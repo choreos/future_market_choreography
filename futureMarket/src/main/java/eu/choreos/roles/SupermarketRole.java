@@ -12,5 +12,10 @@ public class SupermarketRole {
 	public Product searchForProduct(String name){
 		return new Product();
 	}
+	
+	@WebMethod
+	public void registerSupermarket(String endpoint) {
+		
+	}
 
 }

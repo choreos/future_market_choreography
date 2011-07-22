@@ -13,6 +13,7 @@ public class RunWS {
 	private static Endpoint customer;
 	private static Endpoint futureMart;
 	private static Endpoint smRegistry;
+	public static final String REGISTRY_ENDPOINT = "http://localhost:1234/smregistry";
 	
 	public static void startSupermarketWS(){
 		supermarket = startWS(new SupermarketRole(), "supermarketRole");

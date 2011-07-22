@@ -1,48 +1,36 @@
-2011-07-21 20:17:51,544 WARN  [DefaultSoapUICore] Missing folder [/Users/pedroleal/Workspace/future_market_choreography/futureMarket/./ext] for external libraries
-2011-07-21 20:17:51,544 INFO  [DefaultSoapUICore] Creating new settings at [/Users/pedroleal/soapui-settings.xml]
-2011-07-21 20:17:52,098 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xop.xsd with targetNamespace http://www.w3.org/2004/08/xop/include
-2011-07-21 20:17:52,145 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/XMLSchema.xsd with targetNamespace http://www.w3.org/2001/XMLSchema
-2011-07-21 20:17:52,146 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xml.xsd with targetNamespace http://www.w3.org/XML/1998/namespace
-2011-07-21 20:17:52,148 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/swaref.xsd with targetNamespace http://ws-i.org/profiles/basic/1.1/xsd
-2011-07-21 20:17:52,149 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xmime200505.xsd with targetNamespace http://www.w3.org/2005/05/xmlmime
-2011-07-21 20:17:52,150 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xmime200411.xsd with targetNamespace http://www.w3.org/2004/11/xmlmime
-2011-07-21 20:17:52,153 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEnvelope.xsd with targetNamespace http://schemas.xmlsoap.org/soap/envelope/
-2011-07-21 20:17:52,159 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEncoding.xsd with targetNamespace http://schemas.xmlsoap.org/soap/encoding/
-2011-07-21 20:17:52,162 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEnvelope12.xsd with targetNamespace http://www.w3.org/2003/05/soap-envelope
-2011-07-21 20:17:52,168 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEncoding12.xsd with targetNamespace http://www.w3.org/2003/05/soap-encoding
-2011-07-21 20:17:53,561 INFO  [SchemaUtils] Loading schema types from [http://localhost:1234/supermarketRole?wsdl]
-2011-07-21 20:17:53,561 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketRole?wsdl
-2011-07-21 20:17:53,564 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketRole?xsd=1
-2011-07-21 20:17:53,758 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:53,761 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:53,778 INFO  [Soap11HttpBindingImporter] importing endpoint http://localhost:1234/supermarketRole
-2011-07-21 20:17:53,783 INFO  [Soap11HttpBindingImporter] importing operation searchForProduct
-2011-07-21 20:17:53,888 INFO  [SchemaUtils] Loading schema types from [http://localhost:1234/supermarketRole?wsdl]
-2011-07-21 20:17:53,888 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketRole?wsdl
-2011-07-21 20:17:53,890 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketRole?xsd=1
-2011-07-21 20:17:53,997 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:53,997 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:53,998 INFO  [Soap11HttpBindingImporter] importing endpoint http://localhost:1234/supermarketRole
-2011-07-21 20:17:53,998 INFO  [Soap11HttpBindingImporter] importing operation searchForProduct
-2011-07-21 20:17:54,092 INFO  [SchemaUtils] Loading schema types from [http://localhost:1234/supermarketCustomerRole?wsdl]
-2011-07-21 20:17:54,092 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketCustomerRole?wsdl
-2011-07-21 20:17:54,094 INFO  [SchemaUtils] Getting schema http://localhost:1234/supermarketCustomerRole?xsd=1
-2011-07-21 20:17:54,192 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketCustomerRolePortBinding
-2011-07-21 20:17:54,192 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketCustomerRolePortBinding
-2011-07-21 20:17:54,193 INFO  [Soap11HttpBindingImporter] importing endpoint http://localhost:1234/supermarketCustomerRole
-2011-07-21 20:17:54,193 INFO  [Soap11HttpBindingImporter] importing operation getPriceOfProductList
-2011-07-21 20:17:54,313 INFO  [SchemaUtils] Loading schema types from [http://localhost:8084/petals/services/futureMart?wsdl]
-2011-07-21 20:17:54,313 INFO  [SchemaUtils] Getting schema http://localhost:8084/petals/services/futureMart?wsdl
-2011-07-21 20:17:54,321 INFO  [SchemaUtils] Getting schema http://192.168.1.102:8084/petals/services/futureMart?wsdl=supermarketRole_xsd_1
-2011-07-21 20:17:54,441 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:54,441 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketRolePortBinding
-2011-07-21 20:17:54,442 INFO  [Soap11HttpBindingImporter] importing endpoint http://192.168.1.102:8084/petals/services/futureMart
-2011-07-21 20:17:54,442 INFO  [Soap11HttpBindingImporter] importing operation searchForProduct
-2011-07-21 20:17:54,617 INFO  [SchemaUtils] Loading schema types from [http://localhost:1234/smregistry?wsdl]
-2011-07-21 20:17:54,617 INFO  [SchemaUtils] Getting schema http://localhost:1234/smregistry?wsdl
-2011-07-21 20:17:54,620 INFO  [SchemaUtils] Getting schema http://localhost:1234/smregistry?xsd=1
-2011-07-21 20:17:54,690 INFO  [WsdlImporter] Finding importer for {http://services.choreos.eu/}SMRegistryWSPortBinding
-2011-07-21 20:17:54,690 INFO  [WsdlImporter] Importing binding {http://services.choreos.eu/}SMRegistryWSPortBinding
-2011-07-21 20:17:54,691 INFO  [Soap11HttpBindingImporter] importing endpoint http://localhost:1234/smregistry
-2011-07-21 20:17:54,725 INFO  [Soap11HttpBindingImporter] importing operation addSupermarket
-2011-07-21 20:17:54,726 INFO  [Soap11HttpBindingImporter] importing operation getList
+2011-07-22 01:56:00,252 WARN  [DefaultSoapUICore] Missing folder [/Users/pedroleal/Workspace/future_market_choreography/futureMarket/./ext] for external libraries
+2011-07-22 01:56:00,253 INFO  [DefaultSoapUICore] Creating new settings at [/Users/pedroleal/soapui-settings.xml]
+2011-07-22 01:56:00,840 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xop.xsd with targetNamespace http://www.w3.org/2004/08/xop/include
+2011-07-22 01:56:00,888 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/XMLSchema.xsd with targetNamespace http://www.w3.org/2001/XMLSchema
+2011-07-22 01:56:00,889 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xml.xsd with targetNamespace http://www.w3.org/XML/1998/namespace
+2011-07-22 01:56:00,891 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/swaref.xsd with targetNamespace http://ws-i.org/profiles/basic/1.1/xsd
+2011-07-22 01:56:00,892 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xmime200505.xsd with targetNamespace http://www.w3.org/2005/05/xmlmime
+2011-07-22 01:56:00,893 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/xmime200411.xsd with targetNamespace http://www.w3.org/2004/11/xmlmime
+2011-07-22 01:56:00,894 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEnvelope.xsd with targetNamespace http://schemas.xmlsoap.org/soap/envelope/
+2011-07-22 01:56:00,902 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEncoding.xsd with targetNamespace http://schemas.xmlsoap.org/soap/encoding/
+2011-07-22 01:56:00,905 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEnvelope12.xsd with targetNamespace http://www.w3.org/2003/05/soap-envelope
+2011-07-22 01:56:00,913 INFO  [SchemaUtils] Added default schema from file:/Users/pedroleal/Workspace/future_market_choreography/futureMarket/lib/choreUnit_0.4.jar!/com/eviware/soapui/resources/xsds/soapEncoding12.xsd with targetNamespace http://www.w3.org/2003/05/soap-encoding
+2011-07-22 01:56:02,385 INFO  [SchemaUtils] Loading schema types from [http://localhost:8084/petals/services/futureMart?wsdl]
+2011-07-22 01:56:02,385 INFO  [SchemaUtils] Getting schema http://localhost:8084/petals/services/futureMart?wsdl
+2011-07-22 01:56:02,395 INFO  [SchemaUtils] Getting schema http://192.168.1.102:8084/petals/services/futureMart?wsdl=supermarketRole_xsd_1
+2011-07-22 01:56:02,615 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketRolePortBinding
+2011-07-22 01:56:02,618 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketRolePortBinding
+2011-07-22 01:56:02,635 INFO  [Soap11HttpBindingImporter] importing endpoint http://192.168.1.102:8084/petals/services/futureMart
+2011-07-22 01:56:02,667 INFO  [Soap11HttpBindingImporter] importing operation registerSupermarket
+2011-07-22 01:56:02,677 INFO  [Soap11HttpBindingImporter] importing operation searchForProduct
+2011-07-22 01:56:02,981 INFO  [SchemaUtils] Loading schema types from [http://localhost:8084/petals/services/futureMart?wsdl]
+2011-07-22 01:56:02,981 INFO  [SchemaUtils] Getting schema http://localhost:8084/petals/services/futureMart?wsdl
+2011-07-22 01:56:02,984 INFO  [SchemaUtils] Getting schema http://192.168.1.102:8084/petals/services/futureMart?wsdl=supermarketRole_xsd_1
+2011-07-22 01:56:03,086 INFO  [WsdlImporter] Finding importer for {http://roles.choreos.eu/}SupermarketRolePortBinding
+2011-07-22 01:56:03,086 INFO  [WsdlImporter] Importing binding {http://roles.choreos.eu/}SupermarketRolePortBinding
+2011-07-22 01:56:03,087 INFO  [Soap11HttpBindingImporter] importing endpoint http://192.168.1.102:8084/petals/services/futureMart
+2011-07-22 01:56:03,087 INFO  [Soap11HttpBindingImporter] importing operation registerSupermarket
+2011-07-22 01:56:03,087 INFO  [Soap11HttpBindingImporter] importing operation searchForProduct
+2011-07-22 01:56:03,126 INFO  [SchemaUtils] Loading schema types from [http://localhost:1234/smregistry?wsdl]
+2011-07-22 01:56:03,126 INFO  [SchemaUtils] Getting schema http://localhost:1234/smregistry?wsdl
+2011-07-22 01:56:03,129 INFO  [SchemaUtils] Getting schema http://localhost:1234/smregistry?xsd=1
+2011-07-22 01:56:03,221 INFO  [WsdlImporter] Finding importer for {http://smregistry.choreos.eu}SMRegistryWSPortBinding
+2011-07-22 01:56:03,221 INFO  [WsdlImporter] Importing binding {http://smregistry.choreos.eu}SMRegistryWSPortBinding
+2011-07-22 01:56:03,222 INFO  [Soap11HttpBindingImporter] importing endpoint http://localhost:1234/smregistry
+2011-07-22 01:56:03,222 INFO  [Soap11HttpBindingImporter] importing operation addSupermarket
+2011-07-22 01:56:03,223 INFO  [Soap11HttpBindingImporter] importing operation getList

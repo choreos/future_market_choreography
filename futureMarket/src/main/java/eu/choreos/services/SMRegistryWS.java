@@ -6,7 +6,7 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-@WebService
+@WebService(targetNamespace="http://smregistry.choreos.eu")
 public class SMRegistryWS {
 	
 	private List<String> supermarkets;

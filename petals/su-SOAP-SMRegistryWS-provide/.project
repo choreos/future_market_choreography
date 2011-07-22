@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>su-BPEL-futureMart-provide</name>
+	<name>su-SOAP-SMRegistryWS-provide</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,14 +10,8 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-		<buildCommand>
-			<name>com.ebmwebsourcing.petals.extension.bpeldesigner.petalsBpelBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>com.ebmwebsourcing.petals.tools.eclipse.su.main.nature</nature>
-		<nature>com.ebmwebsourcing.petals.extension.bpeldesigner.petalsBpelNature</nature>
 	</natures>
 </projectDescription>
