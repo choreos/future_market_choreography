@@ -4,7 +4,7 @@
 	Originally created for the version 4.0 of the component.
  -->
 <jbi:jbi version="1.0" 
-	xmlns:generatedNs="http://services.choreos.eu/"
+	xmlns:generatedNs="http://smregistry.choreos.eu"
 	xmlns:jbi="http://java.sun.com/xml/ns/jbi"
 	xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
 	xmlns:soap="http://petals.ow2.org/components/soap/version-4"
@@ -15,9 +15,9 @@
 	
 		<!-- Import a Service into Petals => provides a Service. -->
 		<jbi:provides 		
-			interface-name="itfNs:SMRegistryWS"
-			service-name="srvNs:SMRegistryWSService"
-			endpoint-name="SMRegistryWSPort" xmlns:srvNs="http://smregistry.choreos.eu/" xmlns:itfNs="http://smregistry.choreos.eu/">
+			interface-name="generatedNs:SMRegistryWS"
+			service-name="generatedNs:SMRegistryWSService"
+			endpoint-name="SMRegistryWSPort">
 	
 			<!-- CDK specific elements -->
 			<petalsCDK:timeout>30000</petalsCDK:timeout>

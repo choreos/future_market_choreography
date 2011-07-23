@@ -13,8 +13,8 @@
 	</parent>
 	 --> 
 	
-	<name>su-SOAP-SMRegistryWS-provide</name>
-	<artifactId>su-SOAP-SMRegistryWS-provide</artifactId>
+	<name>su-BPEL-futureMart-provide</name>
+	<artifactId>su-BPEL-futureMart-provide</artifactId>
 	<groupId>org.ow2.petals</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jbi-service-unit</packaging>
@@ -23,8 +23,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.ow2.petals</groupId>
-			<artifactId>petals-bc-soap</artifactId>
-			<version>4.0</version>
+			<artifactId>petals-se-bpel</artifactId>
+			<version>1.0</version>
 			<scope>provided</scope>
 			<type>jbi-component</type>
 		</dependency>

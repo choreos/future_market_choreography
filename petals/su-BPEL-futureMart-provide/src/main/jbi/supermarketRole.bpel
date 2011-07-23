@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ns2:process xmlns:ns2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns10="http://www.w3.org/ns/wsdl" xmlns:ns11="http://www.w3.org/ns/wsdl/soap" xmlns:ns12="http://www.w3.org/ns/wsdl/http" xmlns:ns13="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns14="http://docs.oasis-open.org/wsbpel/2.0/serviceref" xmlns:ns15="http://schemas.xmlsoap.org/wsdl/mime/"  xmlns:ns4="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns5="http://schemas.xmlsoap.org/wsdl/" xmlns:ns6="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns7="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns9="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="process0.bpel" targetNamespace="http://roles.choreos.eu/" xmlns:ns1="http://roles.choreos.eu/Artifacts" xmlns:ns="http://smregistry.choreos.eu" xmlns:ns0="http://services.choreos.eu/">
+    <ns2:import namespace="http://smregistry.choreos.eu" location="smregistry.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></ns2:import>
+    <ns2:import namespace="http://services.choreos.eu/" location="futureMartWS.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></ns2:import>
+    <ns2:import importType="http://schemas.xmlsoap.org/wsdl/" location="supermarketRole.wsdl" namespace="http://roles.choreos.eu/"/>
+    <ns2:import importType="http://schemas.xmlsoap.org/wsdl/" location="supermarketRoleArtifacts.wsdl" namespace="http://roles.choreos.eu/Artifacts"/>
+    <ns2:partnerLinks>
+        <ns2:partnerLink xmlns:ns16="http://roles.choreos.eu/Artifacts" myRole="SupermarketRoleRole" name="mainPartner" partnerLinkType="ns16:SupermarketRolePLT"/>
+        <ns2:partnerLink name="futureMartPartner" partnerLinkType="ns1:futureMartPT" partnerRole="futureMartRole"></ns2:partnerLink>
+        <ns2:partnerLink name="smregistryPartner" partnerLinkType="ns1:smRegistryPT" partnerRole="smRegistryRole"></ns2:partnerLink>
+    </ns2:partnerLinks>
+    <ns2:variables>
+        <ns2:variable xmlns:tns="http://roles.choreos.eu/" messageType="tns:searchForProduct" name="searchForProductVarRequest"/>
+        <ns2:variable xmlns:tns="http://roles.choreos.eu/" messageType="tns:searchForProductResponse" name="searchForProductResponseVarResponse"/>
+        <ns2:variable xmlns:tns="http://roles.choreos.eu/" messageType="tns:registerSupermarket" name="registerSupermarketVarRequest"/>
+        <ns2:variable xmlns:tns="http://roles.choreos.eu/" messageType="tns:registerSupermarketResponse" name="registerSupermarketResponseVarResponse"/>
+        <ns2:variable name="smregistryPartnerResponse" messageType="ns:addSupermarketResponse"></ns2:variable>
+        <ns2:variable name="smregistryPartnerRequest" messageType="ns:addSupermarket"></ns2:variable>
+        <ns2:variable name="futureMartPartnerResponse" messageType="ns0:getPriceResponse"></ns2:variable>
+        <ns2:variable name="futureMartPartnerRequest" messageType="ns0:getPrice"></ns2:variable>
+    </ns2:variables>
+    <ns2:sequence name="MainSequence">
+        <ns2:pick name="MainPick">
+            <ns2:onMessage xmlns:ns16="http://roles.choreos.eu/" operation="registerSupermarket" partnerLink="mainPartner" portType="ns16:SupermarketRole" variable="registerSupermarketVarRequest">
+                <ns2:sequence>
+                    <ns2:assign validate="no" name="Assign">
+                        <ns2:copy>
+                            <ns2:from>
+                                <ns2:literal xml:space="preserve"><tns:addSupermarket xmlns:tns="http://smregistry.choreos.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:addSupermarket>
+</ns2:literal>
+                            </ns2:from>
+                            <ns2:to variable="smregistryPartnerRequest" part="parameters"></ns2:to>
+                        </ns2:copy>
+                        <ns2:copy>
+                            <ns2:from part="parameters" variable="registerSupermarketVarRequest">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></ns2:query>
+                            </ns2:from>
+                            <ns2:to part="parameters" variable="smregistryPartnerRequest">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></ns2:query>
+                            </ns2:to>
+                        </ns2:copy>
+                    </ns2:assign>
+                    <ns2:invoke name="Invoke" partnerLink="smregistryPartner" operation="addSupermarket" portType="ns:SMRegistryWS" inputVariable="smregistryPartnerRequest" outputVariable="smregistryPartnerResponse"></ns2:invoke>
+                    <ns2:assign validate="no" name="Assign1">
+                        <ns2:copy>
+                            <ns2:from>
+                                <ns2:literal xml:space="preserve"><tns:registerSupermarketResponse xmlns:tns="http://roles.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:registerSupermarketResponse>
+</ns2:literal>
+                            </ns2:from>
+                            <ns2:to variable="registerSupermarketResponseVarResponse" part="parameters"></ns2:to>
+                        </ns2:copy>
+                        <ns2:copy>
+                            <ns2:from part="parameters" variable="smregistryPartnerResponse">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></ns2:query>
+                            </ns2:from>
+                            <ns2:to part="parameters" variable="registerSupermarketResponseVarResponse">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></ns2:query>
+                            </ns2:to>
+                        </ns2:copy>
+                    </ns2:assign>
+                    <ns2:reply name="ReplyForregisterSupermarket" operation="registerSupermarket" partnerLink="mainPartner" portType="ns16:SupermarketRole" variable="registerSupermarketResponseVarResponse" />
+                </ns2:sequence>
+            </ns2:onMessage>
+            <ns2:onMessage xmlns:ns16="http://roles.choreos.eu/" operation="searchForProduct" partnerLink="mainPartner" portType="ns16:SupermarketRole" variable="searchForProductVarRequest">
+                <ns2:sequence>
+                    <ns2:assign validate="no" name="Assign2">
+                        <ns2:copy>
+                            <ns2:from>
+                                <ns2:literal xml:space="preserve"><tns:getPrice xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:getPrice>
+</ns2:literal>
+                            </ns2:from>
+                            <ns2:to variable="futureMartPartnerRequest" part="parameters"></ns2:to>
+                        </ns2:copy>
+                        <ns2:copy>
+                            <ns2:from part="parameters" variable="searchForProductVarRequest">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></ns2:query>
+                            </ns2:from>
+                            <ns2:to part="parameters" variable="futureMartPartnerRequest">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></ns2:query>
+                            </ns2:to>
+                        </ns2:copy>
+                    </ns2:assign>
+                    <ns2:invoke name="Invoke1" partnerLink="futureMartPartner" operation="getPrice" portType="ns0:FutureMartWS" inputVariable="futureMartPartnerRequest" outputVariable="futureMartPartnerResponse"></ns2:invoke>
+                    <ns2:assign validate="no" name="Assign3">
+                        <ns2:copy>
+                            <ns2:from>
+                                <ns2:literal xml:space="preserve"><tns:searchForProductResponse xmlns:tns="http://roles.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:searchForProductResponse>
+</ns2:literal>
+                            </ns2:from>
+                            <ns2:to variable="searchForProductResponseVarResponse" part="parameters"></ns2:to>
+                        </ns2:copy>
+                        <ns2:copy>
+                            <ns2:from part="parameters" variable="futureMartPartnerResponse">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></ns2:query>
+                            </ns2:from>
+                            <ns2:to part="parameters" variable="searchForProductResponseVarResponse">
+                                <ns2:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return/price]]></ns2:query>
+                            </ns2:to>
+                        </ns2:copy>
+                    </ns2:assign>
+                    <ns2:reply name="ReplyForsearchForProduct" operation="searchForProduct" partnerLink="mainPartner" portType="ns16:SupermarketRole" variable="searchForProductResponseVarResponse" />
+                </ns2:sequence>
+            </ns2:onMessage>
+        </ns2:pick>
+    </ns2:sequence>
+</ns2:process>

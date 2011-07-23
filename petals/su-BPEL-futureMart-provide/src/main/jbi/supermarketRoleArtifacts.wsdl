@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<w:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns10="http://www.w3.org/ns/wsdl" xmlns:ns11="http://www.w3.org/ns/wsdl/soap" xmlns:ns12="http://www.w3.org/ns/wsdl/http" xmlns:ns13="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns14="http://docs.oasis-open.org/wsbpel/2.0/serviceref" xmlns:ns16="xml" xmlns:ns2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns3="http://docs.oasis-open.org/wsbpel/2.0/process/abstract" xmlns:ns4="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://roles.choreos.eu/Artifacts" xmlns:w="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://roles.choreos.eu/" xmlns:wsdl1="http://services.choreos.eu/" xmlns:wsdl2="http://smregistry.choreos.eu" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://roles.choreos.eu/Artifacts">
+    <ns4:partnerLinkType name="SupermarketRolePLT">
+        <ns4:role xmlns:ns17="http://roles.choreos.eu/" name="SupermarketRoleRole" portType="ns17:SupermarketRole"/>
+    </ns4:partnerLinkType>
+    <ns4:partnerLinkType name="futureMartPT">
+    <ns4:role name="futureMartRole" portType="wsdl1:FutureMartWS"/>
+  </ns4:partnerLinkType>
+    <ns4:partnerLinkType name="smRegistryPT">
+    <ns4:role name="smRegistryRole" portType="wsdl2:SMRegistryWS"/>
+  </ns4:partnerLinkType>
+    <w:import location="supermarketRole.wsdl" namespace="http://roles.choreos.eu/"/>
+    <w:import location="futureMartWS.wsdl" namespace="http://services.choreos.eu/"/>
+    <w:import location="smregistry.wsdl" namespace="http://smregistry.choreos.eu"/>
+</w:definitions>
