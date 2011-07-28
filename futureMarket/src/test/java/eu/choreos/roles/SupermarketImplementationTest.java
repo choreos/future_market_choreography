@@ -18,11 +18,13 @@ public class SupermarketImplementationTest {
 	@BeforeClass
 	public static void setUp(){
 		RunWS.startFutureMartWS();
+		RunWS.startSMRegistryWS();
 	}
 	
 	@AfterClass
 	public static void tearDown(){
 		RunWS.stopFutureMartWS();
+		RunWS.stopSMRegistryWS();
 	}
 
 	@Test
@@ -36,15 +38,14 @@ public class SupermarketImplementationTest {
 	
 	@Test
 	public void shouldRegisterItselfIntoRegistryWS() throws Exception {
-		RunWS.startSMRegistryWS();
 		WSClient futureMartWS = new WSClient(FUTUREMART_WSDL);
+
 		WSClient registry = new WSClient(RunWS.REGISTRY_ENDPOINT + "?wsdl");
 		assertNull(registry.request("getList").getContent());
 		futureMartWS.request("registerSupermarket", FUTUREMART_WSDL);
-		registry.request("getList");
+		Item response = registry.request("getList");
 		
-		
-		RunWS.stopSMRegistryWS();
+		assertEquals(FUTUREMART_WSDL, response.getChildAsList("return").get(0).getContent());
 	}
 
 }

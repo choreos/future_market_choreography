@@ -21,8 +21,10 @@ public class SMRegistryWS {
 	}
 	
 	@WebMethod
-	public void addSupermarket(String endpoint){
+	public String addSupermarket(String endpoint){
 		supermarkets.add(endpoint);
+		
+		return "OK";
 	}
 
 	

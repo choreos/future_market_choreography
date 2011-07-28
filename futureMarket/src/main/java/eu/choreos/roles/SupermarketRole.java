@@ -14,8 +14,8 @@ public class SupermarketRole {
 	}
 	
 	@WebMethod
-	public void registerSupermarket(String endpoint) {
-		
+	public String registerSupermarket(String endpoint) {
+		return new String();
 	}
 
 }

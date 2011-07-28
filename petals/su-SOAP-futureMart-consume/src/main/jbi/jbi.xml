@@ -4,7 +4,7 @@
 	Originally created for the version 4.0 of the component.
  -->
 <jbi:jbi version="1.0" 
-	xmlns:generatedNs="http://roles.choreos.eu/"
+	xmlns:generatedNs="http://petals.ow2.org/bpel/futureMart/"
 	xmlns:jbi="http://java.sun.com/xml/ns/jbi"
 	xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
 	xmlns:soap="http://petals.ow2.org/components/soap/version-4"
@@ -15,9 +15,9 @@
 	
 		<!-- Expose a Petals Service => consumes a Service. -->
 		<jbi:consumes
-			interface-name="generatedNs:SupermarketRole"
-			service-name="generatedNs:SupermarketRoleService"
-			endpoint-name="SupermarketRolePort">
+			interface-name="generatedNs:futureMartPortType"
+			service-name="generatedNs:futureMartService"
+			endpoint-name="futureMartEndpoint">
 	
 			<!-- CDK specific elements -->
 			<petalsCDK:timeout>30000</petalsCDK:timeout>

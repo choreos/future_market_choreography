@@ -10,17 +10,17 @@
 	<jbi:services binding-component="false">
 
 		<jbi:provides
-			interface-name="generatedNs:SupermarketRole"
-			service-name="generatedNs:SupermarketRoleService"
-			endpoint-name="SupermarketRolePort"
-			xmlns:generatedNs="http://roles.choreos.eu/">
+			interface-name="generatedNs:futureMartPortType"
+			service-name="generatedNs:futureMartService"
+			endpoint-name="futureMartEndpoint"
+			xmlns:generatedNs="http://petals.ow2.org/bpel/futureMart/">
 
 			<!-- CDK elements -->
 			<petalsCDK:validate-wsdl>true</petalsCDK:validate-wsdl>
-			<petalsCDK:wsdl>supermarketRole.wsdl</petalsCDK:wsdl>
+			<petalsCDK:wsdl>futureMartDefinition.wsdl</petalsCDK:wsdl>
 
 			<!-- Component specific elements -->
-			<bpel:bpel>supermarketRole.bpel</bpel:bpel>
+			<bpel:bpel>futureMart.bpel</bpel:bpel>
 			<bpel:poolsize>1</bpel:poolsize>
 
 		</jbi:provides>

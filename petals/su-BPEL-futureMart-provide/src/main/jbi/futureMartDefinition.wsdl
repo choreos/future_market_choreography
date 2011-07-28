@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<definitions name="futureMartDefinition"
+        targetNamespace="http://petals.ow2.org/bpel/futureMart/"
+        xmlns:tns="http://petals.ow2.org/bpel/futureMart/"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
+ 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>
+        <schema 
+        		attributeFormDefault="unqualified" 
+        		elementFormDefault="qualified" 
+            	targetNamespace="http://petals.ow2.org/bpel/futureMart/" 
+            	xmlns="http://www.w3.org/2001/XMLSchema"
+            	xmlns:petals="http://petals.ow2.org/bpel/futureMart/">
+
+
+
+            
+        
+        
+            <element name="searchForProductRequest"
+            	type="petals:searchForProductRequest">
+            </element>
+            <element name="searchForProductResponse"
+            	type="petals:searchForProductResponse">
+            </element>
+
+            <complexType name="searchForProductRequest">
+            	<sequence>
+            		<element name="input" type="string"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="searchForProductResponse">
+            	<sequence>
+            		<element name="return" type="petals:returnType"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="returnType">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            		<element name="price" type="double"></element>
+            	</sequence>
+            </complexType>
+            <element name="registerSupermarket">
+            	<complexType>
+            		<sequence>
+            			<element name="in" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="registerSupermarketResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="return" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="registerSupermarketRequest"
+            	type="petals:registerSupermarketRequest">
+            </element>
+            
+            <complexType name="registerSupermarketRequest">
+            	<sequence>
+            		<element name="input" type="string"></element>
+            	</sequence>
+            </complexType>
+        </schema>
+    </types>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type definitions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="futureMartRequestMessage">
+        <part name="payload" element="tns:searchForProductRequest"/>
+    </message>
+    <message name="futureMartResponseMessage">
+        <part name="payload" element="tns:searchForProductResponse"/>
+    </message>
+    
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the processName BPEL process -->
+    <message name="registerSupermarketRequest">
+    	<part name="parameters" element="tns:registerSupermarketRequest"></part>
+    </message>
+    <message name="registerSupermarketResponse">
+    	<part name="parameters" element="tns:registerSupermarketResponse"></part>
+    </message>
+    <portType name="futureMartPortType">
+        <operation name="searchForProduct">
+            <input name="productIn" message="tns:futureMartRequestMessage" />
+            <output name="productOut" message="tns:futureMartResponseMessage"/>
+        </operation>
+        <operation name="registerSupermarket">
+        	<input message="tns:registerSupermarketRequest" name="marketIn"></input>
+        	<output message="tns:registerSupermarketResponse" name="marketOut"></output>
+        </operation>
+    </portType>
+
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION 
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <binding name="futureMartBinding" type="tns:futureMartPortType">
+
+ 	<soap:binding style="document"
+ 		transport="http://schemas.xmlsoap.org/soap/http" />
+ 	<operation name="searchForProduct">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/futureMart/searchForProduct" />
+ 		<input name="productIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="productOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="registerSupermarket">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/futureMart/registerSupermarket" />
+ 		<input name="marketIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="marketOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ </binding>
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION 
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <service name="futureMartService">
+    	<port name="futureMartEndpoint" binding="tns:futureMartBinding">
+    		<soap:address location="futureMartEndpoint"></soap:address>
+    	</port>
+    </service>
+    
+</definitions>
