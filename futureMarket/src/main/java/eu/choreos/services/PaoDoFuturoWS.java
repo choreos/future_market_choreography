@@ -9,7 +9,7 @@ import javax.jws.WebService;
 public class PaoDoFuturoWS {
 	
 	@WebMethod
-	public double calculatePriceOf(String aProduct){
+	public double getProductPriceByName(String name){
 		HashMap<String, Double> priceTable = new HashMap<String, Double>();
 		
 		priceTable.put("milk", 3.96);
@@ -17,7 +17,7 @@ public class PaoDoFuturoWS {
 		priceTable.put("rice", 4.76);
 		priceTable.put("popcorn", 2.18);
 		
-		return priceTable.get(aProduct);
+		return priceTable.get(name);
 	}
 
 }

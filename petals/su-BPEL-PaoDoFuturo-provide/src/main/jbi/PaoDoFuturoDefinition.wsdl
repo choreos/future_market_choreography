@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<definitions name="PaoDoFuturoDefinition"
+        targetNamespace="http://petals.ow2.org/bpel/PaoDoFuturo/"
+        xmlns:tns="http://petals.ow2.org/bpel/PaoDoFuturo/"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
+ 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>
+        <schema 
+        		attributeFormDefault="unqualified" 
+        		elementFormDefault="qualified" 
+            	targetNamespace="http://petals.ow2.org/bpel/PaoDoFuturo/" 
+            	xmlns="http://www.w3.org/2001/XMLSchema"
+            	xmlns:petals="http://petals.ow2.org/bpel/PaoDoFuturo/">
+
+
+            <element name="searchForProduct"
+            	type="petals:searchForProduct">
+            </element>
+            
+            <complexType name="searchForProduct">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            	</sequence>
+            </complexType>
+            <element name="searchForProductResponse"
+            	type="petals:searchForProductResponse">
+            </element>
+            
+            <complexType name="searchForProductResponse">
+            	<sequence>
+            		<element name="return" type="petals:returnType"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="returnType">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            		<element name="price" type="double"></element>
+            	</sequence>
+            </complexType>
+            <element name="registerSupermarket">
+            	<complexType>
+            		<sequence>
+            			<element name="in" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="registerSupermarketResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="out" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+        </schema>
+    </types>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type definitions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="PaoDoFuturoRequestMessage">
+        <part name="payload" element="tns:searchForProduct"/>
+    </message>
+    <message name="PaoDoFuturoResponseMessage">
+        <part name="payload" element="tns:searchForProductResponse"/>
+    </message>
+    
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the processName BPEL process -->
+    <message name="registerSupermarketRequest">
+    	<part name="parameters" element="tns:registerSupermarket"></part>
+    </message>
+    <message name="registerSupermarketResponse">
+    	<part name="parameters" element="tns:registerSupermarketResponse"></part>
+    </message>
+    <portType name="PaoDoFuturoPortType">
+        <operation name="searchForProduct">
+            <input name="productIn" message="tns:PaoDoFuturoRequestMessage" />
+            <output name="productOut" message="tns:PaoDoFuturoResponseMessage"/>
+        </operation>
+        <operation name="registerSupermarket">
+        	<input message="tns:registerSupermarketRequest" name="marketIn"></input>
+        	<output message="tns:registerSupermarketResponse" name="marketOut"></output>
+        </operation>
+    </portType>
+
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION 
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <binding name="PaoDoFuturoBinding" type="tns:PaoDoFuturoPortType">
+ 	<soap:binding style="document"
+ 		transport="http://schemas.xmlsoap.org/soap/http" />
+
+ 	<operation name="searchForProduct">
+ 		<soap:operation soapAction="http://petals.ow2.org/bpel/PaoDoFuturo/searchForProduct" />
+ 		<input name="productIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="productOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="registerSupermarket">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/PaoDoFuturo/registerSupermarket" />
+ 		<input name="marketIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="marketOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ </binding>
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION 
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+  
+    <service name="PaoDoFuturoService">
+    	<port name="PaoDoFuturoEndpoint" binding="tns:PaoDoFuturoBinding">
+    		<soap:address location="PaoDoFuturoEndpoint"></soap:address>
+    	</port>
+    </service>
+    
+</definitions>

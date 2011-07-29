@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:processDefinition="http://petals.ow2.org/bpel/PaoDoFuturo/" xmlns:tns="http://petals.ow2.org/bpel/PaoDoFuturo/Artifacts" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://services.choreos.eu/" xmlns:wsdl1="http://smregistry.choreos.eu" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PaoDoFuturoArtifacts" targetNamespace="http://petals.ow2.org/bpel/PaoDoFuturo/Artifacts">
+		
+    <plnk:partnerLinkType name="PaoDoFuturoPLT">
+        <plnk:role name="PaoDoFuturoRole" portType="processDefinition:PaoDoFuturoPortType"/>
+    </plnk:partnerLinkType>
+  
+    <plnk:partnerLinkType name="PaoDoFuturoPT">
+    <plnk:role name="PaoDoFuturoRole" portType="wsdl:PaoDoFuturoWS"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="smRegistryPT">
+    <plnk:role name="smRegistryRole" portType="wsdl1:SMRegistryWS"/>
+  </plnk:partnerLinkType>
+    <import location="PaoDoFuturoDefinition.wsdl" namespace="http://petals.ow2.org/bpel/PaoDoFuturo/"/>
+    <import location="paoDoFuturoWS.wsdl" namespace="http://services.choreos.eu/"/>
+    <import location="smregistry.wsdl" namespace="http://smregistry.choreos.eu"/>
+</definitions>
