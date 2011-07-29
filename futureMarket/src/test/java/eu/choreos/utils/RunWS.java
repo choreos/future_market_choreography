@@ -1,5 +1,7 @@
 package eu.choreos.utils;
 
+import java.util.HashMap;
+
 import javax.xml.ws.Endpoint;
 
 import eu.choreos.roles.SupermarketCustomerRole;
@@ -8,59 +10,27 @@ import eu.choreos.services.FutureMartWS;
 import eu.choreos.services.SMRegistryWS;
 
 public class RunWS {
-	
-	private static Endpoint supermarket;
-	private static Endpoint customer;
-	private static Endpoint futureMart;
-	private static Endpoint smRegistry;
-	public static final String REGISTRY_ENDPOINT = "http://localhost:1234/smregistry";
-	
-	public static void startSupermarketWS(){
-		supermarket = startWS(new SupermarketRole(), "supermarketRole");
-	}
-	
-	public static void startSupermarketCustomerWS() {
-		customer = startWS(new SupermarketCustomerRole(), "supermarketCustomerRole");	
-	}
-	
-	public static void startFutureMartWS() {
-		futureMart = startWS(new FutureMartWS(), "futureMartWS");	
-	}
-	
-	public static void startSMRegistryWS() {
-		smRegistry = startWS(new SMRegistryWS(), "smregistry");	
-	}
-	
-	
 
-	private static Endpoint startWS(Object ws, String wsName) {
-		Endpoint endpoint = Endpoint.create(ws);
-		endpoint.publish("http://localhost:1234/" + wsName);
-		return endpoint;
+	private static HashMap<String, Endpoint>  services = new HashMap<String, Endpoint>();
+	private static final String PREFIX = "http://localhost:1234/";
+
+	
+	public static void start(Object serviceInstance, String wsName){
+		Endpoint endpoint = Endpoint.create(serviceInstance);
+		endpoint.publish(PREFIX + wsName);
+		
+		services.put(wsName, endpoint);
 	}
 	
-	
-	public static void stopSupermarketWS(){
-		supermarket.stop();
+	public static void stop(String wsName){
+		services.get(wsName).stop();
 	}
 	
-	public static void stopSupermarketCustomerWS(){
-		customer.stop();
-	}
-	
-	public static void stopFutureMartWS(){
-		futureMart.stop();
-	}
-	
-	public static void stopSMRegistryWS(){
-		smRegistry.stop();
-	}
-	
-	public static void main(String[] args) {
-		RunWS.startSupermarketCustomerWS();
-		RunWS.startSupermarketWS();
-		RunWS.startFutureMartWS();
-		RunWS.startSMRegistryWS();
+	public static void main(String[] args) {	
+		RunWS.start(new SupermarketRole(), "supermarketRole");
+		RunWS.start(new SupermarketCustomerRole(), "supermarketCustomerRole");
+		RunWS.start(new FutureMartWS(), "futureMartWS");
+		RunWS.start(new SMRegistryWS(), "smregistry");
 	}
 
 }

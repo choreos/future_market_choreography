@@ -14,13 +14,13 @@ public class SMRegistryWSTest {
 	
 	@BeforeClass
 	public static void setUp(){
-		RunWS.startSMRegistryWS();
+		RunWS.start(new SMRegistryWS(), "smregistry");
 	}
 
 	
 	@AfterClass
 	public static void tearDown(){
-		RunWS.stopSMRegistryWS();
+		RunWS.stop("smregistry");
 	}
 
 	@Test

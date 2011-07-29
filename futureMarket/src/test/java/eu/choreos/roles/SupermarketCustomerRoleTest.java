@@ -13,12 +13,12 @@ public class SupermarketCustomerRoleTest {
 	
 	@BeforeClass
 	public static void setUp(){
-		RunWS.startSupermarketCustomerWS();
+		RunWS.start(new SupermarketCustomerRole(), "supermarketCustomerRole");
 	}
 	
 	@AfterClass
 	public static void tearDown(){
-		RunWS.stopSupermarketCustomerWS();
+		RunWS.stop("supermarketCustomerRole");
 	}
 
 	@Test
