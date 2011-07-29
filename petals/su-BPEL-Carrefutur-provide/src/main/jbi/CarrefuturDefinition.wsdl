@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<definitions name="CarrefuturDefinition"
+        targetNamespace="http://petals.ow2.org/bpel/Carrefutur/"
+        xmlns:tns="http://petals.ow2.org/bpel/Carrefutur/"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
+ 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>
+        <schema 
+        		attributeFormDefault="unqualified" 
+        		elementFormDefault="qualified" 
+            	targetNamespace="http://petals.ow2.org/bpel/Carrefutur/" 
+            	xmlns="http://www.w3.org/2001/XMLSchema"
+            	xmlns:petals="http://petals.ow2.org/bpel/Carrefutur/">
+
+			<element name="CarrefuturRequest" type="petals:CarrefuturRequest" />
+            <complexType name="CarrefuturRequest">
+                    <sequence>
+                        <element name="input" type="string"/>
+                    </sequence>
+            </complexType>
+
+			<element name="CarrefuturResponse" type="petals:CarrefuturResponse" />
+            <complexType name="CarrefuturResponse">
+                    <sequence>
+                        <element name="return" type="string"/>
+                    </sequence>
+            </complexType>
+            <element name="searchForProduct"
+            	type="petals:searchForProduct">
+            </element>
+            
+            <complexType name="searchForProduct">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            	</sequence>
+            </complexType>
+        
+            <element name="registerSupermarket">
+            	<complexType>
+            		<sequence>
+            			<element name="in" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="registerSupermarketResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="out" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="searchForProductResponse"
+            	type="petals:searchForProductResponse">
+            </element>
+            
+            <complexType name="searchForProductResponse">
+            	<sequence>
+            		<element name="return" type="petals:returnType"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="returnType">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            		<element name="price" type="double"></element>
+            	</sequence>
+            </complexType>
+        </schema>
+    </types>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type definitions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="CarrefuturRequestMessage">
+        <part name="payload" element="tns:searchForProduct"/>
+    </message>
+    <message name="CarrefuturResponseMessage">
+        <part name="payload" element="tns:searchForProductResponse"/>
+    </message>
+    
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the processName BPEL process -->
+    <message name="registerSupermarketRequest">
+    	<part name="parameters" element="tns:registerSupermarket"></part>
+    </message>
+    <message name="registerSupermarketResponse">
+    	<part name="parameters" element="tns:registerSupermarketResponse"></part>
+    </message>
+    <portType name="CarrefuturPortType">
+        <operation name="searchForProduct">
+            <input name="productIn" message="tns:CarrefuturRequestMessage" />
+            <output name="productOut" message="tns:CarrefuturResponseMessage"/>
+        </operation>
+        <operation name="registerSupermarket">
+        	<input message="tns:registerSupermarketRequest" name="marketIn"></input>
+        	<output message="tns:registerSupermarketResponse" name="marketOut"></output>
+        </operation>
+    </portType>
+
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION 
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <binding name="CarrefuturBinding" type="tns:CarrefuturPortType">
+ 	<soap:binding style="document"
+ 		transport="http://schemas.xmlsoap.org/soap/http" />
+
+ 	<operation name="searchForProduct">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Carrefutur/searchForProduct" />
+ 		<input name="productIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="productOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="registerSupermarket">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Carrefutur/registerSupermarket" />
+ 		<input name="marketIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="marketOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ </binding>
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION 
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+  
+    <service name="CarrefuturService">
+    	<port name="CarrefuturEndpoint" binding="tns:CarrefuturBinding">
+    		<soap:address location="CarrefuturEndpoint"></soap:address>
+    	</port>
+    </service>
+    
+</definitions>

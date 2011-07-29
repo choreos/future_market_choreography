@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.choreos.eu/" version="1.0" targetNamespace="http://services.choreos.eu/">
+  <xs:element name="calculatePriceOf" type="tns:calculatePriceOf" />
+  <xs:element name="calculatePriceOfResponse" type="tns:calculatePriceOfResponse" />
+  <xs:complexType name="calculatePriceOf">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calculatePriceOfResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

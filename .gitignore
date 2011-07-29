@@ -3,7 +3,10 @@ target/
 **/*.jar
 **/*.zip
 **/*.class
+**/*.log
 *.jar
 *.zip
+*.log
 *.class
 .DS_Store
+
