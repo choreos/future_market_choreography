@@ -7,6 +7,7 @@ import javax.xml.ws.Endpoint;
 import eu.choreos.roles.SupermarketCustomerRole;
 import eu.choreos.roles.SupermarketRole;
 import eu.choreos.services.CarrefuturWS;
+import eu.choreos.services.CustomerWS;
 import eu.choreos.services.FutureMartWS;
 import eu.choreos.services.PaoDoFuturoWS;
 import eu.choreos.services.SMRegistryWS;
@@ -35,6 +36,7 @@ public class RunWS {
 		RunWS.start(new SMRegistryWS(), "smregistry");
 		RunWS.start(new CarrefuturWS(), "carrefuturWS");
 		RunWS.start(new PaoDoFuturoWS(), "paoDoFuturoWS");
+		RunWS.start(new CustomerWS(), "customerWS");
 	}
 
 }

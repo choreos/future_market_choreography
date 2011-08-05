@@ -1,14 +1,14 @@
 package eu.choreos.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.utils.RunWS;
-
 import br.usp.ime.choreos.vv.WSClient;
+import eu.choreos.utils.RunWS;
 
 public class SMRegistryWSTest {
 	

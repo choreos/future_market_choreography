@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<definitions name="CustomerDefinition"
+        targetNamespace="http://petals.ow2.org/bpel/Customer/"
+        xmlns:tns="http://petals.ow2.org/bpel/Customer/"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+ 
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of types participating in this BPEL process 
+     The BPEL Designer will generate default request and response types
+     but you can define or import any XML Schema type and use them as part 
+     of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>
+        <schema 
+        		attributeFormDefault="unqualified" 
+        		elementFormDefault="qualified" 
+            	targetNamespace="http://petals.ow2.org/bpel/Customer/" 
+            	xmlns="http://www.w3.org/2001/XMLSchema"
+            	xmlns:petals="http://petals.ow2.org/bpel/Customer/">
+
+			<element name="CustomerRequest" type="petals:CustomerRequest" />
+            <complexType name="CustomerRequest">
+                    <sequence>
+                        <element name="input" type="string"/>
+                    </sequence>
+            </complexType>
+
+			<element name="CustomerResponse" type="petals:CustomerResponse" />
+            <complexType name="CustomerResponse">
+                    <sequence>
+                        <element name="result" type="string"/>
+                    </sequence>
+            </complexType>
+            <element name="getPriceOfProductListRequest"
+            	type="petals:getPriceOfProductListRequest">
+            </element>
+            <element name="getPriceOfProductListResponse"
+            	type="petals:getPriceOfProductListResponse">
+            </element>
+
+
+            <complexType name="getPriceOfProductListRequest">
+            	<sequence>
+            		<element name="item" type="string" minOccurs="1" maxOccurs="unbounded"></element>
+            	</sequence>
+            </complexType>
+        
+        
+            <complexType name="getPriceOfProductListResponse">
+            	<sequence>
+            		<element name="price" type="double"></element>
+            	</sequence>
+            </complexType>
+        </schema>
+    </types>
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type definitions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="CustomerRequestMessage">
+        <part name="payload" element="tns:getPriceOfProductListRequest"/>
+    </message>
+    <message name="CustomerResponseMessage">
+        <part name="payload" element="tns:getPriceOfProductListResponse"/>
+    </message>
+    
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+
+    <!-- portType implemented by the processName BPEL process -->
+    <portType name="CustomerPortType">
+        <operation name="getPriceOfProductList">
+            <input name="listIn" message="tns:CustomerRequestMessage" />
+            <output name="listOut" message="tns:CustomerResponseMessage"/>
+        </operation>
+    </portType>
+
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     BINDING DEFINITION 
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <binding name="CustomerBinding" type="tns:CustomerPortType">
+ 	<soap:binding style="document"
+ 		transport="http://schemas.xmlsoap.org/soap/http" />
+
+ 	<operation name="getPriceOfProductList">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Customer/getPriceOfProductList" />
+ 		<input name="listIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="listOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ </binding>
+
+ <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     SERVICE DEFINITION 
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+  
+    <service name="CustomerService">
+    	<port name="CustomerEndpoint" binding="tns:CustomerBinding">
+    		<soap:address location="CustomerEndpoint"></soap:address>
+    	</port>
+    </service>
+    
+</definitions>

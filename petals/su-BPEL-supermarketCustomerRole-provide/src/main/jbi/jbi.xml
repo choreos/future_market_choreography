@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- JBI descriptor for the Petals component petals-se-bpel  -->
+<jbi:jbi version="1.0" 
+	xmlns:bpel="http://petals.ow2.org/components/petals-bpel-engine/version-1"
+	xmlns:jbi="http://java.sun.com/xml/ns/jbi"
+	xmlns:petalsCDK="http://petals.ow2.org/components/extensions/version-5"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<jbi:services binding-component="false">
+
+		<jbi:provides
+			interface-name="generatedNs:SupermarketCustomerRole"
+			service-name="generatedNs:SupermarketCustomerRoleService"
+			endpoint-name="SupermarketCustomerRolePort"
+			xmlns:generatedNs="http://roles.choreos.eu/">
+
+			<!-- CDK elements -->
+			<petalsCDK:validate-wsdl>true</petalsCDK:validate-wsdl>
+			<petalsCDK:wsdl>supermarketCustomerRole.wsdl</petalsCDK:wsdl>
+
+			<!-- Component specific elements -->
+			<bpel:bpel>supermarketCustomerRole.bpel</bpel:bpel>
+			<bpel:poolsize>1</bpel:poolsize>
+
+		</jbi:provides>
+
+	</jbi:services>
+</jbi:jbi>
