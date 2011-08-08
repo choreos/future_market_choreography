@@ -6,8 +6,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import br.usp.ime.choreos.vv.Item;
-import br.usp.ime.choreos.vv.WSClient;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.WSClient;
 
 @WebService
 public class CustomerWS {

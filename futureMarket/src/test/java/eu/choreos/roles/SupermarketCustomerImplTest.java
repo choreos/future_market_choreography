@@ -6,9 +6,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.Item;
-import br.usp.ime.choreos.vv.ItemImpl;
-import br.usp.ime.choreos.vv.WSClient;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.ItemImpl;
+import eu.choreos.vv.WSClient;
 import eu.choreos.services.CarrefuturWS;
 import eu.choreos.services.CustomerWS;
 import eu.choreos.services.FutureMartWS;

@@ -6,7 +6,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.usp.ime.choreos.vv.WSClient;
+import eu.choreos.vv.WSClient;
 import eu.choreos.utils.RunWS;
 
 public class SupermarketCustomerRoleTest {

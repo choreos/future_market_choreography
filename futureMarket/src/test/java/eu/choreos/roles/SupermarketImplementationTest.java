@@ -12,8 +12,8 @@ import eu.choreos.services.PaoDoFuturoWS;
 import eu.choreos.services.SMRegistryWS;
 import eu.choreos.utils.RunWS;
 
-import br.usp.ime.choreos.vv.Item;
-import br.usp.ime.choreos.vv.WSClient;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.WSClient;
 
 public class SupermarketImplementationTest {
 	
