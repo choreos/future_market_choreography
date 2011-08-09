@@ -17,6 +17,7 @@ import eu.choreos.utils.RunWS;
 
 public class SupermarketImplTest {
 	
+	private static final String GENERICSM_WSDL = "http://localhost:8084/petals/services/supermarket?wsdl";
 	private final String FUTUREMART_WSDL = "http://localhost:8084/petals/services/futureMart?wsdl";
 	private final String CARREFUTUR_WSDL = "http://localhost:8084/petals/services/carrefutur?wsdl";
 	private final String PAO_DO_FUTURO_WSDL = "http://localhost:8084/petals/services/paoDoFuturo?wsdl";
@@ -100,5 +101,27 @@ public class SupermarketImplTest {
 		
 		assertEquals(PAO_DO_FUTURO_WSDL, response.getChildAsList("return").get(2).getContent());
 	}
+	
+	@Test
+	public void genericSupermarketShouldPlayTheSupermarketRole() throws Exception {
+		WSClient futureMart = new WSClient(GENERICSM_WSDL);
+		Item response = futureMart.request("searchForProduct", "milk");
+		Item product = response.getChild("return");
+		assertEquals("milk", product.getChild("name").getContent());
+		assertEquals(new Double(3.95), product.getChild("price").getContentAsDouble());
+	}
+	
+	@Test
+	public void shouldRegisterGenericSupermarketInRegistryWS() throws Exception {
+		WSClient futureMart = new WSClient(GENERICSM_WSDL);
+
+		WSClient registry = new WSClient(REGISTRY_ENDPOINT);
+		assertNull(registry.request("getList").getContent());
+		futureMart.request("registerSupermarket", GENERICSM_WSDL);
+		Item response = registry.request("getList");
+		
+		assertEquals(GENERICSM_WSDL, response.getChildAsList("return").get(3).getContent());
+	}
+	
 
 }
