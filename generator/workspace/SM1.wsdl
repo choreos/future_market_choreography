@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://services.choreos.eu/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SupermarketWSService" targetNamespace="http://services.choreos.eu/">
+  <types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://services.choreos.eu/" version="1.0">
+      <xs:element name="getPrice" type="tns:getPrice" />
+      <xs:element name="getPriceResponse" type="tns:getPriceResponse" />
+      <xs:complexType name="getPrice">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="arg0" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="getPriceResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="getPriceResponse">
+    <part element="tns:getPriceResponse" name="parameters" />
+  </message>
+  <message name="getPrice">
+    <part element="tns:getPrice" name="parameters" />
+  </message>
+  <portType name="SM1PortType">
+    <operation name="getPrice">
+      <input message="tns:getPrice" />
+      <output message="tns:getPriceResponse" />
+    </operation>
+  </portType>
+  <binding name="SM1PortBinding" type="tns:SM1PortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="getPrice">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="SM1">
+    <port binding="tns:SM1PortBinding" name="SM1Port">
+      <soap:address location="http://localhost:4321/WS/SM1" />
+    </port>
+  </service>
+</definitions>

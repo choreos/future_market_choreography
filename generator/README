@@ -1,0 +1,3 @@
+usage:
+
+ruby ./script/ws_generator.rb <number of ws to be created>
