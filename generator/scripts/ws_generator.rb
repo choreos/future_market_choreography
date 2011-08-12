@@ -1,8 +1,12 @@
 require 'fileutils'
 include FileUtils
 
-require '../lib/wsdl'
-require '../lib/adaptor'
+require "./config"
+require './lib/wsdl'
+require './lib/adaptor'
+require 'open3.rb'
+
+puts `pwd`
 
 number_of_ws = ARGV[0].to_i
 
@@ -14,8 +18,11 @@ number_of_ws = ARGV[0].to_i
 	WSDL.implement_ws id		
 end
 
-Adaptor.adapt_ws "../workspace/eu/choreos/services/.", number_of_ws
+Adaptor.adapt_ws "#{ROOT_DIR}/workspace/eu/choreos/services/.", number_of_ws
 
 #Start ws server
-cd "../workspace"
+cd "#{ROOT_DIR}/workspace"
 `ant SM#{number_of_ws}PortTypeServer`
+puts "#{$?}"
+
+
