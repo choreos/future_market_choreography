@@ -18,6 +18,8 @@ import eu.choreos.utils.RunWS;
 public class SupermarketImplTest {
 	
 	private final String FUTUREMART_WSDL = "http://localhost:8084/petals/services/futureMart?wsdl";
+	private final String SM1 = "http://localhost:8084/petals/services/supermarket1?wsdl";
+	private final String SM2 = "http://localhost:8084/petals/services/supermarket2?wsdl";
 	private final String CARREFUTUR_WSDL = "http://localhost:8084/petals/services/carrefutur?wsdl";
 	private final String PAO_DO_FUTURO_WSDL = "http://localhost:8084/petals/services/paoDoFuturo?wsdl";
 	private final String REGISTRY_ENDPOINT = "http://localhost:1234/smregistry?wsdl";
@@ -66,6 +68,24 @@ public class SupermarketImplTest {
 	}
 	
 	@Test
+	public void sm1ShouldPlayTheSupermarketRole() throws Exception {
+		WSClient futureMart = new WSClient(SM1);
+		Item response = futureMart.request("searchForProduct", "milk");
+		Item product = response.getChild("return");
+		assertEquals("milk", product.getChild("name").getContent());
+		assertEquals(new Double(3.95), product.getChild("price").getContentAsDouble());
+	}
+	
+	@Test
+	public void sm2ShouldPlayTheSupermarketRole() throws Exception {
+		WSClient futureMart = new WSClient(SM2);
+		Item response = futureMart.request("searchForProduct", "milk");
+		Item product = response.getChild("return");
+		assertEquals("milk", product.getChild("name").getContent());
+		assertEquals(new Double(3.95), product.getChild("price").getContentAsDouble());
+	}
+	
+	@Test
 	public void shouldRegisterFuturMartfInRegistryWS() throws Exception {
 		WSClient futureMart = new WSClient(FUTUREMART_WSDL);
 
@@ -99,6 +119,30 @@ public class SupermarketImplTest {
 		Item response = registry.request("getList");
 		
 		assertEquals(PAO_DO_FUTURO_WSDL, response.getChildAsList("return").get(2).getContent());
+	}
+	
+	@Test
+	public void shouldRegisterSM1InRegistryWS() throws Exception {
+		WSClient futureMart = new WSClient(SM1);
+
+		WSClient registry = new WSClient(REGISTRY_ENDPOINT);
+		assertNull(registry.request("getList").getContent());
+		futureMart.request("registerSupermarket", SM1);
+		Item response = registry.request("getList");
+		
+		assertEquals(SM1, response.getChildAsList("return").get(3).getContent());
+	}
+	
+	@Test
+	public void shouldRegisterSM2InRegistryWS() throws Exception {
+		WSClient futureMart = new WSClient(SM2);
+
+		WSClient registry = new WSClient(REGISTRY_ENDPOINT);
+		assertNull(registry.request("getList").getContent());
+		futureMart.request("registerSupermarket", SM2);
+		Item response = registry.request("getList");
+		
+		assertEquals(SM2, response.getChildAsList("return").get(4).getContent());
 	}
 
 }

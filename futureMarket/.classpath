@@ -4,6 +4,6 @@
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/4.8.2/junit-4.8.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/choreUnit_0.4.jar"/>
+	<classpathentry kind="lib" path="lib/rehearsal-0.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
