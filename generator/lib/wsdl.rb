@@ -12,7 +12,7 @@ module WSDL
 	def implement_ws id
 		cd "#{ROOT_DIR}/workspace"
 		`#{CXF_DIR_BIN}/wsdl2java -ant -impl -server -d . SM#{id}.wsdl`
-		puts "#{$?}"
+		cd "#{ROOT_DIR}/scripts"
 	end
 
 	def open_file_and_write file_name, content

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:processDefinition="http://petals.ow2.org/bpel/supermarket/" xmlns:tns="http://petals.ow2.org/bpel/supermarket/Artifacts" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:wsdl="http://services.choreos.eu/" xmlns:wsdl1="http://smregistry.choreos.eu" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="supermarketArtifacts" targetNamespace="http://petals.ow2.org/bpel/supermarket/Artifacts">
+		
+    <plnk:partnerLinkType name="supermarketPLT">
+        <plnk:role name="supermarketRole" portType="processDefinition:supermarket#{id}PortType"/>
+    </plnk:partnerLinkType>
+  
+    <plnk:partnerLinkType name="SupermarketWSPT">
+    <plnk:role name="SupermarketWSRole" portType="wsdl:SM#{id}PortType"/>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="SMRegistryPT">
+    <plnk:role name="SMRegistryRole" portType="wsdl1:SMRegistryWS"/>
+  </plnk:partnerLinkType>
+    <import location="supermarketDefinition.wsdl" namespace="http://petals.ow2.org/bpel/supermarket/"/>
+    <import location="SM#{id}.wsdl" namespace="http://services.choreos.eu/"/>
+    <import location="smregistry.wsdl" namespace="http://smregistry.choreos.eu"/>
+</definitions>
+
