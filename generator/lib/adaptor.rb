@@ -13,7 +13,7 @@ module Adaptor
 				data = File.open("../resources/java/SMData.java", "r").readlines.join.gsub('#{id}', id.to_s)		
 		
 				file_name = "#{dir_name}/SM#{id}PortTypeImpl.java"
-				content = File.open(file_name).readlines.to_s
+				content = File.open(file_name).readlines.join
 				content = content.sub("0.0", "SM#{id}Data.getPrice(arg0)")
 				
 				open_file_and_write file_name, content
