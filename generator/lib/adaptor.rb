@@ -10,17 +10,12 @@ module Adaptor
 	
 	def populate_ws_impl dir_name, number_of_ws
 		(1..number_of_ws).each do |id|			
-				data = File.open("../resources/java/SMData.java", "r").readlines.join.gsub('#{id}', id.to_s)		
-		
-				file_name = "#{dir_name}/SM#{id}PortTypeImpl.java"
-				content = File.open(file_name).readlines.join
-				content = content.sub("0.0", "SM#{id}Data.getPrice(arg0)")
-				
-				open_file_and_write file_name, content
-				open_file_and_write "#{dir_name}/SM#{id}Data.java", data
+      new_supermarket_data_class(dir_name, id)
+      change_return_value_of_getPrice_to_method_call(dir_name, id)
 		end
 	end
 
+  # substitute the ws_server of the original to host |number_of_ws| web services inside it
 	def create_ws_server dir_name, number_of_ws
 		server_class = "package eu.choreos.services;\n\n"
 		server_class << "import javax.xml.ws.Endpoint;\n\n"
@@ -35,10 +30,22 @@ module Adaptor
 	
 		server_class << "\t}\n"
 		server_class << "}"
-
+		
 		open_file_and_write "#{dir_name}/SM#{number_of_ws}PortType_SM#{number_of_ws}Port_Server.java", server_class
 	end
-
+	
+	def new_supermarket_data_class(dir_name, id)
+		data = File.open("../resources/java/SMData.java", "r").readlines.join.gsub('#{id}', id.to_s)		
+		open_file_and_write "#{dir_name}/SM#{id}Data.java", data	 
+	end
+	
+  def change_return_value_of_getPrice_to_method_call(dir_name, id)
+    file_name = "#{dir_name}/SM#{id}PortTypeImpl.java"
+		content = File.open(file_name).readlines.join
+		content = content.sub("0.0", "SM#{id}Data.getPrice(arg0)")
+		open_file_and_write file_name, content
+	end
+	
 	def open_file_and_write file_name, content
 	    file = File.new(file_name, "w")
 	    file.puts content
