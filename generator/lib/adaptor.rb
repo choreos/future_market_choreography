@@ -1,3 +1,4 @@
+require 'erb'
 require 'fileutils'
 include FileUtils
 
@@ -10,7 +11,7 @@ module Adaptor
 	
 	def populate_ws_impl dir_name, number_of_ws
 		(1..number_of_ws).each do |id|			
-      new_supermarket_data_class(dir_name, id)
+      new_supermarket_data_class(dir_name, id, number_of_ws)
       change_return_value_of_getPrice_to_method_call(dir_name, id)
 		end
 	end
@@ -34,9 +35,12 @@ module Adaptor
 		open_file_and_write "#{dir_name}/SM#{number_of_ws}PortType_SM#{number_of_ws}Port_Server.java", server_class
 	end
 	
-	def new_supermarket_data_class(dir_name, id)
-		data = File.open("../resources/java/SMData.java", "r").readlines.join.gsub('#{id}', id.to_s)		
-		open_file_and_write "#{dir_name}/SM#{id}Data.java", data	 
+	def new_supermarket_data_class(dir_name, id, number_of_ws)
+	  @id = id
+	  @number_of_ws = number_of_ws
+	  @number_of_products = NUMBER_PRODUCTS
+	  @price_generator = Proc.new {|i| ((rand(number_of_ws)/number_of_ws.to_f) + i)}
+		substitute("#{ROOT_DIR}/resources/java/SMData.erb.java", "#{dir_name}/SM#{id}Data.java")
 	end
 	
   def change_return_value_of_getPrice_to_method_call(dir_name, id)
@@ -51,4 +55,12 @@ module Adaptor
 	    file.puts content
 	    file.close
 	end
+	
+	def substitute(template, dest)
+    erb = ERB.new(File.read(template))
+    File.open(dest, "w+") do |f|
+      f.write(erb.result(binding))
+    end
+  end
+  
 end
