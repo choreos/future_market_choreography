@@ -11,11 +11,12 @@ module BPEL
 	end
 
 	def create_su_package id
-		mkdir_p "META-INF"
 		cp "../../workspace/SM#{id}.wsdl", "SM#{id}.wsdl"
 		cp "../../resources/wsdl/smregistry.wsdl", "smregistry.wsdl"
 		cp "../../resources/wsdl/smregistry_xsd_1", "smregistry_xsd_1"
 
+    mkdir_p "META-INF"
+    
 		su_jbi = File.open("../../resources/bpel/su-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
 		open_file_and_write "META-INF/jbi.xml", su_jbi	
 
@@ -28,14 +29,9 @@ module BPEL
 		definition = File.open("../../resources/bpel/supermarketDefinition.wsdl", "r").readlines.join.gsub('#{id}', id.to_s)
 		open_file_and_write "supermarketDefinition.wsdl", definition	
 				
-		zip_j "su-BPEL-SM#{id}-provide.zip", "SM#{id}.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "smregistry.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "smregistry_xsd_1"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarket.bpel"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarketArtifacts.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarketDefinition.wsdl"
-
-		zip "su-BPEL-SM#{id}-provide.zip", "META-INF"				
+		compact_petals_files "su-BPEL-SM#{id}-provide.zip", "SM#{id}.wsdl", "smregistry.wsdl", 
+		                                                    "smregistry_xsd_1", "supermarket.bpel",
+		                                                    "supermarketArtifacts.wsdl", "supermarketDefinition.wsdl"
 	end
 
 	def create_sa_package id
@@ -43,8 +39,7 @@ module BPEL
 		sa_jbi = File.open("../../resources/bpel/sa-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
 		open_file_and_write "META-INF/jbi.xml", sa_jbi	
 				
-		zip_j "sa-BPEL-SM#{id}-provide.zip", "su-BPEL-SM#{id}-provide.zip"
-		zip "sa-BPEL-SM#{id}-provide.zip", "META-INF"				
+		compact_petals_files "sa-BPEL-SM#{id}-provide.zip", "su-BPEL-SM#{id}-provide.zip"
 	end
 end
 

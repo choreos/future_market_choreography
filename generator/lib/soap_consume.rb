@@ -16,7 +16,7 @@ module SOAP_Consume
 		su_jbi = File.open("../../resources/soap/consume/su-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
 		open_file_and_write "META-INF/jbi.xml", su_jbi	
 				
-		zip "su-SOAP-SM#{id}-consume.zip", "META-INF"				
+		compact_petals_files "su-SOAP-SM#{id}-consume.zip"				
 	end
 
 	def create_sa_package id
@@ -24,8 +24,7 @@ module SOAP_Consume
 		sa_jbi = File.open("../../resources/soap/consume/sa-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
 		open_file_and_write "META-INF/jbi.xml", sa_jbi	
 
-		zip_j "sa-SOAP-SM#{id}-consume.zip", "su-SOAP-SM#{id}-consume.zip"				
-		zip "sa-SOAP-SM#{id}-consume.zip", "META-INF"				
+		compact_petals_files "sa-SOAP-SM#{id}-consume.zip", "su-SOAP-SM#{id}-consume.zip"							
 	end
 end
 
