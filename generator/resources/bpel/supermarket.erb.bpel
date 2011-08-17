@@ -7,7 +7,7 @@
 
     <!-- Import the client WSDL -->
     <bpel:import namespace="http://smregistry.choreos.eu" location="smregistry.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
-    <bpel:import namespace="http://services.choreos.eu/" location="SM#{id}.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
+    <bpel:import namespace="http://services.choreos.eu/" location="SM<%=@id%>.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <import location="supermarketDefinition.wsdl" 
 			namespace="http://petals.ow2.org/bpel/supermarket/" 
 	        importType="http://schemas.xmlsoap.org/wsdl/" />
@@ -53,7 +53,7 @@
     <sequence name="MainSequence">
     	
         <bpel:pick name="Pick">
-            <bpel:onMessage partnerLink="orchestratorPartner" operation="searchForProduct" portType="tns:supermarket#{id}PortType" variable="searchForProductRequest">
+            <bpel:onMessage partnerLink="orchestratorPartner" operation="searchForProduct" portType="tns:supermarket<%=@id%>PortType" variable="searchForProductRequest">
                 <bpel:sequence>
                     <bpel:assign validate="no" name="Assign">
                         <bpel:copy>
@@ -73,7 +73,7 @@
                             </bpel:to>
                         </bpel:copy>
                     </bpel:assign>
-                    <bpel:invoke name="Invoke" partnerLink="supermarketWSPartner" operation="getPrice" portType="ns:SM#{id}PortType" inputVariable="supermarketWSPartnerRequest" outputVariable="supermarketWSPartnerResponse"></bpel:invoke>
+                    <bpel:invoke name="Invoke" partnerLink="supermarketWSPartner" operation="getPrice" portType="ns:SM<%=@id%>PortType" inputVariable="supermarketWSPartnerRequest" outputVariable="supermarketWSPartnerResponse"></bpel:invoke>
                     <bpel:assign validate="no" name="Assign1">
                         <bpel:copy>
                             <bpel:from>
@@ -104,10 +104,10 @@
                             </bpel:to>
                         </bpel:copy>
                     </bpel:assign>
-                    <bpel:reply name="Reply" partnerLink="orchestratorPartner" operation="searchForProduct" portType="tns:supermarket#{id}PortType" variable="searchForProductResponse"></bpel:reply>
+                    <bpel:reply name="Reply" partnerLink="orchestratorPartner" operation="searchForProduct" portType="tns:supermarket<%=@id%>PortType" variable="searchForProductResponse"></bpel:reply>
                 </bpel:sequence>
             </bpel:onMessage>
-            <bpel:onMessage partnerLink="orchestratorPartner" operation="registerSupermarket" portType="tns:supermarket#{id}PortType" variable="registerSupermarketRequest">
+            <bpel:onMessage partnerLink="orchestratorPartner" operation="registerSupermarket" portType="tns:supermarket<%=@id%>PortType" variable="registerSupermarketRequest">
                 <bpel:sequence>
                     <bpel:assign validate="no" name="Assign2">
                         <bpel:copy>
@@ -147,7 +147,7 @@
                             </bpel:to>
                         </bpel:copy>
                     </bpel:assign>
-                    <bpel:reply name="Reply1" partnerLink="orchestratorPartner" operation="registerSupermarket" portType="tns:supermarket#{id}PortType" variable="registerSupermarketResponse"></bpel:reply>
+                    <bpel:reply name="Reply1" partnerLink="orchestratorPartner" operation="registerSupermarket" portType="tns:supermarket<%=@id%>PortType" variable="registerSupermarketResponse"></bpel:reply>
                 </bpel:sequence>
             </bpel:onMessage>
         </bpel:pick>

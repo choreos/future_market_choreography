@@ -5,20 +5,20 @@
 
 	<jbi:service-assembly>
 		<jbi:identification>
-			<jbi:name>sa-BPEL-SM#{id}-provide</jbi:name>
+			<jbi:name>sa-SOAP-SM<%=@id%>-provide</jbi:name>
 			<jbi:description></jbi:description>
 		</jbi:identification>
 
 		<!-- New service-unit -->
 		<jbi:service-unit>
 			<jbi:identification>
-				<jbi:name>su-BPEL-SM#{id}-provide</jbi:name>
+				<jbi:name>su-SOAP-SM<%=@id%>-provide</jbi:name>
 				<jbi:description></jbi:description>
 			</jbi:identification>
 
 			<jbi:target>
-				<jbi:artifacts-zip>su-BPEL-SM#{id}-provide.zip</jbi:artifacts-zip>
-				<jbi:component-name>petals-se-bpel</jbi:component-name>
+				<jbi:artifacts-zip>su-SOAP-SM<%=@id%>-provide.zip</jbi:artifacts-zip>
+				<jbi:component-name>petals-bc-soap</jbi:component-name>
 			</jbi:target>
 		</jbi:service-unit>
 	</jbi:service-assembly>

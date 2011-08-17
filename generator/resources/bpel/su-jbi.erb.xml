@@ -10,8 +10,8 @@
 	<jbi:services binding-component="false">
 
 		<jbi:provides
-			interface-name="itfNs:supermarket#{id}PortType"
-			service-name="srvNs:supermarket#{id}Service"
+			interface-name="itfNs:supermarket<%=@id%>PortType"
+			service-name="srvNs:supermarket<%=@id%>Service"
 			endpoint-name="supermarketEndpoint"
 			xmlns:generatedNs="http://petals.ow2.org/bpel/supermarket/" xmlns:itfNs="http://petals.ow2.org/bpel/supermarket/" xmlns:srvNs="http://petals.ow2.org/bpel/supermarket/">
 

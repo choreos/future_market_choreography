@@ -13,16 +13,16 @@ module SOAP_Consume
 	def create_su_package id
 		mkdir_p "META-INF"
 
-		su_jbi = File.open("../../resources/soap/consume/su-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", su_jbi	
-				
+    @id = id
+		substitute("../../resources/soap/consume/su-jbi.erb.xml", "META-INF/jbi.xml")
 		compact_petals_files "su-SOAP-SM#{id}-consume.zip"				
 	end
 
 	def create_sa_package id
 		mkdir_p "META-INF"
-		sa_jbi = File.open("../../resources/soap/consume/sa-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", sa_jbi	
+		
+		@id = id
+		substitute("../../resources/soap/consume/sa-jbi.erb.xml", "META-INF/jbi.xml")
 
 		compact_petals_files "sa-SOAP-SM#{id}-consume.zip", "su-SOAP-SM#{id}-consume.zip"							
 	end

@@ -47,15 +47,11 @@ def run_main
   start_ws_server(number_of_ws)
 end
 
-def remove_service_assemblies_of_petals
-  `rm #{PETALS_PLATAFORM_DIR}/installed/sa-SOAP-SM*.zip`
-  `rm #{PETALS_PLATAFORM_DIR}/installed/sa-BPEL-SM*.zip`
-end
-
 begin 
   run_main
 rescue SystemExit, Interrupt
-  remove_service_assemblies_of_petals
+  cd ROOT_DIR
+  `ruby scripts/clean.rb`
 end
 
 

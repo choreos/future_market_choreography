@@ -98,7 +98,7 @@
     <message name="registerSupermarketResponse">
     	<part name="parameters" element="tns:registerSupermarketResponse"></part>
     </message>
-    <portType name="supermarket#{id}PortType">
+    <portType name="supermarket<%=@id%>PortType">
         <operation name="searchForProduct">
             <input name="productIn" message="tns:supermarketRequestMessage" />
             <output name="productOut" message="tns:supermarketResponseMessage"/>
@@ -114,7 +114,7 @@
      BINDING DEFINITION 
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
- <binding name="supermarket#{id}Binding" type="tns:supermarket#{id}PortType">
+ <binding name="supermarket<%=@id%>Binding" type="tns:supermarket<%=@id%>PortType">
  	<soap:binding style="document"
  		transport="http://schemas.xmlsoap.org/soap/http" />
 
@@ -144,8 +144,8 @@
      SERVICE DEFINITION 
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
   
-    <service name="supermarket#{id}Service">
-    	<port name="supermarketEndpoint" binding="tns:supermarket#{id}Binding">
+    <service name="supermarket<%=@id%>Service">
+    	<port name="supermarketEndpoint" binding="tns:supermarket<%=@id%>Binding">
     		<soap:address location="supermarketEndpoint"></soap:address>
     	</port>
     </service>

@@ -15,8 +15,8 @@
 	
 		<!-- Expose a Petals Service => consumes a Service. -->
 		<jbi:consumes
-			interface-name="generatedNs:supermarket#{id}PortType"
-			service-name="generatedNs:supermarket#{id}Service"
+			interface-name="generatedNs:supermarket<%=@id%>PortType"
+			service-name="generatedNs:supermarket<%=@id%>Service"
 			endpoint-name="supermarketEndpoint">
 	
 			<!-- CDK specific elements -->
@@ -24,7 +24,7 @@
 			<petalsCDK:mep xsi:nil="true" />
 		
 			<!-- Component specific elements -->	
-			<soap:service-name>supermarket#{id}</soap:service-name>
+			<soap:service-name>supermarket<%=@id%></soap:service-name>
 			<soap:mode>SOAP</soap:mode>
 			<soap:enable-http-transport>true</soap:enable-http-transport>
 			<soap:enable-jms-transport>false</soap:enable-jms-transport>

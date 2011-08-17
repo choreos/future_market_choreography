@@ -15,9 +15,10 @@
 	
 		<!-- Import a Service into Petals => provides a Service. -->
 		<jbi:provides 		
-			interface-name="generatedNs:SM#{id}PortType"
-			service-name="generatedNs:SM#{id}"
-			endpoint-name="SM#{id}Port">
+			interface-name="generatedNs:SM<%=@id%>PortType"
+			service-name="generatedNs:SM<%=@id%>"
+			endpoint-name="SM<%=@id%>Port">
+			
 	
 			<!-- CDK specific elements -->
 			<petalsCDK:timeout>30000</petalsCDK:timeout>
@@ -25,10 +26,10 @@
 			<petalsCDK:forward-security-subject>false</petalsCDK:forward-security-subject>
 			<petalsCDK:forward-message-properties>false</petalsCDK:forward-message-properties>
 			<petalsCDK:forward-attachments>false</petalsCDK:forward-attachments>
-			<petalsCDK:wsdl>SM#{id}.wsdl</petalsCDK:wsdl>
+			<petalsCDK:wsdl>SM<%=@id%>.wsdl</petalsCDK:wsdl>
 		
 			<!-- Component specific elements -->	
-			<soap:address>http://localhost:4321/WS/SM#{id}</soap:address>
+			<soap:address>http://localhost:4321/WS/SM<%=@id%></soap:address>
 			<soap:soap-version>1.1</soap:soap-version>
 			<soap:chunked-mode>false</soap:chunked-mode>
 			<soap:cleanup-transport>true</soap:cleanup-transport>
