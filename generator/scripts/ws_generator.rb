@@ -2,11 +2,11 @@ require 'fileutils'
 include FileUtils
 
 require "./config"
-require './lib/wsdl'
-require './lib/adaptor'
-require './lib/soap_provide'
-require './lib/soap_consume'
-require './lib/bpel'
+require 'lib/wsdl'
+require 'lib/adaptor'
+require 'lib/soap_provide'
+require 'lib/soap_consume'
+require 'lib/bpel'
 
 def generate_supermarket_services(number_of_ws)
   (1..number_of_ws).each do |id|

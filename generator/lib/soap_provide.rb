@@ -1,5 +1,6 @@
-require 'fileutils'
-include FileUtils
+require 'lib/generator_utils'
+include GeneratorUtils
+
 
 module SOAP_Provide
 	module_function
@@ -29,22 +30,7 @@ module SOAP_Provide
 		zip_j "sa-SOAP-SM#{id}-provide.zip", "su-SOAP-SM#{id}-provide.zip"
 		zip "sa-SOAP-SM#{id}-provide.zip", "META-INF"				
 	end
-	
-	def open_file_and_write file_name, content
-	    file = File.new(file_name, "w")
-	    file.puts content
-	    file.close
-	end
 
-	def zip zip_file, *args
-	  list = args.join " "
-	  `zip -qr0m #{zip_file} #{list} 2>/dev/null`
-	end
-
-	def zip_j zip_file, *args
-	  list = args.join " "
-	  `zip -qr0mj #{zip_file} #{list} 2>/dev/null`
-	end
 end
 
 		

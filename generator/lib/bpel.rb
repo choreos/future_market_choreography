@@ -1,5 +1,5 @@
-require 'fileutils'
-include FileUtils
+require 'lib/generator_utils'
+include GeneratorUtils
 
 module BPEL
 	module_function
@@ -45,22 +45,6 @@ module BPEL
 				
 		zip_j "sa-BPEL-SM#{id}-provide.zip", "su-BPEL-SM#{id}-provide.zip"
 		zip "sa-BPEL-SM#{id}-provide.zip", "META-INF"				
-	end
-	
-	def open_file_and_write file_name, content
-	    file = File.new(file_name, "w")
-	    file.puts content
-	    file.close
-	end
-
-	def zip zip_file, *args
-	  list = args.join " "
-	  `zip -qr0m #{zip_file} #{list} 2>/dev/null`
-	end
-
-	def zip_j zip_file, *args
-	  list = args.join " "
-	  `zip -qr0mj #{zip_file} #{list} 2>/dev/null`
 	end
 end
 

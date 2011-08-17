@@ -1,6 +1,6 @@
 require 'erb'
-require 'fileutils'
-include FileUtils
+require 'lib/generator_utils'
+include GeneratorUtils
 
 module Adaptor
 	module_function
@@ -37,7 +37,6 @@ module Adaptor
 	
 	def new_supermarket_data_class(dir_name, id, number_of_ws)
 	  @id = id
-	  @number_of_ws = number_of_ws
 	  @number_of_products = NUMBER_PRODUCTS
 	  @price_generator = Proc.new {|i| ((rand(number_of_ws)/number_of_ws.to_f) + i)}
 		substitute("#{ROOT_DIR}/resources/java/SMData.erb.java", "#{dir_name}/SM#{id}Data.java")
@@ -48,19 +47,5 @@ module Adaptor
 		content = File.open(file_name).readlines.join
 		content = content.sub("0.0", "SM#{id}Data.getPrice(arg0)")
 		open_file_and_write file_name, content
-	end
-	
-	def open_file_and_write file_name, content
-	    file = File.new(file_name, "w")
-	    file.puts content
-	    file.close
-	end
-	
-	def substitute(template, dest)
-    erb = ERB.new(File.read(template))
-    File.open(dest, "w+") do |f|
-      f.write(erb.result(binding))
-    end
-  end
-  
+	end  
 end
