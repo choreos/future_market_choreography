@@ -7,14 +7,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.vv.Item;
-import eu.choreos.vv.WSClient;
 import eu.choreos.services.CarrefuturWS;
 import eu.choreos.services.FutureMartWS;
 import eu.choreos.services.PaoDoFuturoWS;
 import eu.choreos.services.SMRegistryWS;
 import eu.choreos.utils.RunWS;
-
+import eu.choreos.vv.Item;
+import eu.choreos.vv.WSClient;
+	
 public class SupermarketImplTest {
 	
 	private final String FUTUREMART_WSDL = "http://localhost:8084/petals/services/futureMart?wsdl";
