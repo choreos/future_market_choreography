@@ -1,3 +1,11 @@
-usage:
+Dependecies
+- You need to downlaod Apache CXF: http://cxf.apache.org/
+  After that set up the CXF_HOME variable to where is located your Apache CXF
+  And add Apache CXF at PATH environment.
+  
+- ant
+
+Usage:
 
 ruby ./script/ws_generator.rb <number of ws to be created>
+# The services will be published at http://localhost:4321/WS/SM<service number>?wsdl

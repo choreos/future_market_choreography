@@ -13,7 +13,13 @@
   </xs:complexType>
   <xs:complexType name="getLowestPriceForListResponse">
     <xs:sequence>
-      <xs:element name="return" type="xs:double" />
+      <xs:element name="return" type="tns:order" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="order">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int" />
+      <xs:element name="price" type="xs:double" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Exception">

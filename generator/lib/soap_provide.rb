@@ -1,5 +1,6 @@
-require 'fileutils'
-include FileUtils
+require 'lib/generator_utils'
+include GeneratorUtils
+
 
 module SOAP_Provide
 	module_function
@@ -11,40 +12,24 @@ module SOAP_Provide
 	end
 
 	def create_su_package id
-		mkdir_p "META-INF"
 		cp "../../workspace/SM#{id}.wsdl", "SM#{id}.wsdl"
 
-		su_jbi = File.open("../../resources/soap/provide/su-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", su_jbi	
+    mkdir_p "META-INF"
+		@id = id
+		substitute("../../resources/soap/provide/su-jbi.erb.xml", "META-INF/jbi.xml")
 				
-		zip_j "su-SOAP-SM#{id}-provide.zip", "SM#{id}.wsdl"
-		zip "su-SOAP-SM#{id}-provide.zip", "META-INF"				
+		compact_petals_files "su-SOAP-SM#{id}-provide.zip", "SM#{id}.wsdl"	
 	end
 
 	def create_sa_package id
 		mkdir_p "META-INF"
-		sa_jbi = File.open("../../resources/soap/provide/sa-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", sa_jbi	
+		@id = id		
+		substitute("../../resources/soap/provide/sa-jbi.erb.xml", "META-INF/jbi.xml")
 				
-		zip_j "sa-SOAP-SM#{id}-provide.zip", "su-SOAP-SM#{id}-provide.zip"
-		zip "sa-SOAP-SM#{id}-provide.zip", "META-INF"				
-	end
-	
-	def open_file_and_write file_name, content
-	    file = File.new(file_name, "w")
-	    file.puts content
-	    file.close
+		compact_petals_files "sa-SOAP-SM#{id}-provide.zip", "su-SOAP-SM#{id}-provide.zip"
+			
 	end
 
-	def zip zip_file, *args
-	  list = args.join " "
-	  `zip -qr0m #{zip_file} #{list} 2>/dev/null`
-	end
-
-	def zip_j zip_file, *args
-	  list = args.join " "
-	  `zip -qr0mj #{zip_file} #{list} 2>/dev/null`
-	end
 end
 
 		

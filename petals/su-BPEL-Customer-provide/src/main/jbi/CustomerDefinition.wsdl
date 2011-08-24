@@ -50,6 +50,13 @@
         
             <complexType name="getPriceOfProductListResponse">
             	<sequence>
+            		<element name="order" type="petals:orderType"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="orderType">
+            	<sequence>
+            		<element name="id" type="int"></element>
             		<element name="price" type="double"></element>
             	</sequence>
             </complexType>
