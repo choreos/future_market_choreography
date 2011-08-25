@@ -4,7 +4,7 @@
         xmlns:tns="http://petals.ow2.org/bpel/Shipper1/"
         xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
         xmlns="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
  
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
@@ -33,6 +33,29 @@
                         <element name="result" type="string"/>
                     </sequence>
             </complexType>
+            <element name="setDeliveryData">
+            	<complexType>
+            		<sequence>
+            			<element name="id" type="string"></element>
+            			<element name="personalData" type="petals:personalDataType"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="setDeliveryDataResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="confirmation" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+        
+            <complexType name="personalDataType">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            		<element name="address" type="string"></element>
+            		<element name="zipcode" type="string"></element>
+            	</sequence>
+            </complexType>
         </schema>
     </types>
 
@@ -53,33 +76,54 @@
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
 
     <!-- portType implemented by the processName BPEL process -->
+    <message name="setDeliveryDataRequest">
+    	<part name="parameters" element="tns:setDeliveryData"></part>
+    </message>
+    <message name="setDeliveryDataResponse">
+    	<part name="parameters" element="tns:setDeliveryDataResponse"></part>
+    </message>
     <portType name="Shipper1PortType">
         <operation name="getDeliveryData">
             <input name="processInput" message="tns:Shipper1RequestMessage" />
             <output name="processOutput" message="tns:Shipper1ResponseMessage"/>
+        </operation>
+        <operation name="setDeliveryData">
+        	<input message="tns:setDeliveryDataRequest" name="setIn"></input>
+        	<output message="tns:setDeliveryDataResponse" name="setOut"></output>
         </operation>
     </portType>
 
 
  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BINDING DEFINITION 
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
-  
- 	<binding name="Shipper1Binding" type="tns:Shipper1PortType">
-    	<soap:binding style="document"
- 			transport="http://schemas.xmlsoap.org/soap/http" />
-   		
-   		<operation name="getDeliveryData">
-			<soap:operation soapAction="http:petals.ow2.org/process" />
-			<input name="processInput">
-    			<soap:body use="literal" />
-    		</input>
-    		<output name="processOutput">
-    			<soap:body use="literal" />
-    		</output>
-		</operation>
-	</binding>
-      
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+ <binding name="Shipper1Binding" type="tns:Shipper1PortType">
+
+ 	<soap:binding style="document"
+ 		transport="http://schemas.xmlsoap.org/soap/http" />
+ 	<operation name="getDeliveryData">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Shipper1/getDeliveryData" />
+ 		<input name="processInput">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="processOutput">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="setDeliveryData">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Shipper1/setDeliveryData" />
+ 		<input name="setIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="setOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ </binding>
+
  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      SERVICE DEFINITION 
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    

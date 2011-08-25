@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.choreos.services.CarrefuturWS;
@@ -65,7 +66,7 @@ public class SMCustomerImplTest {
 		
 		Item response = customer.request("getPriceOfProductList", list);
 		
-		assertEquals(new Double(1.0), response.getChild("order").getChild("price").getContentAsDouble());	
+		assertEquals(new Double(1.5), response.getChild("order").getChild("price").getContentAsDouble());	
 	}
 	
 	
@@ -86,7 +87,7 @@ public class SMCustomerImplTest {
 		
 		Item response = customer.request("getPriceOfProductList", list);
 		
-		assertEquals(new Double(1.0 + 2.0), response.getChild("order").getChild("price").getContentAsDouble());	
+		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());	
 	}
 	
 	@Test
@@ -127,7 +128,30 @@ public class SMCustomerImplTest {
 		Item response = customer.request("getPriceOfProductList", list);
 		
 		assertEquals("1", response.getChild("order").getChild("id").getContent());
-		assertEquals(new Double(1.0 + 2.0), response.getChild("order").getChild("price").getContentAsDouble());
+		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());
+	}
+	
+	@Ignore
+	public void shouldReceiveAConfirmationMessageAfterPurchasing() throws Exception {
+		WSClient customer = new WSClient(CUSTOMER);
+		
+		Item list = new ItemImpl("getPriceOfProductListRequest");
+		
+		Item item1 = new ItemImpl("item");
+		item1.setContent("product1");
+		list.addChild(item1);
+		
+		Item item2 = new ItemImpl("item");
+		item2.setContent("product2");
+		list.addChild(item2);
+		
+		
+		Item response = customer.request("getPriceOfProductList", list);
+		int purchaseID = response.getChild("order").getChild("id").getContentAsInt();
+		
+		//response = customer.request("purchase", requestRoot)
+		
+		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());
 	}
 
 
