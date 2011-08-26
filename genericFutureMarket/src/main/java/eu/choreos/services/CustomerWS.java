@@ -7,8 +7,10 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.swing.JOptionPane;
 
 import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.clientgenerator.WSClient;
 
 @WebService
@@ -79,6 +81,47 @@ public class CustomerWS {
 		order.setPrice(totalPrice);
 		
 		return order;
+	}
+	
+	@WebMethod
+	public String makePurchase(String id, String name, String address, String zipcode) throws Exception{
+		String listOfShipper = "";
+		
+		for (String endpoint : endpoints) {
+			WSClient supermarket = new WSClient(endpoint);
+			
+			Item request = new ItemImpl("purchase");
+			Item orderID = new ItemImpl("id");
+			orderID.setContent(id);
+			request.addChild(orderID);
+			
+			Item personalData = getPersonalData(name, address, zipcode);
+			request.addChild(personalData);
+			
+			Item response = supermarket.request("purchase", request);
+			
+			listOfShipper = response.getChild("confirmation").getContent();
+
+		}
+		
+		return listOfShipper;	
+	}
+	
+	private Item getPersonalData(String wName, String wAddress, String wZipcode) {
+		Item personalData = new ItemImpl("data");
+		
+		Item name = new ItemImpl("name");
+		name.setContent(wName);
+		personalData.addChild(name);
+		
+		Item address = new ItemImpl("address");
+		address.setContent(wAddress);
+		personalData.addChild(address);
+		
+		Item zipCode = new ItemImpl("zipcode");
+		zipCode.setContent(wZipcode);
+		personalData.addChild(zipCode);
+		return personalData;
 	}
 
 }

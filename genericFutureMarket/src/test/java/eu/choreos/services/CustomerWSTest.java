@@ -22,11 +22,13 @@ public class CustomerWSTest {
 	@Before
 	public void setUp(){
 		RunWS.start(new CustomerWS(), "customerWS");
+		RunWS.start(new ShipperWS(), "shipperWS");
 	}
 	
 	@After
 	public void tearDown(){
 		RunWS.stop("customerWS");
+		RunWS.stop("shipperWS");
 	}
 	
 	@Test
@@ -41,7 +43,7 @@ public class CustomerWSTest {
 		
 		Item response = customerWS.request("getLowestPriceForList");
 		
-		assertEquals(new Double(1.0), response.getChild("return").getChild("price").getContentAsDouble());		
+		assertEquals(new Double(1.5), response.getChild("return").getChild("price").getContentAsDouble());		
 	}
 	
 	@Test
@@ -56,7 +58,7 @@ public class CustomerWSTest {
 		
 		Item response = customerWS.request("getLowestPriceForList");
 		
-		assertEquals(new Double(1.0), response.getChild("return").getChild("price").getContentAsDouble());		
+		assertEquals(new Double(1.5), response.getChild("return").getChild("price").getContentAsDouble());		
 
 	}
 	
@@ -107,6 +109,25 @@ public class CustomerWSTest {
 		Item response = customerWS.request("getLowestPriceForList");
 		
 		assertEquals("1", response.getChild("return").getChild("id").getContent());		
+	}
+	
+	@Test
+	public void shouldRetrieveAnIDOrderAndThenPurchase() throws Exception{
+		WSClient customerWS = new WSClient(CUSTOMER_WS_WSDL);
+		
+		Item request = generateSupermarketsList(SM1_WSDL, SM2_WSDL);		
+		customerWS.request("setSupermarketsList", request);
+		
+		request = generateProductsList("product1", "product2");
+		customerWS.request("setProductsList", request);
+		
+		Item response = customerWS.request("getLowestPriceForList");
+		
+		String orderID = response.getChild("return").getChild("id").getContent();
+		
+		response = customerWS.request("makePurchase", orderID, "aName", "anAddress", "999999");
+		
+		assertEquals("Shipper1", response.getChild("return").getContent());		
 	}
 	
 	private Item generateSupermarketsList(String... endpoints){
