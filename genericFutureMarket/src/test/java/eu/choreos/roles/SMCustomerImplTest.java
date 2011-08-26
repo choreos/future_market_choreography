@@ -14,6 +14,7 @@ import eu.choreos.services.CustomerWS;
 import eu.choreos.services.FutureMartWS;
 import eu.choreos.services.PaoDoFuturoWS;
 import eu.choreos.services.SMRegistryWS;
+import eu.choreos.services.ShipperWS;
 import eu.choreos.utils.RunWS;
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
@@ -29,6 +30,7 @@ public class SMCustomerImplTest {
 	@BeforeClass
 	public static void setUp() throws Exception{
 		RunWS.start(new SMRegistryWS(), "smregistry");
+		RunWS.start(new ShipperWS(), "shipperWS");
 		
 		registerSupermarkets(SM1, SM2);
 	}
@@ -46,6 +48,7 @@ public class SMCustomerImplTest {
 	@AfterClass
 	public static void tearDown(){
 		RunWS.stop("smregistry");
+		RunWS.stop("shipperWS");
 	}
 	
 	private static void registerSupermarkets(String... endpoints) throws Exception{
@@ -66,7 +69,7 @@ public class SMCustomerImplTest {
 		
 		Item response = customer.request("getPriceOfProductList", list);
 		
-		assertEquals(new Double(1.5), response.getChild("order").getChild("price").getContentAsDouble());	
+		assertEquals(new Double(1.0), response.getChild("order").getChild("price").getContentAsDouble());	
 	}
 	
 	
@@ -131,7 +134,7 @@ public class SMCustomerImplTest {
 		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());
 	}
 	
-	@Ignore
+	@Test
 	public void shouldReceiveAConfirmationMessageAfterPurchasing() throws Exception {
 		WSClient customer = new WSClient(CUSTOMER);
 		
@@ -147,11 +150,36 @@ public class SMCustomerImplTest {
 		
 		
 		Item response = customer.request("getPriceOfProductList", list);
-		int purchaseID = response.getChild("order").getChild("id").getContentAsInt();
+		String purchaseID = response.getChild("order").getChild("id").getContent();
 		
-		//response = customer.request("purchase", requestRoot)
+		Item request = new ItemImpl("purchase");
+		Item orderID = new ItemImpl("id");
+		orderID.setContent(purchaseID);
+		request.addChild(orderID);
 		
-		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());
+		Item personalData = getPersonalData();
+		request.addChild(personalData);
+		
+		response = customer.request("purchase", request);
+		
+		assertEquals("Shipper1", response.getChild("out").getContent());
+	}
+	
+	private Item getPersonalData() {
+		Item personalData = new ItemImpl("account");
+		
+		Item name = new ItemImpl("name");
+		name.setContent("Audrey H. Bowers");
+		personalData.addChild(name);
+		
+		Item address = new ItemImpl("address");
+		address.setContent("2421 West Drive");
+		personalData.addChild(address);
+		
+		Item zipCode = new ItemImpl("zipcode");
+		zipCode.setContent("60606");
+		personalData.addChild(zipCode);
+		return personalData;
 	}
 
 

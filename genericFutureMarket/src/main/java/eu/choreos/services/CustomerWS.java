@@ -89,7 +89,7 @@ public class CustomerWS {
 		
 		for (String endpoint : endpoints) {
 			WSClient supermarket = new WSClient(endpoint);
-			
+						
 			Item request = new ItemImpl("purchase");
 			Item orderID = new ItemImpl("id");
 			orderID.setContent(id);
