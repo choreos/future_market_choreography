@@ -3,9 +3,10 @@
          xmlns:tns="http://petals.ow2.org/bpel/supermarket/"
          xmlns:artifacts="http://petals.ow2.org/bpel/supermarket/Artifacts"
          xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://services.choreos.eu/" xmlns:ns0="http://smregistry.choreos.eu">
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://services.choreos.eu/" xmlns:ns0="http://smregistry.choreos.eu" xmlns:ns1="http://petals.ow2.org/bpel/Shipper1/">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://petals.ow2.org/bpel/Shipper1/" location="Shipper1Definition.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://smregistry.choreos.eu" location="smregistry.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://services.choreos.eu/" location="SM<%=@id%>.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <import location="supermarketDefinition.wsdl" 
@@ -27,6 +28,7 @@
                      myRole="supermarketRole" partnerRole="supermarketRole"/>
         <bpel:partnerLink name="supermarketWSPartner" partnerLinkType="artifacts:supermarketPLT" myRole="supermarketRole" partnerRole="supermarketRole"></bpel:partnerLink>
         <bpel:partnerLink name="registryWS" partnerLinkType="artifacts:SMRegistryPT" myRole="SMRegistryRole" partnerRole="SMRegistryRole"></bpel:partnerLink>
+        <bpel:partnerLink name="shipper" partnerLinkType="artifacts:shipperPT" myRole="shipperRole" partnerRole="shipperRole"></bpel:partnerLink>
     </partnerLinks>
   
     <!-- ================================================================= -->         
@@ -43,6 +45,10 @@
         <bpel:variable name="registryWSResponse" messageType="ns0:addSupermarketResponse"></bpel:variable>
         <bpel:variable name="registryWSRequest" messageType="ns0:addSupermarket"></bpel:variable>
         <bpel:variable name="registerSupermarketResponse" messageType="tns:registerSupermarketResponse"></bpel:variable>
+        <bpel:variable name="purchaseRequest" messageType="tns:purchaseRequest"></bpel:variable>
+        <bpel:variable name="shipperResponse" messageType="ns1:setDeliveryDataResponse"></bpel:variable>
+        <bpel:variable name="shipperRequest" messageType="ns1:setDeliveryDataRequest"></bpel:variable>
+        <bpel:variable name="purchaseResponse" messageType="tns:purchaseResponse"></bpel:variable>
     </variables>
 
     <!-- ================================================================= -->         
@@ -150,7 +156,82 @@
                     <bpel:reply name="Reply1" partnerLink="orchestratorPartner" operation="registerSupermarket" portType="tns:supermarket<%=@id%>PortType" variable="registerSupermarketResponse"></bpel:reply>
                 </bpel:sequence>
             </bpel:onMessage>
+            <bpel:onMessage partnerLink="supermarketWSPartner" operation="purchase" portType="tns:supermarket<%=@id%>PortType" variable="purchaseRequest">
+                <bpel:sequence name="Sequence">
+                    <bpel:assign validate="no" name="Assign4">
+                        
+                        
+                        
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:setDeliveryData xmlns:tns="http://petals.ow2.org/bpel/Shipper1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:id></tns:id>
+  <tns:personalData>
+    <tns:name></tns:name>
+    <tns:address></tns:address>
+    <tns:zipcode></tns:zipcode>
+  </tns:personalData>
+</tns:setDeliveryData>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="shipperRequest" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:id]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:id]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                    <![CDATA[tns:data/tns:name]]>
+                                </bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                                    <![CDATA[ns1:personalData/ns1:name]]>
+                                </bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:data/tns:address]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:personalData/ns1:address]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:data/tns:zipcode]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:personalData/ns1:zipcode]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    
+                    <bpel:invoke name="Invoke2" partnerLink="shipper" operation="setDeliveryData" portType="ns1:Shipper1PortType" inputVariable="shipperRequest" outputVariable="shipperResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign5">
+                        
+                        
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve">Shipper1</bpel:literal>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:confirmation]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply2" partnerLink="supermarketWSPartner" operation="purchase" portType="tns:supermarket<%=@id%>PortType" variable="purchaseResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
         </bpel:pick>
     </sequence>
 </process>
+
 

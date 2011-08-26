@@ -28,7 +28,7 @@ public class SMRole extends ConformanceTestCase{
 	}
 
 	@Test
-	public void shouldHaveASearchForAProduct() throws Exception {
+	public void shouldHaveASearchForAProductOperation() throws Exception {
 		WSClient supermarketRole = new WSClient(endpoint);
 		assertTrue(supermarketRole.getOperations().contains("searchForProduct"));
 	}
@@ -37,6 +37,13 @@ public class SMRole extends ConformanceTestCase{
 	public void shouldRegisterSupermarketIntoSMRegistryWS() throws Exception {
 		WSClient supermarketRole = new WSClient(endpoint);
 		assertTrue(supermarketRole.getOperations().contains("registerSupermarket"));
+	}
+	
+
+	@Test
+	public void shouldHaveAPurchaseOperation() throws Exception {
+		WSClient supermarketRole = new WSClient(endpoint);
+		assertTrue(supermarketRole.getOperations().contains("purchase"));
 	}
 	
 	@Test

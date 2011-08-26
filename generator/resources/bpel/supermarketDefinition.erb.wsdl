@@ -1,154 +1,175 @@
-<?xml version="1.0"?>
-<definitions name="supermarketDefinition"
-        targetNamespace="http://petals.ow2.org/bpel/supermarket/"
-        xmlns:tns="http://petals.ow2.org/bpel/supermarket/"
-        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
-        xmlns="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
- 
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://petals.ow2.org/bpel/supermarket/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema" name="supermarketDefinition" targetNamespace="http://petals.ow2.org/bpel/supermarket/">
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
      The BPEL Designer will generate default request and response types
      but you can define or import any XML Schema type and use them as part 
      of the message types.
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
-    <types>
-        <schema 
-        		attributeFormDefault="unqualified" 
-        		elementFormDefault="qualified" 
-            	targetNamespace="http://petals.ow2.org/bpel/supermarket/" 
-            	xmlns="http://www.w3.org/2001/XMLSchema"
-            	xmlns:petals="http://petals.ow2.org/bpel/supermarket/">
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:petals="http://petals.ow2.org/bpel/supermarket/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://petals.ow2.org/bpel/supermarket/">
+      <element name="supermarketRequest" type="petals:supermarketRequest" />
+      <complexType name="supermarketRequest">
+        <sequence>
+          <element name="input" type="string" />
+        </sequence>
+      </complexType>
+      <element name="supermarketResponse" type="petals:supermarketResponse" />
+      <complexType name="supermarketResponse">
+        <sequence>
+          <element name="result" type="string" />
+        </sequence>
+      </complexType>
+      <element name="searchForProduct" type="petals:searchForProduct" />
+      <element name="searchForProductResponse" type="petals:searchForProductResponse" />
+      <complexType name="searchForProduct">
+        <sequence>
+          <element name="name" type="string" />
+        </sequence>
+      </complexType>
+      <complexType name="searchForProductResponse">
+        <sequence>
+          <element name="return" type="petals:returnType" />
+        </sequence>
+      </complexType>
+      <complexType name="returnType">
+        <sequence>
+          <element name="name" type="string" />
+          <element name="price" type="double" />
+        </sequence>
+      </complexType>
+      <element name="registerSupermarket">
+        <complexType>
+          <sequence>
+            <element name="in" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="registerSupermarketResponse">
+        <complexType>
+          <sequence>
+            <element name="out" type="string" />
+          </sequence>
+        </complexType>
+      </element>
+      <element name="purchase">
+      	<complexType>
+      		<sequence>
 
-			<element name="supermarketRequest" type="petals:supermarketRequest" />
-            <complexType name="supermarketRequest">
-                    <sequence>
-                        <element name="input" type="string"/>
-                    </sequence>
-            </complexType>
+      			<element name="id" type="string"></element>
+      			<element name="data" type="petals:personalDataType"></element>
+      		</sequence>
+      	</complexType>
+      </element>
+      <element name="purchaseResponse">
+      	<complexType>
+      		<sequence>
 
-			<element name="supermarketResponse" type="petals:supermarketResponse" />
-            <complexType name="supermarketResponse">
-                    <sequence>
-                        <element name="result" type="string"/>
-                    </sequence>
-            </complexType>
-            <element name="searchForProduct"
-            	type="petals:searchForProduct">
-            </element>
-            <element name="searchForProductResponse"
-            	type="petals:searchForProductResponse">
-            </element>
-            
-            <complexType name="searchForProduct">
-            	<sequence>
-            		<element name="name" type="string"></element>
-            	</sequence>
-            </complexType>
-        
-            <complexType name="searchForProductResponse">
-            	<sequence>
-            		<element name="return" type="petals:returnType"></element>
-            	</sequence>
-            </complexType>
-        
-            <complexType name="returnType">
-            	<sequence>
-            		<element name="name" type="string"></element>
-            		<element name="price" type="double"></element>
-            	</sequence>
-            </complexType>
-            <element name="registerSupermarket">
-            	<complexType>
-            		<sequence>
-            			<element name="in" type="string"></element>
-            		</sequence>
-            	</complexType>
-            </element>
-            <element name="registerSupermarketResponse">
-            	<complexType>
-            		<sequence>
-            			<element name="out" type="string"></element>
-            		</sequence>
-            	</complexType>
-            </element>
-        </schema>
-    </types>
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      			<element name="confirmation" type="string"></element>
+      		</sequence>
+      	</complexType>
+      </element>
+    
+      <complexType name="personalDataType">
+      	<sequence>
+      		<element name="name" type="string"></element>
+      		<element name="address" type="string"></element>
+      		<element name="zipcode" type="string"></element>
+      	</sequence>
+      </complexType>
+    </schema>
+  </types>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      MESSAGE TYPE DEFINITION - Definition of the message types used as 
      part of the port type definitions
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
-    <message name="supermarketRequestMessage">
-        <part name="payload" element="tns:searchForProduct"/>
-    </message>
-    <message name="supermarketResponseMessage">
-        <part name="payload" element="tns:searchForProductResponse"/>
-    </message>
-    
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <message name="supermarketRequestMessage">
+    <part name="payload" element="tns:searchForProduct" />
+  </message>
+  <message name="supermarketResponseMessage">
+    <part name="payload" element="tns:searchForProductResponse" />
+  </message>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      PORT TYPE DEFINITION - A port type groups a set of operations into
      a logical service unit.
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
-
-    <!-- portType implemented by the processName BPEL process -->
-    <message name="registerSupermarketRequest">
-    	<part name="parameters" element="tns:registerSupermarket"></part>
-    </message>
-    <message name="registerSupermarketResponse">
-    	<part name="parameters" element="tns:registerSupermarketResponse"></part>
-    </message>
-    <portType name="supermarket<%=@id%>PortType">
-        <operation name="searchForProduct">
-            <input name="productIn" message="tns:supermarketRequestMessage" />
-            <output name="productOut" message="tns:supermarketResponseMessage"/>
-        </operation>
-        <operation name="registerSupermarket">
-        	<input message="tns:registerSupermarketRequest" name="registerIn"></input>
-        	<output message="tns:registerSupermarketResponse" name="registerOut"></output>
-        </operation>
-    </portType>
-
-
- <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!-- portType implemented by the processName BPEL process -->
+  <message name="registerSupermarketRequest">
+    <part name="parameters" element="tns:registerSupermarket" />
+  </message>
+  <message name="registerSupermarketResponse">
+    <part name="parameters" element="tns:registerSupermarketResponse" />
+  </message>
+  <message name="purchaseRequest">
+  	<part name="parameters" element="tns:purchase"></part>
+  </message>
+  <message name="purchaseResponse">
+  	<part name="parameters" element="tns:purchaseResponse"></part>
+  </message>
+  <portType name="supermarket<%=@id%>PortType">
+    <operation name="searchForProduct">
+      <input name="productIn" message="tns:supermarketRequestMessage" />
+      <output name="productOut" message="tns:supermarketResponseMessage" />
+    </operation>
+    <operation name="registerSupermarket">
+      <input message="tns:registerSupermarketRequest" name="registerIn" />
+      <output message="tns:registerSupermarketResponse" name="registerOut" />
+    </operation>
+    <operation name="purchase">
+    	<input message="tns:purchaseRequest" name="purIn"></input>
+    	<output message="tns:purchaseResponse" name="putOut"></output>
+    </operation>
+  </portType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      BINDING DEFINITION 
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <binding name="supermarket<%=@id%>Binding" type="tns:supermarket<%=@id%>PortType">
 
- <binding name="supermarket<%=@id%>Binding" type="tns:supermarket<%=@id%>PortType">
- 	<soap:binding style="document"
- 		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<soap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<operation name="searchForProduct">
 
- 	<operation name="searchForProduct">
- 		<soap:operation
- 			soapAction="http://petals.ow2.org/bpel/supermarket/searchForProduct" />
- 		<input name="productIn">
- 			<soap:body use="literal" />
- 		</input>
- 		<output name="productOut">
- 			<soap:body use="literal" />
- 		</output>
- 	</operation>
- 	<operation name="registerSupermarket">
- 		<soap:operation
- 			soapAction="http://petals.ow2.org/bpel/supermarket/registerSupermarket" />
- 		<input name="registerIn">
- 			<soap:body use="literal" />
- 		</input>
- 		<output name="registerOut">
- 			<soap:body use="literal" />
- 		</output>
- 	</operation>
- </binding>
+  		<soap:operation
+  			soapAction="http://petals.ow2.org/bpel/supermarket/searchForProduct" />
+  		<input name="productIn">
 
- <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  			<soap:body use="literal" />
+  		</input>
+  		<output name="productOut">
+
+  			<soap:body use="literal" />
+  		</output>
+  	</operation>
+  	<operation name="registerSupermarket">
+
+  		<soap:operation
+  			soapAction="http://petals.ow2.org/bpel/supermarket/registerSupermarket" />
+  		<input name="registerIn">
+
+  			<soap:body use="literal" />
+  		</input>
+  		<output name="registerOut">
+
+  			<soap:body use="literal" />
+  		</output>
+  	</operation>
+  	<operation name="purchase">
+  		<soap:operation
+  			soapAction="http://petals.ow2.org/bpel/supermarket/purchase" />
+  		<input name="purIn">
+  			<soap:body use="literal" />
+  		</input>
+  		<output name="putOut">
+  			<soap:body use="literal" />
+  		</output>
+  	</operation>
+  </binding>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      SERVICE DEFINITION 
-     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
-  
-    <service name="supermarket<%=@id%>Service">
-    	<port name="supermarketEndpoint" binding="tns:supermarket<%=@id%>Binding">
-    		<soap:address location="supermarketEndpoint"></soap:address>
-    	</port>
-    </service>
-    
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <service name="supermarket<%=@id%>Service">
+    <port name="supermarketEndpoint" binding="tns:supermarket<%=@id%>Binding">
+      <soap:address location="supermarketEndpoint" />
+    </port>
+  </service>
 </definitions>
-

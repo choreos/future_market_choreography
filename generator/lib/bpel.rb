@@ -14,6 +14,7 @@ module BPEL
 		cp "../../workspace/SM#{id}.wsdl", "SM#{id}.wsdl"
 		cp "../../resources/wsdl/smregistry.wsdl", "smregistry.wsdl"
 		cp "../../resources/wsdl/smregistry_xsd_1", "smregistry_xsd_1"
+		cp "../../resources/wsdl/Shipper1Definition.wsdl", "Shipper1Definition.wsdl"
 
     mkdir_p "META-INF"
     
@@ -24,7 +25,7 @@ module BPEL
 		substitute("../../resources/bpel/supermarketDefinition.erb.wsdl", "supermarketDefinition.wsdl")
 				
 		compact_petals_files "su-BPEL-SM#{id}-provide.zip", "SM#{id}.wsdl", "smregistry.wsdl", 
-		                                                    "smregistry_xsd_1", "supermarket.bpel",
+		                                                    "smregistry_xsd_1", "Shipper1Definition.wsdl", "supermarket.bpel",
 		                                                    "supermarketArtifacts.wsdl", "supermarketDefinition.wsdl"
 	end
 
