@@ -69,7 +69,7 @@ public class SMCustomerImplTest {
 		
 		Item response = customer.request("getPriceOfProductList", list);
 		
-		assertEquals(new Double(1.0), response.getChild("order").getChild("price").getContentAsDouble());	
+		assertEquals(new Double(1.5), response.getChild("order").getChild("price").getContentAsDouble());	
 	}
 	
 	
@@ -163,6 +163,50 @@ public class SMCustomerImplTest {
 		response = customer.request("purchase", request);
 		
 		assertEquals("Shipper1", response.getChild("out").getContent());
+	}
+	
+	@Test
+	public void shouldRetriveDeliveryDataAfterPurchasing() throws Exception {
+		WSClient customer = new WSClient(CUSTOMER);
+		
+		Item list = new ItemImpl("getPriceOfProductListRequest");
+		
+		Item item1 = new ItemImpl("item");
+		item1.setContent("product1");
+		list.addChild(item1);
+		
+		Item item2 = new ItemImpl("item");
+		item2.setContent("product2");
+		list.addChild(item2);
+		
+		
+		Item response = customer.request("getPriceOfProductList", list);
+		String purchaseID = response.getChild("order").getChild("id").getContent();
+		
+		Item request = new ItemImpl("purchase");
+		Item orderID = new ItemImpl("id");
+		orderID.setContent(purchaseID);
+		request.addChild(orderID);
+		
+		Item personalData = getPersonalData();
+		request.addChild(personalData);
+		
+		response = customer.request("purchase", request);
+		
+		String shipperName = response.getChild("out").getContent();
+		
+		request = new ItemImpl("getDeliveryData");
+		Item shipper = new ItemImpl("shipper");
+		shipper.setContent(shipperName);
+		request.addChild(shipper);
+
+		Item id = new ItemImpl("orderID");
+		id.setContent(purchaseID);
+		request.addChild(id);
+		
+		response = customer.request("getDeliveryData", request);
+		
+		assertEquals("Sat Dec 24 20:15:00 BRST 2011", response.getChild("delivery").getContent());
 	}
 	
 	private Item getPersonalData() {

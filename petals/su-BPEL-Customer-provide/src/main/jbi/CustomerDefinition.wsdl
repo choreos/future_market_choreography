@@ -83,6 +83,21 @@
             		<element name="zipcode" type="string"></element>
             	</sequence>
             </complexType>
+            <element name="getDeliveryData">
+            	<complexType>
+            		<sequence>
+            			<element name="shipper" type="string"></element>
+            			<element name="orderID" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="getDeliveryDataResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="delivery" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
         </schema>
     </types>
 
@@ -109,6 +124,12 @@
     <message name="purchaseResponse">
     	<part name="parameters" element="tns:purchaseResponse"></part>
     </message>
+    <message name="getDeliveryDataRequest">
+    	<part name="parameters" element="tns:getDeliveryData"></part>
+    </message>
+    <message name="getDeliveryDataResponse">
+    	<part name="parameters" element="tns:getDeliveryDataResponse"></part>
+    </message>
     <portType name="CustomerPortType">
         <operation name="getPriceOfProductList">
             <input name="listIn" message="tns:CustomerRequestMessage" />
@@ -117,6 +138,10 @@
         <operation name="purchase">
         	<input message="tns:purchaseRequest" name="purIn"></input>
         	<output message="tns:purchaseResponse" name="purOut"></output>
+        </operation>
+        <operation name="getDeliveryData">
+        	<input message="tns:getDeliveryDataRequest" name="getIn"></input>
+        	<output message="tns:getDeliveryDataResponse" name="getOut"></output>
         </operation>
     </portType>
 
@@ -146,6 +171,16 @@
  			<soap:body use="literal" />
  		</input>
  		<output name="purOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="getDeliveryData">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Customer/getDeliveryData" />
+ 		<input name="getIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="getOut">
  			<soap:body use="literal" />
  		</output>
  	</operation>

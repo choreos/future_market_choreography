@@ -3,9 +3,10 @@
          xmlns:tns="http://petals.ow2.org/bpel/Customer/"
          xmlns:artifacts="http://petals.ow2.org/bpel/Customer/Artifacts"
          xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://smregistry.choreos.eu" xmlns:ns0="http://services.choreos.eu/">
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://smregistry.choreos.eu" xmlns:ns0="http://services.choreos.eu/" xmlns:ns1="http://petals.ow2.org/bpel/Shipper1/">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://petals.ow2.org/bpel/Shipper1/" location="Shipper1Definition.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://services.choreos.eu/" location="customerWS.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://smregistry.choreos.eu" location="smregistry.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <import location="CustomerDefinition.wsdl" 
@@ -27,6 +28,7 @@
                      myRole="CustomerRole" />
         <bpel:partnerLink name="smRegistry" partnerLinkType="artifacts:smRegistryPT" partnerRole="smRegistryRole" myRole="smRegistryRole"></bpel:partnerLink>
         <bpel:partnerLink name="customerWS" partnerLinkType="artifacts:customerPT" myRole="customerRole" partnerRole="customerRole"></bpel:partnerLink>
+        <bpel:partnerLink name="shipper" partnerLinkType="artifacts:shipperPT" myRole="shipperRole" partnerRole="shipperRole"></bpel:partnerLink>
     </partnerLinks>
   
     <!-- ================================================================= -->         
@@ -55,6 +57,10 @@
         <bpel:variable name="purchaseWSResponse" messageType="ns0:makePurchaseResponse"></bpel:variable>
         <bpel:variable name="purchaseWSRequest" messageType="ns0:makePurchase"></bpel:variable>
         <bpel:variable name="purchaseResponse" messageType="tns:purchaseResponse"></bpel:variable>
+        <bpel:variable name="getDeliveryDataRequest" messageType="tns:getDeliveryDataRequest"></bpel:variable>
+        <bpel:variable name="shipperResponse" messageType="ns1:Shipper1ResponseMessage"></bpel:variable>
+        <bpel:variable name="shipperRequest" messageType="ns1:Shipper1RequestMessage"></bpel:variable>
+        <bpel:variable name="getDeliveryDataResponse" messageType="tns:getDeliveryDataResponse"></bpel:variable>
     </variables>
 
     <!-- ================================================================= -->         
@@ -267,6 +273,52 @@
                         </bpel:copy>
                     </bpel:assign>
                     <bpel:reply name="Reply1" partnerLink="orchestrator" operation="purchase" portType="tns:CustomerPortType" variable="purchaseResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+            <bpel:onMessage partnerLink="orchestrator" operation="getDeliveryData" portType="tns:CustomerPortType" variable="getDeliveryDataRequest">
+                <bpel:sequence name="Sequence1">
+                    <bpel:assign validate="no" name="Assign5">
+                        
+                        
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:Shipper1Request xmlns:tns="http://petals.ow2.org/bpel/Shipper1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:input></tns:input>
+</tns:Shipper1Request>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="shipperRequest" part="payload"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="getDeliveryDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:orderID]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="payload" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:input]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke name="Invoke1" partnerLink="shipper" operation="getDeliveryData" portType="ns1:Shipper1PortType" inputVariable="shipperRequest" outputVariable="shipperResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign6">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:getDeliveryDataResponse xmlns:tns="http://petals.ow2.org/bpel/Customer/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:delivery></tns:delivery>
+</tns:getDeliveryDataResponse>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="getDeliveryDataResponse" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="payload" variable="shipperResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:result]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="getDeliveryDataResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:delivery]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply2" partnerLink="orchestrator" operation="getDeliveryData" portType="tns:CustomerPortType" variable="getDeliveryDataResponse"></bpel:reply>
                 </bpel:sequence>
             </bpel:onMessage>
         </bpel:pick>
