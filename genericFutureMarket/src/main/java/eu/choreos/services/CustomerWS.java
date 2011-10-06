@@ -7,11 +7,10 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.swing.JOptionPane;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.ItemImpl;
+import eu.choreos.vv.WSClient;
 
 @WebService
 public class CustomerWS {

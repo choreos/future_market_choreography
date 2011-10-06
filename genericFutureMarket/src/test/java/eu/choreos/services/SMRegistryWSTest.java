@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.choreos.utils.RunWS;
-import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.WSClient;
 
 public class SMRegistryWSTest {
 	

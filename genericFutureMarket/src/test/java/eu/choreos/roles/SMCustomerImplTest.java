@@ -1,24 +1,21 @@
 package eu.choreos.roles;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.choreos.services.CarrefuturWS;
 import eu.choreos.services.CustomerWS;
-import eu.choreos.services.FutureMartWS;
-import eu.choreos.services.PaoDoFuturoWS;
 import eu.choreos.services.SMRegistryWS;
 import eu.choreos.services.ShipperWS;
 import eu.choreos.utils.RunWS;
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.ItemImpl;
+import eu.choreos.vv.WSClient;
 
 
 public class SMCustomerImplTest {
@@ -68,8 +65,9 @@ public class SMCustomerImplTest {
 		list.addChild(item1);
 		
 		Item response = customer.request("getPriceOfProductList", list);
+		Double actualPrice = response.getChild("order").getChild("price").getContentAsDouble();
 		
-		assertEquals(new Double(1.5), response.getChild("order").getChild("price").getContentAsDouble());	
+		assertTrue(actualPrice.toString(), (actualPrice > 0.9 && actualPrice < 2.0) );	
 	}
 	
 	
@@ -89,8 +87,12 @@ public class SMCustomerImplTest {
 		
 		
 		Item response = customer.request("getPriceOfProductList", list);
+		Double actualPrice = response.getChild("order").getChild("price").getContentAsDouble();
 		
-		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());	
+		Double minPrice = new Double(2.9);
+		Double maxPrice = new Double(4.9);
+		
+		assertTrue(actualPrice.toString(), (actualPrice > minPrice && actualPrice < maxPrice));	
 	}
 	
 	@Test
@@ -131,7 +133,13 @@ public class SMCustomerImplTest {
 		Item response = customer.request("getPriceOfProductList", list);
 		
 		assertEquals("1", response.getChild("order").getChild("id").getContent());
-		assertEquals(new Double(1.0 + 2.5), response.getChild("order").getChild("price").getContentAsDouble());
+		
+		Double actualPrice = response.getChild("order").getChild("price").getContentAsDouble();
+		
+		Double minPrice = new Double(2.9);
+		Double maxPrice = new Double(4.9);
+		
+		assertTrue(actualPrice.toString(), (actualPrice > minPrice && actualPrice < maxPrice));	
 	}
 	
 	@Test

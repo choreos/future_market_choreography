@@ -10,10 +10,10 @@ import org.junit.Test;
 import eu.choreos.services.SMRegistryWS;
 import eu.choreos.services.ShipperWS;
 import eu.choreos.utils.RunWS;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.ItemImpl;
+import eu.choreos.vv.WSClient;
 import eu.choreos.vv.abstractor.Role;
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.WSClient;
 
 public class SMImplTest {
 	

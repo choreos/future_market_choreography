@@ -1,6 +1,6 @@
 # Manual set up of environment variables
 #PETALS_PLATAFORM_DIR="/media/stuff/Baile/technologies/petals/dsb-distribution-1.0-SNAPSHOT"
-PETALS_PLATAFORM_DIR="/media/stuff/Baile/technologies/petals/dsb-distribution-1.0-SNAPSHOT"
+PETALS_PLATAFORM_DIR="/Applications/SOA4AllDSB"
 NUMBER_PRODUCTS=1000
 
 # Auto set up of environment variables
