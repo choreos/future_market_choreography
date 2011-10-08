@@ -30,4 +30,8 @@ module GeneratorUtils
     end
   end
   
+  def create_dir(dir)
+    mkdir_p(dir)
+  end
+  
 end

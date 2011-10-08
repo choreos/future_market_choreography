@@ -111,8 +111,8 @@ public class SMCustomerImplTest {
 		
 		
 		Item response = customer.request("getPriceOfProductList", list);
-		
-		assertEquals("1", response.getChild("order").getChild("id").getContent());	
+		String id = response.getChild("order").getChild("id").getContent();
+		assertTrue(Integer.getInteger(id) > 0);	
 	}
 	
 	@Test

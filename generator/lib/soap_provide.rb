@@ -5,6 +5,7 @@ include GeneratorUtils
 module SOAP_Provide
 	module_function
 	def create_soap_provider id
+	  create_dir "../petals/soap-provide"
 		cd "../petals/soap-provide"		
 		create_su_package id
 		create_sa_package id

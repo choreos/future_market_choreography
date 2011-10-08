@@ -1,6 +1,5 @@
-package eu.choreos.services;
+package eu.choreos.models;
 
-import eu.choreos.models.Product;
 
 public class CheapestProduct extends Product{
 	

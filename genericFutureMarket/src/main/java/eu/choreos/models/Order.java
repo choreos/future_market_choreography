@@ -1,4 +1,4 @@
-package eu.choreos.services;
+package eu.choreos.models;
 
 public class Order {
 	

@@ -4,6 +4,7 @@ include GeneratorUtils
 module BPEL
 	module_function
 	def create_bpel id
+	  create_dir "../petals/bpel"
 		cd "../petals/bpel"		
 		create_su_package id
 		create_sa_package id
