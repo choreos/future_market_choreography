@@ -28,6 +28,17 @@ public class SMRegistryWS {
 		
 		return "OK";
 	}
+	
+	@WebMethod
+	public String removeSupermarket(String endpoint){
+		if(supermarkets.contains(endpoint)) {
+			supermarkets.remove(endpoint);
+			return "OK";
+		}
+		else
+			return "Endpoint not found";
+			
+	}
 
 	
 }
