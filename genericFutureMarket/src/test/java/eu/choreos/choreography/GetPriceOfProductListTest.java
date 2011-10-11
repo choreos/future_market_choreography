@@ -4,7 +4,6 @@ import static eu.choreos.choreography.AcceptanceTestUtils.CUSTOMER;
 import static eu.choreos.choreography.AcceptanceTestUtils.SMREGISTRY_ENDPOINT;
 import static eu.choreos.choreography.AcceptanceTestUtils.registerSupermarkets;
 import static eu.choreos.choreography.AcceptanceTestUtils.removeSupermarkets;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;

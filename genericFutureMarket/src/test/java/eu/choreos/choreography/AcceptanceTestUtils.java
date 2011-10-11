@@ -1,5 +1,8 @@
 package eu.choreos.choreography;
 
+import static eu.choreos.choreography.AcceptanceTestUtils.getPersonalData;
+import eu.choreos.vv.Item;
+import eu.choreos.vv.ItemImpl;
 import eu.choreos.vv.WSClient;
 
 public class AcceptanceTestUtils {
@@ -29,5 +32,47 @@ public class AcceptanceTestUtils {
 
 	public static String generateEndpoint(int i) {
 		return SM_ENDPOINT_BASE + Integer.toString(i) + "?wsdl";
+	}
+	
+	public static Item getPersonalData() {
+		Item personalData = new ItemImpl("account");
+		
+		Item name = new ItemImpl("name");
+		name.setContent("Audrey H. Bowers");
+		personalData.addChild(name);
+		
+		Item address = new ItemImpl("address");
+		address.setContent("2421 West Drive");
+		personalData.addChild(address);
+		
+		Item zipCode = new ItemImpl("zipcode");
+		zipCode.setContent("60606");
+		personalData.addChild(zipCode);
+		return personalData;
+	}
+	
+	public static String requestIdOfSimpleOrder(WSClient customer) throws Exception {
+		Item list = new ItemImpl("getPriceOfProductListRequest");
+		Item item1 = new ItemImpl("item");
+		item1.setContent("product1");
+		list.addChild(item1);
+
+		Item response = customer.request("getPriceOfProductList", list);
+		return response.getChild("order").getChild("id")
+				.getContent();
+	}
+	
+
+	public static String purchaseProduct(WSClient customer, String purchaseID) throws Exception {
+		Item request = new ItemImpl("purchase");
+		Item orderID = new ItemImpl("id");
+		orderID.setContent(purchaseID);
+		request.addChild(orderID);
+
+		Item personalData = getPersonalData();
+		request.addChild(personalData);
+
+		Item response = customer.request("purchase", request);
+		return response.getChild("out").getContent();
 	}
 }
