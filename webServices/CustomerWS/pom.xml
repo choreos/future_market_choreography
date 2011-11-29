@@ -2,12 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.choreos</groupId>
-  <artifactId>futureMarket</artifactId>
+  <artifactId>CustomerWS</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>futureMarket</name>
+  <name>CustomerWS</name>
   <url>http://maven.apache.org</url>
-  
   <repositories>  
    <repository>
       <id>ccslrepository</id>
@@ -28,5 +27,4 @@
       <version>0.9</version>
     </dependency>
   </dependencies>
-  
 </project>
