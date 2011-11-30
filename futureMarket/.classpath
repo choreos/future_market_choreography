@@ -6,5 +6,11 @@
 	<classpathentry kind="var" path="M2_REPO/net/sf/saxon/saxon/8.7/saxon-8.7.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="M2_REPO/eu/choreos/rehearsal/0.9/rehearsal-0.9.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CustomerWS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Shipper"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SMRegistry"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SM1"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SM2"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SM3"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

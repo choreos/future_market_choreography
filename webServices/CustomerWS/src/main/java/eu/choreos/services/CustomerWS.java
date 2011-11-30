@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.swing.JOptionPane;
 
 import eu.choreos.models.CheapestProduct;
 import eu.choreos.models.Order;
@@ -75,7 +76,6 @@ public class CustomerWS {
 			totalPrice += lowestUnitPrice;
 		}
 		
-		Rehearsal.stopAll();
 		
 		currentOrder++;
 		orders.put(currentOrder, items);
@@ -92,6 +92,7 @@ public class CustomerWS {
 		String listOfShipper = "";
 		
 		for (String endpoint : endpoints) {
+			
 			WSClient supermarket = new WSClient(endpoint);
 						
 			Item request = new ItemImpl("purchase");

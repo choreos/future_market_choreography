@@ -3,9 +3,10 @@
          xmlns:tns="http://petals.ow2.org/bpel/Customer/"
          xmlns:artifacts="http://petals.ow2.org/bpel/Customer/Artifacts"
          xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://smregistry.choreos.eu" xmlns:ns0="http://services.choreos.eu/">
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://smregistry.choreos.eu" xmlns:ns0="http://services.choreos.eu/" xmlns:ns1="http://petals.ow2.org/bpel/Shipper1/">
 
     <!-- Import the client WSDL -->
+    <bpel:import namespace="http://petals.ow2.org/bpel/Shipper1/" location="Shipper1Definition.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://services.choreos.eu/" location="customerWS.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <bpel:import namespace="http://smregistry.choreos.eu" location="smregistry.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
     <import location="CustomerDefinition.wsdl" 
@@ -27,6 +28,7 @@
                      myRole="CustomerRole" />
         <bpel:partnerLink name="smRegistry" partnerLinkType="artifacts:smRegistryPT" partnerRole="smRegistryRole" myRole="smRegistryRole"></bpel:partnerLink>
         <bpel:partnerLink name="customerWS" partnerLinkType="artifacts:customerPT" myRole="customerRole" partnerRole="customerRole"></bpel:partnerLink>
+        <bpel:partnerLink name="shipper" partnerLinkType="artifacts:shipperPT" myRole="shipperRole" partnerRole="shipperRole"></bpel:partnerLink>
     </partnerLinks>
   
     <!-- ================================================================= -->         
@@ -50,7 +52,15 @@
         <bpel:variable name="setProductsListRequest" messageType="ns0:setProductsList"></bpel:variable>
         <bpel:variable name="lowestPriceResponse" messageType="ns0:getLowestPriceForListResponse"></bpel:variable>
         <bpel:variable name="lowestPriceRequest" messageType="ns0:getLowestPriceForList"></bpel:variable>
-        <bpel:variable name="orchestratorResponse" messageType="tns:CustomerResponseMessage"></bpel:variable>
+        <bpel:variable name="getPriceOfProductListResponse" messageType="tns:CustomerResponseMessage"></bpel:variable>
+        <bpel:variable name="purchaseRequest" messageType="tns:purchaseRequest"></bpel:variable>
+        <bpel:variable name="purchaseWSResponse" messageType="ns0:makePurchaseResponse"></bpel:variable>
+        <bpel:variable name="purchaseWSRequest" messageType="ns0:makePurchase"></bpel:variable>
+        <bpel:variable name="purchaseResponse" messageType="tns:purchaseResponse"></bpel:variable>
+        <bpel:variable name="getDeliveryDataRequest" messageType="tns:getDeliveryDataRequest"></bpel:variable>
+        <bpel:variable name="shipperResponse" messageType="ns1:Shipper1ResponseMessage"></bpel:variable>
+        <bpel:variable name="shipperRequest" messageType="ns1:Shipper1RequestMessage"></bpel:variable>
+        <bpel:variable name="getDeliveryDataResponse" messageType="tns:getDeliveryDataResponse"></bpel:variable>
     </variables>
 
     <!-- ================================================================= -->         
@@ -59,37 +69,33 @@
     <!-- services integrated within this business process                  -->
     <!-- ================================================================= -->         
     <sequence name="MainSequence">
-    	<bpel:receive 	name="ReceiveMessage" partnerLink="orchestrator" operation="getPriceOfProductList" portType="tns:CustomerPortType" variable="getPriceOfProductListRequest"/>
         
         
         
         
-        <bpel:assign validate="no" name="Assign1"><bpel:copy>
-                <bpel:from>
-                    <bpel:literal xml:space="preserve"><tns:getLowestPriceForList xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-</tns:getLowestPriceForList>
-</bpel:literal>
-                </bpel:from>
-                <bpel:to variable="lowestPriceRequest" part="parameters"></bpel:to>
-            </bpel:copy><bpel:copy>
-                <bpel:from>
-                    <bpel:literal xml:space="preserve"><tns:getList xmlns:tns="http://smregistry.choreos.eu" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-</tns:getList>
-</bpel:literal>
-                </bpel:from>
-                <bpel:to variable="smRegistryRequest" part="parameters"></bpel:to>
-            </bpel:copy>
-            
-            
         
-            
         
-        </bpel:assign>
         
-        <bpel:invoke name="getSupermarketsList" partnerLink="smRegistry" operation="getList" portType="ns:SMRegistryWS" inputVariable="smRegistryRequest" outputVariable="supermarketsList"></bpel:invoke>
         
-        <bpel:assign validate="no" name="Assign2">
-            <bpel:copy>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <bpel:pick name="operations"><bpel:onMessage partnerLink="orchestrator" operation="getPriceOfProductList" portType="tns:CustomerPortType" variable="getPriceOfProductListRequest">
+                <bpel:sequence>
+                    <bpel:invoke name="getSupermarketsList" partnerLink="smRegistry" operation="getList" portType="ns:SMRegistryWS" inputVariable="smRegistryRequest" outputVariable="supermarketsList"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign2"><bpel:copy>
                 <bpel:from>
                     <bpel:literal xml:space="preserve"><tns:setSupermarketsList xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 </tns:setSupermarketsList>
@@ -97,9 +103,9 @@
                 </bpel:from>
                 <bpel:to part="parameters" variable="setSupermarketsListRequest"></bpel:to>
             </bpel:copy>
-        </bpel:assign>
-        <bpel:forEach parallel="no" counterName="Counter" name="ForEach">
-            <bpel:startCounterValue>
+        
+                    </bpel:assign>
+                    <bpel:forEach parallel="no" counterName="Counter" name="ForEach"><bpel:startCounterValue>
                 <![CDATA[1]]>
             </bpel:startCounterValue>
             <bpel:finalCounterValue><![CDATA[count($supermarketsList.parameters/return)]]></bpel:finalCounterValue>
@@ -123,12 +129,10 @@
             
         </bpel:assign>
             </bpel:scope>
-        </bpel:forEach>
-        <bpel:invoke name="setSupermaketsList" partnerLink="customerWS" operation="setSupermarketsList" portType="ns0:CustomerWS" inputVariable="setSupermarketsListRequest" outputVariable="setSupermarketsListResponse"></bpel:invoke>
         
-        
-        <bpel:assign validate="no" name="Assign3">
-            <bpel:copy>
+                    </bpel:forEach>
+                    <bpel:invoke name="setSupermaketsList" partnerLink="customerWS" operation="setSupermarketsList" portType="ns0:CustomerWS" inputVariable="setSupermarketsListRequest" outputVariable="setSupermarketsListResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign3"><bpel:copy>
                 <bpel:from>
                     <bpel:literal xml:space="preserve"><tns:setProductsList xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 </tns:setProductsList>
@@ -137,11 +141,9 @@
                 <bpel:to part="parameters" variable="setProductsListRequest"></bpel:to>
             </bpel:copy>
             
-        </bpel:assign>
         
-        
-        <bpel:forEach parallel="no" counterName="Counter" name="ForEach1">
-            <bpel:startCounterValue>
+                    </bpel:assign>
+                    <bpel:forEach parallel="no" counterName="Counter" name="ForEach1"><bpel:startCounterValue>
                 <![CDATA[1]]>
             </bpel:startCounterValue>
             <bpel:finalCounterValue><![CDATA[count($getPriceOfProductListRequest.payload/tns:item)]]></bpel:finalCounterValue>
@@ -163,28 +165,162 @@
                     </bpel:copy>
                 </bpel:assign>
             </bpel:scope>
-        </bpel:forEach>
-        <bpel:invoke name="setProductsList" partnerLink="customerWS" operation="setProductsList" portType="ns0:CustomerWS" inputVariable="setProductsListRequest" outputVariable="setProductsListResponse"></bpel:invoke>
-        <bpel:invoke name="getListPrice" partnerLink="customerWS" operation="getLowestPriceForList" portType="ns0:CustomerWS" inputVariable="lowestPriceRequest" outputVariable="lowestPriceResponse"></bpel:invoke>
-        <bpel:assign validate="no" name="Assign">
+        
+                    </bpel:forEach>
+                    <bpel:invoke name="setProductsList" partnerLink="customerWS" operation="setProductsList" portType="ns0:CustomerWS" inputVariable="setProductsListRequest" outputVariable="setProductsListResponse"></bpel:invoke>
+                    <bpel:invoke name="getListPrice" partnerLink="customerWS" operation="getLowestPriceForList" portType="ns0:CustomerWS" inputVariable="lowestPriceRequest" outputVariable="lowestPriceResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign">
             <bpel:copy>
                 <bpel:from>
                     <bpel:literal xml:space="preserve"><tns:getPriceOfProductListResponse xmlns:tns="http://petals.ow2.org/bpel/Customer/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <tns:price></tns:price>
+  <tns:order>
+    <tns:id></tns:id>
+    <tns:price></tns:price>
+  </tns:order>
 </tns:getPriceOfProductListResponse>
 </bpel:literal>
                 </bpel:from>
-                <bpel:to variable="orchestratorResponse" part="payload"></bpel:to>
+                <bpel:to variable="getPriceOfProductListResponse" part="payload"></bpel:to>
             </bpel:copy>
             <bpel:copy>
                 <bpel:from part="parameters" variable="lowestPriceResponse">
-                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></bpel:query>
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[return/id]]>
+                    </bpel:query>
                 </bpel:from>
-                <bpel:to part="payload" variable="orchestratorResponse">
-                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:price]]></bpel:query>
+                <bpel:to part="payload" variable="getPriceOfProductListResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">
+                        <![CDATA[tns:order/tns:id]]>
+                    </bpel:query>
                 </bpel:to>
             </bpel:copy>
-        </bpel:assign>
-        <bpel:reply name="Reply" partnerLink="orchestrator" operation="getPriceOfProductList" portType="tns:CustomerPortType" variable="orchestratorResponse"></bpel:reply>
+            <bpel:copy>
+                <bpel:from part="parameters" variable="lowestPriceResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return/price]]></bpel:query>
+                </bpel:from>
+                <bpel:to part="payload" variable="getPriceOfProductListResponse">
+                    <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:order/tns:price]]></bpel:query>
+                </bpel:to>
+            </bpel:copy>
+        
+                    </bpel:assign>
+                    <bpel:reply name="Reply" partnerLink="orchestrator" operation="getPriceOfProductList" portType="tns:CustomerPortType" variable="getPriceOfProductListResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+        
+            <bpel:onMessage partnerLink="orchestrator" operation="purchase" portType="tns:CustomerPortType" variable="purchaseRequest">
+                <bpel:sequence name="Sequence">
+                    <bpel:assign validate="no" name="Assign1">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:makePurchase xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:makePurchase>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="purchaseWSRequest" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:id]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:account/tns:name]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg1]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:account/tns:address]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg2]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:account/tns:zipcode]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg3]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke name="Invoke" partnerLink="customerWS" operation="makePurchase" portType="ns0:CustomerWS" inputVariable="purchaseWSRequest" outputVariable="purchaseWSResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign4">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:purchaseResponse xmlns:tns="http://petals.ow2.org/bpel/Customer/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:out></tns:out>
+</tns:purchaseResponse>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="purchaseResponse" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="purchaseWSResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="purchaseResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:out]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply1" partnerLink="orchestrator" operation="purchase" portType="tns:CustomerPortType" variable="purchaseResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+            <bpel:onMessage partnerLink="orchestrator" operation="getDeliveryData" portType="tns:CustomerPortType" variable="getDeliveryDataRequest">
+                <bpel:sequence name="Sequence1">
+                    <bpel:assign validate="no" name="Assign5">
+                        
+                        
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:Shipper1Request xmlns:tns="http://petals.ow2.org/bpel/Shipper1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:input></tns:input>
+</tns:Shipper1Request>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="shipperRequest" part="payload"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="getDeliveryDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:orderID]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="payload" variable="shipperRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:input]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke name="Invoke1" partnerLink="shipper" operation="getDeliveryData" portType="ns1:Shipper1PortType" inputVariable="shipperRequest" outputVariable="shipperResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign6">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:getDeliveryDataResponse xmlns:tns="http://petals.ow2.org/bpel/Customer/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:delivery></tns:delivery>
+</tns:getDeliveryDataResponse>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="getDeliveryDataResponse" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="payload" variable="shipperResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[ns1:result]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="getDeliveryDataResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:delivery]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply2" partnerLink="orchestrator" operation="getDeliveryData" portType="tns:CustomerPortType" variable="getDeliveryDataResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+        </bpel:pick>
     </sequence>
 </process>

@@ -4,7 +4,7 @@
         xmlns:tns="http://petals.ow2.org/bpel/Customer/"
         xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
         xmlns="http://schemas.xmlsoap.org/wsdl/"
-        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
  
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      TYPE DEFINITION - List of types participating in this BPEL process 
@@ -50,9 +50,54 @@
         
             <complexType name="getPriceOfProductListResponse">
             	<sequence>
+            		<element name="order" type="petals:orderType"></element>
+            	</sequence>
+            </complexType>
+        
+            <complexType name="orderType">
+            	<sequence>
+            		<element name="id" type="int"></element>
             		<element name="price" type="double"></element>
             	</sequence>
             </complexType>
+            <element name="purchase">
+            	<complexType>
+            		<sequence>
+            			<element name="id" type="string"></element>
+            			<element name="account" type="petals:accountType"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="purchaseResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="out" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+        
+            <complexType name="accountType">
+            	<sequence>
+            		<element name="name" type="string"></element>
+            		<element name="address" type="string"></element>
+            		<element name="zipcode" type="string"></element>
+            	</sequence>
+            </complexType>
+            <element name="getDeliveryData">
+            	<complexType>
+            		<sequence>
+            			<element name="shipper" type="string"></element>
+            			<element name="orderID" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
+            <element name="getDeliveryDataResponse">
+            	<complexType>
+            		<sequence>
+            			<element name="delivery" type="string"></element>
+            		</sequence>
+            	</complexType>
+            </element>
         </schema>
     </types>
 
@@ -73,10 +118,30 @@
      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
 
     <!-- portType implemented by the processName BPEL process -->
+    <message name="purchaseRequest">
+    	<part name="parameters" element="tns:purchase"></part>
+    </message>
+    <message name="purchaseResponse">
+    	<part name="parameters" element="tns:purchaseResponse"></part>
+    </message>
+    <message name="getDeliveryDataRequest">
+    	<part name="parameters" element="tns:getDeliveryData"></part>
+    </message>
+    <message name="getDeliveryDataResponse">
+    	<part name="parameters" element="tns:getDeliveryDataResponse"></part>
+    </message>
     <portType name="CustomerPortType">
         <operation name="getPriceOfProductList">
             <input name="listIn" message="tns:CustomerRequestMessage" />
             <output name="listOut" message="tns:CustomerResponseMessage"/>
+        </operation>
+        <operation name="purchase">
+        	<input message="tns:purchaseRequest" name="purIn"></input>
+        	<output message="tns:purchaseResponse" name="purOut"></output>
+        </operation>
+        <operation name="getDeliveryData">
+        	<input message="tns:getDeliveryDataRequest" name="getIn"></input>
+        	<output message="tns:getDeliveryDataResponse" name="getOut"></output>
         </operation>
     </portType>
 
@@ -86,9 +151,9 @@
       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
  <binding name="CustomerBinding" type="tns:CustomerPortType">
+
  	<soap:binding style="document"
  		transport="http://schemas.xmlsoap.org/soap/http" />
-
  	<operation name="getPriceOfProductList">
  		<soap:operation
  			soapAction="http://petals.ow2.org/bpel/Customer/getPriceOfProductList" />
@@ -96,6 +161,26 @@
  			<soap:body use="literal" />
  		</input>
  		<output name="listOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="purchase">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Customer/purchase" />
+ 		<input name="purIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="purOut">
+ 			<soap:body use="literal" />
+ 		</output>
+ 	</operation>
+ 	<operation name="getDeliveryData">
+ 		<soap:operation
+ 			soapAction="http://petals.ow2.org/bpel/Customer/getDeliveryData" />
+ 		<input name="getIn">
+ 			<soap:body use="literal" />
+ 		</input>
+ 		<output name="getOut">
  			<soap:body use="literal" />
  		</output>
  	</operation>

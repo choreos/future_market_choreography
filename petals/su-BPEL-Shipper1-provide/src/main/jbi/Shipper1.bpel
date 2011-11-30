@@ -1,0 +1,150 @@
+<process name="Shipper1"
+         targetNamespace="http://petals.ow2.org/bpel/Shipper1/"          
+         xmlns:tns="http://petals.ow2.org/bpel/Shipper1/"
+         xmlns:artifacts="http://petals.ow2.org/bpel/Shipper1/Artifacts"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns="http://services.choreos.eu/">
+
+    <!-- Import the client WSDL -->
+    <bpel:import namespace="http://services.choreos.eu/" location="shipperWS.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"></bpel:import>
+    <import location="Shipper1Definition.wsdl" 
+			namespace="http://petals.ow2.org/bpel/Shipper1/" 
+	        importType="http://schemas.xmlsoap.org/wsdl/" />
+	        
+	<import location="Shipper1Artifacts.wsdl"
+			namespace="http://petals.ow2.org/bpel/Shipper1/Artifacts"
+			importType="http://schemas.xmlsoap.org/wsdl/" />
+	                
+    <!-- ================================================================= -->         
+    <!-- PARTNERLINKS                                                      -->
+    <!-- List of services participating in this BPEL process               -->
+    <!-- ================================================================= -->         
+    <partnerLinks>
+        <!-- The 'client' role represents the requester of this service. -->
+        <partnerLink name="orchestrator"
+                     partnerLinkType="artifacts:Shipper1PLT"
+                     myRole="Shipper1Role" />
+        <bpel:partnerLink name="shipperWS" partnerLinkType="artifacts:shipperWSPT" myRole="shipperWSRole" partnerRole="shipperWSRole"></bpel:partnerLink>
+    </partnerLinks>
+  
+    <!-- ================================================================= -->         
+    <!-- VARIABLES                                                         -->
+    <!-- List of messages and XML documents used within this BPEL process  -->
+    <!-- ================================================================= -->         
+    <variables>
+    	<bpel:variable 	name="getDataRequest" 
+    					messageType="tns:Shipper1RequestMessage" />
+        <bpel:variable name="getDataWSResponse" messageType="ns:getDateAndTimeResponse"></bpel:variable>
+        <bpel:variable name="getDataWSRequest" messageType="ns:getDateAndTime"></bpel:variable>
+        <bpel:variable name="getDataResponse" messageType="tns:Shipper1ResponseMessage"></bpel:variable>
+        <bpel:variable name="setDataRequest" messageType="tns:setDeliveryDataRequest"></bpel:variable>
+        <bpel:variable name="setDataWSResponse" messageType="ns:setDeliveryResponse"></bpel:variable>
+        <bpel:variable name="setDataWSRequest" messageType="ns:setDelivery"></bpel:variable>
+        <bpel:variable name="setDataResponse" messageType="tns:setDeliveryDataResponse"></bpel:variable>
+    </variables>
+
+    <!-- ================================================================= -->         
+    <!-- ORCHESTRATION LOGIC                                               -->
+    <!-- Set of activities coordinating the flow of messages across the    -->
+    <!-- services integrated within this business process                  -->
+    <!-- ================================================================= -->         
+    <sequence name="MainSequence">
+        <bpel:pick name="Pick">
+            <bpel:onMessage partnerLink="orchestrator" operation="getDeliveryData" portType="tns:Shipper1PortType" variable="getDataRequest">
+                <bpel:sequence name="Sequence">
+                    <bpel:assign validate="no" name="Assign">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:getDateAndTime xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:getDateAndTime>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="getDataWSRequest" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="payload" variable="getDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:input]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="getDataWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke name="Invoke" partnerLink="shipperWS" operation="getDateAndTime" portType="ns:ShipperWS" inputVariable="getDataWSRequest" outputVariable="getDataWSResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign1">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:Shipper1Response xmlns:tns="http://petals.ow2.org/bpel/Shipper1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:result></tns:result>
+</tns:Shipper1Response>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="getDataResponse" part="payload"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="getDataWSResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="payload" variable="getDataResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:result]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply" partnerLink="orchestrator" operation="getDeliveryData" portType="tns:Shipper1PortType" variable="getDataResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+            <bpel:onMessage partnerLink="orchestrator" operation="setDeliveryData" portType="tns:Shipper1PortType" variable="setDataRequest">
+                <bpel:sequence name="Sequence1">
+                    <bpel:assign validate="no" name="Assign2">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:setDelivery xmlns:tns="http://services.choreos.eu/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</tns:setDelivery>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="setDataWSRequest" part="parameters"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="setDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:id]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="setDataWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg0]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="setDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:personalData/tns:zipcode]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="parameters" variable="setDataWSRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[arg1]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:invoke name="Invoke1" partnerLink="shipperWS" operation="setDelivery" portType="ns:ShipperWS" inputVariable="setDataWSRequest" outputVariable="setDataWSResponse"></bpel:invoke>
+                    <bpel:assign validate="no" name="Assign3">
+                        <bpel:copy>
+                            <bpel:from>
+                                <bpel:literal xml:space="preserve"><tns:Shipper1Request xmlns:tns="http://petals.ow2.org/bpel/Shipper1/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <tns:input></tns:input>
+</tns:Shipper1Request>
+</bpel:literal>
+                            </bpel:from>
+                            <bpel:to variable="getDataRequest" part="payload"></bpel:to>
+                        </bpel:copy>
+                        <bpel:copy>
+                            <bpel:from part="parameters" variable="setDataWSResponse">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[return]]></bpel:query>
+                            </bpel:from>
+                            <bpel:to part="payload" variable="getDataRequest">
+                                <bpel:query queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0"><![CDATA[tns:input]]></bpel:query>
+                            </bpel:to>
+                        </bpel:copy>
+                    </bpel:assign>
+                    <bpel:reply name="Reply1" partnerLink="orchestrator" operation="setDeliveryData" portType="tns:Shipper1PortType" variable="setDataResponse"></bpel:reply>
+                </bpel:sequence>
+            </bpel:onMessage>
+        </bpel:pick>
+        
+    </sequence>
+</process>

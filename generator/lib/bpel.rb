@@ -1,5 +1,5 @@
-require 'fileutils'
-include FileUtils
+require 'lib/generator_utils'
+include GeneratorUtils
 
 module BPEL
 	module_function
@@ -11,57 +11,31 @@ module BPEL
 	end
 
 	def create_su_package id
-		mkdir_p "META-INF"
 		cp "../../workspace/SM#{id}.wsdl", "SM#{id}.wsdl"
 		cp "../../resources/wsdl/smregistry.wsdl", "smregistry.wsdl"
 		cp "../../resources/wsdl/smregistry_xsd_1", "smregistry_xsd_1"
 
-		su_jbi = File.open("../../resources/bpel/su-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", su_jbi	
-
-		bpel = File.open("../../resources/bpel/supermarket.bpel", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "supermarket.bpel", bpel	
-
-		artifacts = File.open("../../resources/bpel/supermarketArtifacts.wsdl", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "supermarketArtifacts.wsdl", artifacts
-
-		definition = File.open("../../resources/bpel/supermarketDefinition.wsdl", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "supermarketDefinition.wsdl", definition	
+    mkdir_p "META-INF"
+    
+    @id = id
+    substitute("../../resources/bpel/su-jbi.erb.xml", "META-INF/jbi.xml")
+    substitute("../../resources/bpel/supermarket.erb.bpel", "supermarket.bpel")
+		substitute("../../resources/bpel/supermarketArtifacts.erb.wsdl", "supermarketArtifacts.wsdl")
+		substitute("../../resources/bpel/supermarketDefinition.erb.wsdl", "supermarketDefinition.wsdl")
 				
-		zip_j "su-BPEL-SM#{id}-provide.zip", "SM#{id}.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "smregistry.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "smregistry_xsd_1"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarket.bpel"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarketArtifacts.wsdl"
-		zip_j "su-BPEL-SM#{id}-provide.zip", "supermarketDefinition.wsdl"
-
-		zip "su-BPEL-SM#{id}-provide.zip", "META-INF"				
+		compact_petals_files "su-BPEL-SM#{id}-provide.zip", "SM#{id}.wsdl", "smregistry.wsdl", 
+		                                                    "smregistry_xsd_1", "supermarket.bpel",
+		                                                    "supermarketArtifacts.wsdl", "supermarketDefinition.wsdl"
 	end
 
 	def create_sa_package id
 		mkdir_p "META-INF"
-		sa_jbi = File.open("../../resources/bpel/sa-jbi.xml", "r").readlines.join.gsub('#{id}', id.to_s)
-		open_file_and_write "META-INF/jbi.xml", sa_jbi	
+		@id = id
+		substitute("../../resources/bpel/sa-jbi.erb.xml", "META-INF/jbi.xml")
 				
-		zip_j "sa-BPEL-SM#{id}-provide.zip", "su-BPEL-SM#{id}-provide.zip"
-		zip "sa-BPEL-SM#{id}-provide.zip", "META-INF"				
+		compact_petals_files "sa-BPEL-SM#{id}-provide.zip", "su-BPEL-SM#{id}-provide.zip"
 	end
 	
-	def open_file_and_write file_name, content
-	    file = File.new(file_name, "w")
-	    file.puts content
-	    file.close
-	end
-
-	def zip zip_file, *args
-	  list = args.join " "
-	  `zip -qr0m #{zip_file} #{list} 2>/dev/null`
-	end
-
-	def zip_j zip_file, *args
-	  list = args.join " "
-	  `zip -qr0mj #{zip_file} #{list} 2>/dev/null`
-	end
 end
 
 		

@@ -28,6 +28,12 @@
   <message name="Exception">
     <part name="fault" element="tns:Exception" />
   </message>
+  <message name="makePurchase">
+    <part name="parameters" element="tns:makePurchase" />
+  </message>
+  <message name="makePurchaseResponse">
+    <part name="parameters" element="tns:makePurchaseResponse" />
+  </message>
   <portType name="CustomerWS">
     <operation name="setSupermarketsList">
       <input message="tns:setSupermarketsList" />
@@ -40,6 +46,11 @@
     <operation name="getLowestPriceForList">
       <input message="tns:getLowestPriceForList" />
       <output message="tns:getLowestPriceForListResponse" />
+      <fault message="tns:Exception" name="Exception" />
+    </operation>
+    <operation name="makePurchase">
+      <input message="tns:makePurchase" />
+      <output message="tns:makePurchaseResponse" />
       <fault message="tns:Exception" name="Exception" />
     </operation>
   </portType>
@@ -64,6 +75,18 @@
       </output>
     </operation>
     <operation name="getLowestPriceForList">
+      <soap:operation soapAction="" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+      <fault name="Exception">
+        <soap:fault name="Exception" use="literal" />
+      </fault>
+    </operation>
+    <operation name="makePurchase">
       <soap:operation soapAction="" />
       <input>
         <soap:body use="literal" />

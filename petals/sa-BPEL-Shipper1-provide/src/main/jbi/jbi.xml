@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi:jbi version="1.0"
+	xmlns="http://java.sun.com/xml/ns/jbi"
+	xmlns:jbi="http://java.sun.com/xml/ns/jbi">
+
+	<jbi:service-assembly>
+		<jbi:identification>
+			<jbi:name>sa-BPEL-Shipper1-provide</jbi:name>
+			<jbi:description></jbi:description>
+		</jbi:identification>
+
+		<!-- New service-unit -->
+		<jbi:service-unit>
+			<jbi:identification>
+				<jbi:name>su-BPEL-Shipper1-provide</jbi:name>
+				<jbi:description></jbi:description>
+			</jbi:identification>
+
+			<jbi:target>
+				<jbi:artifacts-zip>su-BPEL-Shipper1-provide.zip</jbi:artifacts-zip>
+				<jbi:component-name>petals-se-bpel</jbi:component-name>
+			</jbi:target>
+		</jbi:service-unit>
+	</jbi:service-assembly>
+</jbi:jbi>

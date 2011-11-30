@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6. -->
+<!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.6 in JDK 6. -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://smregistry.choreos.eu" version="1.0" targetNamespace="http://smregistry.choreos.eu">
   <xs:element name="addSupermarket" type="tns:addSupermarket" />
   <xs:element name="addSupermarketResponse" type="tns:addSupermarketResponse" />
   <xs:element name="getList" type="tns:getList" />
   <xs:element name="getListResponse" type="tns:getListResponse" />
+  <xs:element name="removeSupermarket" type="tns:removeSupermarket" />
+  <xs:element name="removeSupermarketResponse" type="tns:removeSupermarketResponse" />
   <xs:complexType name="addSupermarket">
     <xs:sequence>
       <xs:element name="arg0" type="xs:string" minOccurs="0" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="addSupermarketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="removeSupermarket">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="removeSupermarketResponse">
     <xs:sequence>
       <xs:element name="return" type="xs:string" minOccurs="0" />
     </xs:sequence>
