@@ -7,4 +7,5 @@ target/
 *.log
 *.class
 .DS_Store
-
+.classpath
+.project
