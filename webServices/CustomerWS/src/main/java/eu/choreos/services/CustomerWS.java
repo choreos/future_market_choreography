@@ -7,11 +7,9 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.swing.JOptionPane;
 
 import eu.choreos.models.CheapestProduct;
 import eu.choreos.models.Order;
-import eu.choreos.vv.actions.Rehearsal;
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.clientgenerator.WSClient;
