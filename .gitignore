@@ -1,7 +1,5 @@
 target/
 .metadata/
-.project
-.classpath
 **/*.jar
 **/*.class
 **/*.log
