@@ -1,12 +1,35 @@
 package eu.choreos.services;
 
+import java.util.HashMap;
+import java.util.List;
+
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public class SM1 extends SM {
+public abstract class SM {
+
+    protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
+
+    public SM() {
+	init();
+    }
+
+    @WebMethod
+    public HashMap<String, Double> getPrices(List<String> products) {
+
+	HashMap<String, Double> priceProducts = new HashMap<String, Double>();
+	for (String product : products) {
+	    Double price = priceTable.get(product);
+	    if (price != null) {
+		priceProducts.put(product, price);
+	    }
+	}
+	return priceProducts;
+    }
+    
 
     protected void init() {
-
 	priceTable.put("product1", 1.0);
 
 	priceTable.put("product2", 2.0);
@@ -2006,7 +2029,6 @@ public class SM1 extends SM {
 	priceTable.put("product999", 999.0);
 
 	priceTable.put("product1000", 1000.0);
-
     }
 
 }
