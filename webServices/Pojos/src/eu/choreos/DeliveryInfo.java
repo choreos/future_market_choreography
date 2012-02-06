@@ -9,8 +9,6 @@ public class DeliveryInfo {
 	private Calendar date;
 	
 	private PurchaseInfo purchase;
-	
-	private CustomerInfo customer;
 
 	public String getId() {
 		return id;
@@ -35,15 +33,6 @@ public class DeliveryInfo {
 	public void setPurchase(PurchaseInfo purchase) {
 		this.purchase = purchase;
 	}
-
-	public CustomerInfo getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(CustomerInfo customer) {
-		this.customer = customer;
-	}
-	
 	
 
 }

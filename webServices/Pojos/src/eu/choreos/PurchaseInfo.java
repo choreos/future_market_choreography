@@ -8,7 +8,7 @@ public class PurchaseInfo {
 	
 	private String sellerEndpoint;
 	
-	private List<String> products;
+	private String[] products;
 	
 	private Double value;
 	
@@ -30,11 +30,15 @@ public class PurchaseInfo {
 		this.sellerEndpoint = sellerEndpoint;
 	}
 
-	public List<String> getProducts() {
+	public String[] getProducts() {
 		return products;
 	}
 
 	public void setProducts(List<String> products) {
+		this.products = (String[]) products.toArray();
+	}
+	
+	public void setProducts(String[] products) {
 		this.products = products;
 	}
 
