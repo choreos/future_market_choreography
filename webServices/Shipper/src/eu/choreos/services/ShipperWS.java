@@ -44,3 +44,11 @@ public class ShipperWS {
 	}
 	
 }
+
+class ReceiveShipperDataCaller extends Thread {
+	
+	public void run() {
+		
+	}
+
+}
