@@ -3,9 +3,13 @@ package eu.choreos;
 public class ProductPrice {
 	
 	private String product;
-	private String price;
+	private Double price;
 	
-	public ProductPrice(String product,String price){
+	public ProductPrice(){
+	    
+	}
+	
+	public ProductPrice(String product,Double price){
 	    this.product = product;
 	    this.price = price;
 	}
@@ -16,10 +20,10 @@ public class ProductPrice {
 	public void setProduct(String product) {
 		this.product = product;
 	}
-	public String getPrice() {
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

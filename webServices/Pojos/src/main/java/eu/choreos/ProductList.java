@@ -15,7 +15,7 @@ public class ProductList {
 	}
 	
 	public void setPriceList(List<ProductPrice> priceList) {
-		this.priceList = (ProductPrice[]) priceList.toArray();
+		this.priceList = priceList.toArray(new ProductPrice[priceList.size()]);
 	}
 
 }
