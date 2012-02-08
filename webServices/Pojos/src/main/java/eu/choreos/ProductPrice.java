@@ -5,6 +5,11 @@ public class ProductPrice {
 	private String product;
 	private String price;
 	
+	public ProductPrice(String product,String price){
+	    this.product = product;
+	    this.price = price;
+	}
+	
 	public String getProduct() {
 		return product;
 	}
