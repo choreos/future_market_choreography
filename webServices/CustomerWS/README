@@ -1,0 +1,3 @@
+Original rehearsal library conflicts with tomcat, so we need a especial version of rehearsal, without javax/servlet and javax/el. Save it in target/smcustomer/WEB-INF/lib/. In IME Dropbox, we have MAC6900/BaileGroup/rehearsal-0.9-tomcat.jar
+
+$ cp ~/Dropbox/Baile-CHOReOS-Public/MAC6900/BaileGroup/rehearsal-0.9-tomcat.jar target/smcustomer/WEB-INF/lib/
