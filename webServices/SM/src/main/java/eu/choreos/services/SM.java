@@ -1,10 +1,24 @@
 package eu.choreos.services;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+
+import org.apache.xmlbeans.XmlException;
+
+import eu.choreos.CustomerInfo;
+import eu.choreos.ProductList;
+import eu.choreos.ProductPrice;
+import eu.choreos.PurchaseInfo;
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.exceptions.FrameworkException;
+import eu.choreos.vv.exceptions.InvalidOperationNameException;
+import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
 public abstract class SM {
@@ -16,18 +30,48 @@ public abstract class SM {
     }
 
     @WebMethod
-    public HashMap<String, Double> getPrices(List<String> products) {
+    public ProductList getPrices(String[] products) {
 
-	HashMap<String, Double> priceProducts = new HashMap<String, Double>();
+	ProductList priceProducts = new ProductList();
+	List<ProductPrice> productPriceList = new ArrayList<ProductPrice>();
 	for (String product : products) {
 	    Double price = priceTable.get(product);
 	    if (price != null) {
-		priceProducts.put(product, price);
+		productPriceList.add(new ProductPrice(product, price));
 	    }
 	}
+
+	priceProducts.setPriceList(productPriceList);
 	return priceProducts;
     }
     
+    public String purchase(String[] products, CustomerInfo customerInfo){
+	PurchaseInfo purchaseInfo = new PurchaseInfo();
+	purchaseInfo.setCustomer(customerInfo);
+	purchaseInfo.setProducts(products);
+	try {
+	    WSClient wsShipper = new WSClient("http://localhost:1234/shipperWS?wsdl");
+	    Item response = wsShipper.request("getDateAndTime");
+	    System.out.println(response.toString());
+	} catch (WSDLException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (XmlException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (FrameworkException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (InvalidOperationNameException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	
+	return "1";
+    }
 
     protected void init() {
 	priceTable.put("product1", 1.0);
