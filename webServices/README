@@ -3,3 +3,5 @@ Inside each WS folder, run:
   $ mvn -Dwtpversion=2.0 eclipse:eclipse
 - If you just want to build the war file (in target/)
   $ mvn package
+
+If the project requires rehearsal, add it as a provided dependency, otherwise javax/servlet and javax/el will conflict with tomcat ones.
