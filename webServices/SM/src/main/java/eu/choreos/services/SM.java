@@ -26,7 +26,7 @@ public abstract class SM {
     protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
 
     public SM() {
-	init();
+	this.init();
     }
 
     @WebMethod
@@ -50,8 +50,8 @@ public abstract class SM {
 	purchaseInfo.setCustomer(customerInfo);
 	purchaseInfo.setProducts(products);
 	try {
-	    WSClient wsShipper = new WSClient("http://localhost:1234/shipperWS?wsdl");
-	    Item response = wsShipper.request("getDateAndTime");
+	    WSClient wsShipper = new WSClient("http://localhost:4321/WS/SM1?wsdl");
+	    Item response = wsShipper.request("getDateAndTime","2");
 	    System.out.println(response.toString());
 	} catch (WSDLException e) {
 	    // TODO Auto-generated catch block
