@@ -7,4 +7,42 @@
   <build>
   	<finalName>smshipper</finalName>
   </build>
+  
+  <repositories>
+    <repository>
+      <id>ccslrepository</id>
+      <name>ccsl</name>
+      <url>http://valinhos.ime.usp.br:54080/maven/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+      <groupId>eu.choreos</groupId>
+      <artifactId>rehearsal</artifactId>
+      <version>0.9</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.sun.faces</groupId>
+    	<artifactId>jsf-impl</artifactId>
+    	<version>2.1.6</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.sun.faces</groupId>
+    	<artifactId>jsf-api</artifactId>
+    	<version>2.1.6</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>eu.choreos</groupId>
+    	<artifactId>Pojos</artifactId>
+    	<version>0.0.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>
