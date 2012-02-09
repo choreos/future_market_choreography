@@ -1,17 +1,16 @@
 package eu.choreos.services;
 
-import java.util.HashMap;
-
-import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public class SM2 {
-	
-	@WebMethod
-	public double getPrice(String name) {
-		HashMap<String, Double> priceTable = new HashMap<String, Double>();
-		
+public class SM2 extends SM{
+    
+    public SM2() {
+	this.init();
+    }
+    
+    protected void init(){
+
 		priceTable.put("product1", 1.66666666666667);
 		
 		priceTable.put("product2", 2.33333333333333);
@@ -2011,8 +2010,5 @@ public class SM2 {
 		priceTable.put("product999", 999.666666666667);
 		
 		priceTable.put("product1000", 1000.33333333333);
-		
-		return priceTable.get(name);
-	}
-
+    }
 }
