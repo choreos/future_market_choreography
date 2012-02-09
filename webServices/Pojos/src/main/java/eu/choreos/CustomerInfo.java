@@ -1,5 +1,8 @@
 package eu.choreos;
 
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+
 public class CustomerInfo {
 	
 	private String id;
@@ -41,7 +44,27 @@ public class CustomerInfo {
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-
 	
+	public Item getItem(String tagName) {
+		Item item = new ItemImpl(tagName);
+		
+		Item i = new ItemImpl("id");
+		i.setContent(id);
+		item.addChild(i);
+		
+		i = new ItemImpl("name");
+		i.setContent(name);
+		item.addChild(i);
+		
+		i = new ItemImpl("endpoint");
+		i.setContent(endpoint);
+		item.addChild(i);
+		
+		i = new ItemImpl("zipcode");
+		i.setContent(zipcode);
+		item.addChild(i);
+		
+		return item;
+	}
 	
 }

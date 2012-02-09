@@ -2,6 +2,10 @@ package eu.choreos;
 
 import java.util.List;
 
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+
+
 public class PurchaseInfo {
 	
 	private String id;
@@ -14,6 +18,8 @@ public class PurchaseInfo {
 	
 	private CustomerInfo customer;
 
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -58,6 +64,31 @@ public class PurchaseInfo {
 		this.customer = customer;
 	}
 	
-	
+	public Item getItem(String tagName) {
+		Item item = new ItemImpl(tagName);
+		
+		Item i = new ItemImpl("id");
+		i.setContent(id);
+		item.addChild(i);
+		
+		i = new ItemImpl("sellerEndpoint");
+		i.setContent(sellerEndpoint);
+		item.addChild(i);
+		
+		i = new ItemImpl("value");
+		i.setContent(value.toString());
+		item.addChild(i);
+		
+		for(String p: products) {
+			i = new ItemImpl("products");
+			i.setContent(p);
+			item.addChild(i);
+		}
+			
+		
+		item.addChild(customer.getItem("customer"));
+		
+		return item;
+	}
 
 }

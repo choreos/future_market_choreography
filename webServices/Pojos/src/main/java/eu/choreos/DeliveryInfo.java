@@ -1,12 +1,16 @@
 package eu.choreos;
 
 import java.util.Calendar;
+import java.util.Date;
+
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
 
 public class DeliveryInfo {
 	
 	private String id;
 	
-	private Calendar date;
+	private String date;
 	
 	private PurchaseInfo purchase;
 
@@ -18,11 +22,11 @@ public class DeliveryInfo {
 		this.id = id;
 	}
 
-	public Calendar getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Calendar date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -34,5 +38,20 @@ public class DeliveryInfo {
 		this.purchase = purchase;
 	}
 	
-
+	public Item getItem(String tagName) {
+		Item item = new ItemImpl(tagName);
+		
+		Item i = new ItemImpl("date");
+		i.setContent(date);
+		item.addChild(i);
+		
+		i = new ItemImpl("id");
+		i.setContent(id);
+		item.addChild(i);
+		
+		item.addChild(purchase.getItem("purchase"));
+		
+		return item;
+	}
+	
 }
