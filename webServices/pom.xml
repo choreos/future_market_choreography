@@ -8,6 +8,7 @@
   <name>CHOReOS FM</name>
 
   <modules>
+    <module>Pojos</module>
     <module>SM</module>
     <module>SM1</module>
     <module>SM2</module>
