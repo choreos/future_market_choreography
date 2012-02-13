@@ -32,22 +32,6 @@
 			<artifactId>Pojos</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-
-
-		<dependency>
-			<groupId>com.sun.faces</groupId>
-			<artifactId>jsf-impl</artifactId>
-			<version>2.1.6</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.faces</groupId>
-			<artifactId>jsf-api</artifactId>
-			<version>2.1.6</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
 		<dependency>
 			<groupId>eu.choreos</groupId>
 			<artifactId>Pojos</artifactId>
