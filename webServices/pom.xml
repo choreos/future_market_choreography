@@ -13,6 +13,9 @@
     <module>SM1</module>
     <module>SM2</module>
     <module>SM3</module>
+    <module>SMRegistry</module>
+    <module>CustomerWS</module>
+    <module>Shipper</module>
   </modules>  
 
   <properties>
