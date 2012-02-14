@@ -7,6 +7,11 @@
   <version>1.0-SNAPSHOT</version>
   <name>CustomerWS</name>
   <url>http://maven.apache.org</url>
+
+  <build>
+  	<finalName>smcustomer</finalName>
+  </build>
+
   <repositories>  
    <repository>
       <id>ccslrepository</id>
@@ -14,6 +19,7 @@
       <url>http://valinhos.ime.usp.br:54080/maven/</url>
     </repository>
   </repositories>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -34,12 +40,27 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
+  	<dependency>
+  	    <groupId>javax.jms</groupId>
+  	    <artifactId>jms</artifactId>
+  	    <version>1.1</version>
+  	</dependency>
+  	<dependency>
+  	    <groupId>javax.mail</groupId>
+  	    <artifactId>mail</artifactId>
+  	    <version>1.4.4</version>
+  	</dependency>
   </dependencies>
-  <build>
-  	<finalName>smcustomer</finalName>
-  </build>
+
   <dependencyManagement>
   	<dependencies>
+  		<dependency>
+  			<groupId>javax</groupId>
+  			<artifactId>javaee-api</artifactId>
+  			<version>6.0</version>
+  			<scope>provided</scope>
+  		</dependency>
   	</dependencies>
   </dependencyManagement>
+
 </project>

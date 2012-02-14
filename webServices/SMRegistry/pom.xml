@@ -4,6 +4,7 @@
   <artifactId>SMRegistry</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+
   <build>
   	<finalName>smregistry</finalName>
     <plugins>
@@ -34,20 +35,20 @@
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
-      <groupId>eu.choreos</groupId>
-      <artifactId>rehearsal</artifactId>
-      <version>0.9</version>
-      <scope>provided</scope>
+	    <groupId>eu.choreos</groupId>
+	    <artifactId>rehearsal</artifactId>
+	    <version>0.9</version>
+	    <scope>provided</scope>
   	</dependency>
   	<dependency>
-  		<groupId>javax.jms</groupId>
-  		<artifactId>jms</artifactId>
-  		<version>1.1</version>
+  	    <groupId>javax.jms</groupId>
+  	    <artifactId>jms</artifactId>
+  	    <version>1.1</version>
   	</dependency>
   	<dependency>
-  		<groupId>javax.mail</groupId>
-  		<artifactId>mail</artifactId>
-  		<version>1.4.4</version>
+  	    <groupId>javax.mail</groupId>
+  	    <artifactId>mail</artifactId>
+  	    <version>1.4.4</version>
   	</dependency>
   </dependencies>
   <dependencyManagement>
