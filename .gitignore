@@ -12,3 +12,4 @@ target/
 .settings
 # One should use properties template
 *.properties
+*.orig
