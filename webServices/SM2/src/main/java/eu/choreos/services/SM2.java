@@ -5,8 +5,9 @@ import javax.jws.WebService;
 @WebService
 public class SM2 extends SM{
     
-    public SM2() {
-	this.init();
+    public SM2() throws Exception {
+        super("smsupermarket2/smsupermarket2");
+        this.init();
     }
     
     protected void init(){

@@ -8,11 +8,26 @@
 	<build>
 		<finalName>smsupermarket1</finalName>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>ccslrepository</id>
+			<name>ccsl</name>
+			<url>http://valinhos.ime.usp.br:54080/maven/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>eu.choreos</groupId>
 			<artifactId>SM</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.choreos</groupId>
+			<artifactId>rehearsal</artifactId>
+			<version>0.9</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

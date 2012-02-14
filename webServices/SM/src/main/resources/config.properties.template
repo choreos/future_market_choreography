@@ -2,3 +2,4 @@
 
 shipper.wsdl = http://127.0.0.1:8080/smshipper/smshipper?wsdl
 
+registry.wsdl = http://127.0.0.1:8080/smregistry/smregistry?wsdl
