@@ -56,11 +56,11 @@ public class PurchaseInfo {
 		this.value = value;
 	}
 
-	public CustomerInfo getCustomer() {
+	public CustomerInfo getCustomerInfo() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerInfo customer) {
+	public void setCustomerInfo(CustomerInfo customer) {
 		this.customer = customer;
 	}
 	
