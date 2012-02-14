@@ -1,4 +1,4 @@
-package eu.choreos.services;
+package eu.choreos.services.tests.functional;
 
 import static org.junit.Assert.assertEquals;
 
