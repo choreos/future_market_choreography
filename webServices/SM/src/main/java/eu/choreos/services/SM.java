@@ -1,9 +1,14 @@
 package eu.choreos.services;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -24,9 +29,37 @@ import eu.choreos.vv.exceptions.WSDLException;
 public abstract class SM {
 
     protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
+    static WSClient registry;
+    final ClassLoader loader = SM.class.getClassLoader();
+    private final String servicePath;
 
-    public SM() {
-	this.init();
+    public SM(final String servicePath) throws WSDLException, XmlException, IOException, FrameworkException,
+            InvalidOperationNameException {
+        this.servicePath = servicePath;
+        register();
+        this.init();
+    }
+
+    private void register() throws WSDLException, XmlException, IOException, FrameworkException,
+            InvalidOperationNameException {
+        registry = new WSClient(getRegistryWsdl());
+        registry.request("add", "Supermarket", getMyWsdl());
+    }
+
+    private String getMyWsdl() throws MalformedURLException, UnknownHostException {
+        final String hostName = getMyHostName();
+        return "http://" + hostName + ":8080/" + servicePath + "?wsdl";
+    }
+
+    private String getMyHostName() throws UnknownHostException {
+        InetAddress addr = InetAddress.getLocalHost();
+        return addr.getCanonicalHostName();
+    }
+
+    private String getRegistryWsdl() throws FileNotFoundException, IOException {
+        Properties properties = new Properties();
+        properties.load(loader.getResourceAsStream("config.properties"));
+        return properties.getProperty("registry.wsdl");
     }
 
     @WebMethod

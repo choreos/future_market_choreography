@@ -5,8 +5,9 @@ import javax.jws.WebService;
 @WebService
 public class SM3 extends SM {
 
-    public SM3() {
-	this.init();
+    public SM3() throws Exception {
+        super("smsupermarket3/smsupermarket3");
+        this.init();
     }
 
     protected void init() {
