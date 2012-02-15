@@ -30,7 +30,7 @@ public class ShipperWS  {
 		//this.start();
 		WSClient wscustomer;
 		try {
-			wscustomer = new WSClient(purchaseinfo.getCustomer().getEndpoint());
+			wscustomer = new WSClient(purchaseinfo.getCustomerInfo().getEndpoint());
 			
 			DeliveryInfo deliveryInfo = new DeliveryInfo();
 			deliveryInfo.setPurchase(purchaseinfo);
