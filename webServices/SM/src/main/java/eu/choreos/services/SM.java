@@ -16,7 +16,6 @@ import javax.jws.WebService;
 import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.CustomerInfo;
-import eu.choreos.ProductList;
 import eu.choreos.ProductPrice;
 import eu.choreos.PurchaseInfo;
 import eu.choreos.vv.clientgenerator.Item;
@@ -67,9 +66,8 @@ public abstract class SM {
     }
 
 	@WebMethod
-	public ProductList getPrices(String[] products) {
+	public ProductPrice[] getPrices(String[] products) {
 
-		ProductList priceProducts = new ProductList();
 		List<ProductPrice> productPriceList = new ArrayList<ProductPrice>();
 		for (String product : products) {
 			Double price = priceTable.get(product);
@@ -78,8 +76,7 @@ public abstract class SM {
 			}
 		}
 
-		priceProducts.setPriceList(productPriceList);
-		return priceProducts;
+		return productPriceList.toArray(new ProductPrice[1]);
 	}
 
 	public String purchase(String[] products, CustomerInfo customerInfo){
