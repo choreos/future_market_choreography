@@ -4,13 +4,13 @@ import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.clientgenerator.ItemImpl;
 
 public class CustomerInfo {
-	
+
 	private String id;
-	
+
 	private String name;
-	
+
 	private String zipcode;
-	
+
 	private String endpoint;
 
 	public String getId() {
@@ -44,27 +44,40 @@ public class CustomerInfo {
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-	
+
 	public Item getItem(String tagName) {
 		Item item = new ItemImpl(tagName);
-		
+
 		Item i = new ItemImpl("id");
 		i.setContent(id);
 		item.addChild(i);
-		
+
 		i = new ItemImpl("name");
 		i.setContent(name);
 		item.addChild(i);
-		
+
 		i = new ItemImpl("endpoint");
 		i.setContent(endpoint);
 		item.addChild(i);
-		
+
 		i = new ItemImpl("zipcode");
 		i.setContent(zipcode);
 		item.addChild(i);
-		
+
 		return item;
 	}
-	
+
+	public static CustomerInfo fromItem(Item item) {
+		CustomerInfo customerInfo = new CustomerInfo();
+		try {
+			customerInfo.setEndpoint(item.getChild("endpoint").getContent());
+			customerInfo.setId(item.getChild("id").getContent());
+			customerInfo.setName(item.getChild("name").getContent());
+			customerInfo.setZipcode(item.getChild("zipcode").getContent());
+		} catch (NoSuchFieldException e) {
+			customerInfo = null;
+			e.printStackTrace();
+		}
+		return customerInfo;
+	}
 }
