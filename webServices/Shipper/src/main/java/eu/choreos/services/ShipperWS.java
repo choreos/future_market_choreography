@@ -13,33 +13,38 @@ import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.DeliveryInfo;
 import eu.choreos.PurchaseInfo;
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
 import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
 import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
-public class ShipperWS  {
-	
+public class ShipperWS {
+
 	HashMap<Integer, String> deliveries = new HashMap<Integer, String>();
-	
-	long id;
-	
+
+	long id = 1L;
+
 	@WebMethod
-	public String setDelivery(PurchaseInfo purchaseinfo){
-		//this.start();
+	public String setDelivery(PurchaseInfo purchaseinfo) {
+		// this.start();
 		WSClient wscustomer;
 		try {
-			wscustomer = new WSClient(purchaseinfo.getCustomerInfo().getEndpoint());
-			
+			wscustomer = new WSClient(purchaseinfo.getCustomerInfo()
+					.getEndpoint());
+
 			DeliveryInfo deliveryInfo = new DeliveryInfo();
 			deliveryInfo.setPurchase(purchaseinfo);
-			deliveryInfo.setId(""+id++);
+			deliveryInfo.setId("" + id++);
 			deliveryInfo.setDate(new Date().toString());
-			
-			
-			
-			return wscustomer.request("receiveShipmentData", deliveryInfo.getItem("arg0")).getChild("return").getContent();
+			Item receiveShipmentData = new ItemImpl("receiveShipmentData");
+			Item item = deliveryInfo.getItem("arg0");
+			receiveShipmentData.addChild(item);
+			return wscustomer
+					.request("receiveShipmentData", receiveShipmentData)
+					.getChild("return").getContent();
 		} catch (WSDLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,32 +66,30 @@ public class ShipperWS  {
 		}
 		return "erro";
 	}
-	
+
 	@WebMethod
-	public String getDateAndTime(String id){
+	public String getDateAndTime(String id) {
 		String zipCode = deliveries.get(Integer.parseInt(id));
-		
+
 		Calendar c = null;
-		
-		if(Integer.parseInt(zipCode.substring(0, 3)) <= 300)
+
+		if (Integer.parseInt(zipCode.substring(0, 3)) <= 300)
 			c = setTime(8, 12, 32);
 		else if (Integer.parseInt(zipCode.substring(0, 3)) <= 600)
 			c = setTime(15, 30, 42);
 		else if (Integer.parseInt(zipCode.substring(0, 3)) <= 750)
 			c = setTime(20, 15, 00);
-		else 
+		else
 			c = setTime(22, 30, 00);
-		
+
 		return c.getTime().toString();
 	}
-	
-	private Calendar setTime(int hour, int minute, int second){
+
+	private Calendar setTime(int hour, int minute, int second) {
 		Calendar c1 = new GregorianCalendar(2011, Calendar.DECEMBER, 24);
 		c1.set(2011, Calendar.DECEMBER, 24, hour, minute, second);
-		
+
 		return c1;
 	}
-	
-	
-	
+
 }
