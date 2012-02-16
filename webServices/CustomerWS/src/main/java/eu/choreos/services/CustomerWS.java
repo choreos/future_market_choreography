@@ -18,6 +18,7 @@ import javax.jws.WebService;
 
 import org.apache.xmlbeans.XmlException;
 
+import eu.choreos.DeliveryInfo;
 import eu.choreos.models.CheapestProduct;
 import eu.choreos.models.LowestPrice;
 import eu.choreos.models.Order;
@@ -36,13 +37,15 @@ public class CustomerWS {
 	final ClassLoader loader = CustomerWS.class.getClassLoader();
 	private HashMap<String, HashMap<String, Set<String>>> customerProductLists;
 	private long currentList = 1L;
-	
+	private ArrayList<DeliveryInfo> DeliveryInfoList;
+
 	public CustomerWS() throws WSDLException, FileNotFoundException,
 			XmlException, IOException, FrameworkException {
 		registry = new WSClient(this.getRegistryWsdl());
-		customerProductLists = new HashMap<String, HashMap<String,Set<String>>>();
+		customerProductLists = new HashMap<String, HashMap<String, Set<String>>>();
+		DeliveryInfoList = new ArrayList<DeliveryInfo>();
 	}
-	
+
 	@WebMethod
 	public String makePurchase(String id, String name, String address,
 			String zipcode) throws Exception {
@@ -112,7 +115,8 @@ public class CustomerWS {
 	public LowestPrice getLowestPriceForList(String[] products) {
 		try {
 			Item supermarketItem = registry.request("getList", "Supermarket");
-			List<Item> supermarketList = supermarketItem.getChildAsList("return");
+			List<Item> supermarketList = supermarketItem
+					.getChildAsList("return");
 			HashMap<HashMap<String, Double>, String> supermarketsProductList = new HashMap<HashMap<String, Double>, String>();
 			for (Item supermarketEndpoint : supermarketList) {
 				String endpoint = supermarketEndpoint.getContent();
@@ -120,21 +124,24 @@ public class CustomerWS {
 				Item productListReturn = wsSupermarket.request("getPrices",
 						ArrayStringtoItem(products));
 				HashMap<String, Double> productsMap = new HashMap<String, Double>();
-				for (Item productPrice : productListReturn.getChildAsList("return")) {
-					productsMap.put(productPrice.getChild("product").getContent(),
-							Double.parseDouble(productPrice.getChild("price")
-									.getContent()));
+				for (Item productPrice : productListReturn
+						.getChildAsList("return")) {
+					productsMap.put(productPrice.getChild("product")
+							.getContent(), Double.parseDouble(productPrice
+							.getChild("price").getContent()));
 				}
 				supermarketsProductList.put(productsMap, endpoint);
 			}
-			
-			String listId = ""+getListId();
-			customerProductLists.put(listId, new HashMap<String, Set<String>>());
+
+			String listId = "" + getListId();
+			customerProductLists
+					.put(listId, new HashMap<String, Set<String>>());
 			Double listPrice = 0d;
-			for(String product: products) {
+			for (String product : products) {
 				String endpoint = "";
 				Double lowestPrice = Double.MAX_VALUE;
-				for(HashMap<String, Double> productsHash: supermarketsProductList.keySet()) {
+				for (HashMap<String, Double> productsHash : supermarketsProductList
+						.keySet()) {
 					Double price = productsHash.get(product);
 					if (price < lowestPrice) {
 						lowestPrice = price;
@@ -144,10 +151,9 @@ public class CustomerWS {
 				addProduct(listId, endpoint, product);
 				listPrice += lowestPrice;
 			}
-			
-	
+
 			return new LowestPrice(listId, listPrice);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -155,15 +161,16 @@ public class CustomerWS {
 
 	private void addProduct(String listId, String endpoint, String product) {
 		if (customerProductLists.get(listId).get(endpoint) == null) {
-			customerProductLists.get(listId).put(endpoint, new HashSet<String>());
+			customerProductLists.get(listId).put(endpoint,
+					new HashSet<String>());
 		}
 		customerProductLists.get(listId).get(endpoint).add(product);
 	}
-	
+
 	private synchronized long getListId() {
 		return currentList++;
 	}
-	
+
 	private Item ArrayStringtoItem(String[] strings) {
 		Item getPrices = new ItemImpl("getPrices");
 		for (String i : strings) {
@@ -174,4 +181,20 @@ public class CustomerWS {
 		return getPrices;
 	}
 
+	@WebMethod
+	public String receiveShipmentData(DeliveryInfo deliveryInfo) {
+		DeliveryInfoList.add(deliveryInfo);
+		return "OK";
+	}
+
+	@WebMethod
+	public DeliveryInfo getShipmentData(String id) {
+		if (!DeliveryInfoList.isEmpty())
+			for (int i = 0; i < DeliveryInfoList.size(); i++) {
+				if (DeliveryInfoList.get(i).getId().equalsIgnoreCase(id)) {
+					return DeliveryInfoList.get(i);
+				}
+			}
+		return null;
+	}
 }
