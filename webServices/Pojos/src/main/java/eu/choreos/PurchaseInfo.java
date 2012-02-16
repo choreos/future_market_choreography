@@ -86,7 +86,7 @@ public class PurchaseInfo {
 		}
 			
 		
-		item.addChild(customer.getItem("customer"));
+		item.addChild(customer.getItem("customerInfo"));
 		
 		return item;
 	}
