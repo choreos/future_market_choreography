@@ -90,5 +90,18 @@ public class PurchaseInfo {
 		
 		return item;
 	}
+	
+	public static PurchaseInfo fromItem(Item i){
+		PurchaseInfo p = new PurchaseInfo();
+		try {
+			p.setId(i.getChild("id").getContent());
+			//TODO terminar
+		} catch (NoSuchFieldException e) {
+			p = null;
+			e.printStackTrace();
+		}
+		
+		return p;
+	}
 
 }

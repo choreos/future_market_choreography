@@ -1,5 +1,6 @@
 package eu.choreos.services;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,58 +14,40 @@ import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.DeliveryInfo;
 import eu.choreos.PurchaseInfo;
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
-import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
-import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
 public class ShipperWS {
 
 	HashMap<Integer, String> deliveries = new HashMap<Integer, String>();
+	private HashMap<String, DeliveryInfo> deliveryInfoList;
 
 	long id = 1L;
 
-	@WebMethod
-	public String setDelivery(PurchaseInfo purchaseinfo) {
-		// this.start();
-		WSClient wscustomer;
-		try {
-			wscustomer = new WSClient(purchaseinfo.getCustomerInfo()
-					.getEndpoint());
+	public ShipperWS() throws WSDLException, FileNotFoundException,
+	XmlException, IOException, FrameworkException {
+		deliveryInfoList = new HashMap<String, DeliveryInfo>();
+	}
 
-			DeliveryInfo deliveryInfo = new DeliveryInfo();
-			deliveryInfo.setPurchase(purchaseinfo);
-			deliveryInfo.setId("" + id++);
-			deliveryInfo.setDate(new Date().toString());
-			Item receiveShipmentData = new ItemImpl("receiveShipmentData");
-			Item item = deliveryInfo.getItem("arg0");
-			receiveShipmentData.addChild(item);
-			return wscustomer
-					.request("receiveShipmentData", receiveShipmentData)
-					.getChild("return").getContent();
-		} catch (WSDLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (XmlException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FrameworkException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidOperationNameException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@WebMethod
+	public String setDelivery(PurchaseInfo purchaseInfo) {
+		DeliveryInfo deliveryInfo = new DeliveryInfo();
+		deliveryInfo.setPurchase(purchaseInfo);
+		deliveryInfo.setId("" + id++);
+		deliveryInfo.setDate(new Date().toString());
+		
+		deliveryInfoList.put(purchaseToIdentifier(purchaseInfo), deliveryInfo);
+		
+		return "OK";
+	}
+	
+	@WebMethod
+	public DeliveryInfo getDeliveryStatus(PurchaseInfo purchaseInfo){
+		if ( deliveryInfoList.containsKey(purchaseToIdentifier(purchaseInfo)) ){
+			return deliveryInfoList.get(purchaseToIdentifier(purchaseInfo));
 		}
-		return "erro";
+		return null;
 	}
 
 	@WebMethod
@@ -90,6 +73,10 @@ public class ShipperWS {
 		c1.set(2011, Calendar.DECEMBER, 24, hour, minute, second);
 
 		return c1;
+	}
+	
+	private String purchaseToIdentifier(PurchaseInfo p){
+		return p.getId() + p.getSellerEndpoint();
 	}
 
 }

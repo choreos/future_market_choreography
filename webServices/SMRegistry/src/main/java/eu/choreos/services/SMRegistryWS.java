@@ -25,6 +25,14 @@ public class SMRegistryWS {
 		else
 			return new ArrayList<String>();
 	}
+	
+	@WebMethod
+	public String getFirst(String role){
+		if (endpoints.containsKey(role))
+			return (String) endpoints.get(role).iterator().next();
+		else
+			return "";
+	}
 
 	@WebMethod
 	public String add(String role, String endpoint){
