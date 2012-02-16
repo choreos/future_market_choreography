@@ -180,13 +180,13 @@ public class CustomerWS {
 	@WebMethod
 	public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo) {
 		try {
-			Item shipperItem = registry.request("getFirst", "shipper");
-			String endpoint = shipperItem.getChild("result").getContent();
+			Item shipperItem = registry.request("getFirst", "Shipper");
+			String endpoint = shipperItem.getChild("return").getContent();
 			
 			WSClient shipper = new WSClient(endpoint);
 			Item deliveryItem = shipper.request("getDeliveryStatus", purchaseInfo.getItem("arg0"));
 			
-			DeliveryInfo response = DeliveryInfo.fromItem(deliveryItem);
+			DeliveryInfo response = DeliveryInfo.fromItem(deliveryItem.getChild("return"));
 			return response;
 		} catch (InvalidOperationNameException e) {
 			e.printStackTrace();

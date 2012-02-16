@@ -2,10 +2,14 @@ package eu.choreos.services;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Properties;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -14,7 +18,9 @@ import org.apache.xmlbeans.XmlException;
 
 import eu.choreos.DeliveryInfo;
 import eu.choreos.PurchaseInfo;
+import eu.choreos.vv.clientgenerator.WSClient;
 import eu.choreos.vv.exceptions.FrameworkException;
+import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
@@ -22,13 +28,43 @@ public class ShipperWS {
 
 	HashMap<Integer, String> deliveries = new HashMap<Integer, String>();
 	private HashMap<String, DeliveryInfo> deliveryInfoList;
+	static WSClient registry;
+	final ClassLoader loader = ShipperWS.class.getClassLoader();
 
 	long id = 1L;
 
 	public ShipperWS() throws WSDLException, FileNotFoundException,
-	XmlException, IOException, FrameworkException {
+	XmlException, IOException, FrameworkException, InvalidOperationNameException {
 		deliveryInfoList = new HashMap<String, DeliveryInfo>();
+		register();
 	}
+	
+	private void register() throws WSDLException, XmlException, IOException, FrameworkException,
+    InvalidOperationNameException {
+		registry = new WSClient(getRegistryWsdl());
+		registry.request("add", "Shipper", getMyWsdl());
+	}
+
+	private String getMyWsdl() throws MalformedURLException,
+			UnknownHostException {
+		final String hostName = getMyHostName();
+		return "http://" + hostName + ":8080/smshipper/smshipper?wsdl";
+	}
+	
+	private String getMyHostName() throws UnknownHostException {
+        InetAddress addr = InetAddress.getLocalHost();
+        return addr.getCanonicalHostName();
+    }
+	
+	private String getRegistryWsdl() throws FileNotFoundException, IOException {
+        return getWsdl("registry.wsdl");
+    }
+
+    private String getWsdl(String name) throws FileNotFoundException, IOException {
+        Properties properties = new Properties();
+        properties.load(loader.getResourceAsStream("config.properties"));
+        return properties.getProperty(name);
+    }
 
 	@WebMethod
 	public String setDelivery(PurchaseInfo purchaseInfo) {
@@ -36,6 +72,7 @@ public class ShipperWS {
 		deliveryInfo.setPurchase(purchaseInfo);
 		deliveryInfo.setId("" + id++);
 		deliveryInfo.setDate(new Date().toString());
+		deliveryInfo.setStatus("done");
 		
 		deliveryInfoList.put(purchaseToIdentifier(purchaseInfo), deliveryInfo);
 		
