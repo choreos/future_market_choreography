@@ -18,19 +18,19 @@ registry:
 	mvn package && \
 	cp -f target/smregistry.war $(CATALINA_HOME)/webapps/
 
-sm1: sm
+sm1: sm FORCE
 	cd SM1 && \
 	mvn clean && \
 	mvn package && \
 	cp -f target/smsupermarket1.war $(CATALINA_HOME)/webapps/
 
-sm2: sm
+sm2: sm FORCE
 	cd SM2 && \
 	mvn clean && \
 	mvn package && \
 	cp -f target/smsupermarket2.war $(CATALINA_HOME)/webapps/
 
-sm3: sm
+sm3: sm FORCE
 	cd SM3 && \
 	mvn clean && \
 	mvn package && \
@@ -44,3 +44,5 @@ pojo:
 	cd Pojos && \
 	mvn clean && \
 	mvn install
+
+FORCE:
