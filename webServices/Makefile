@@ -45,4 +45,10 @@ pojo:
 	mvn clean && \
 	mvn install
 
+clean:
+	rm -rf $(CATALINA_HOME)/webapps/smregistry* \
+	rm -rf $(CATALINA_HOME)/webapps/smshipper* \
+	rm -rf $(CATALINA_HOME)/webapps/smsupermarket* \
+	rm -rf $(CATALINA_HOME)/webapps/smcustomer*
+
 FORCE:
