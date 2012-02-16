@@ -31,6 +31,11 @@ public abstract class SM {
     static WSClient registry;
     final ClassLoader loader = SM.class.getClassLoader();
     private final String servicePath;
+    private long currentId = 1l;
+    
+    private synchronized long getListId() {
+    	return currentId++;
+    }
 
     public SM(final String servicePath) throws WSDLException, XmlException, IOException, FrameworkException,
             InvalidOperationNameException {
@@ -79,20 +84,19 @@ public abstract class SM {
 		return productPriceList.toArray(new ProductPrice[1]);
 	}
 
-	public String purchase(String[] products, CustomerInfo customerInfo){
+	public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo){
 		PurchaseInfo purchaseInfo = new PurchaseInfo();
-		purchaseInfo.setCustomerInfo(customerInfo);
-		purchaseInfo.setProducts(products);
-		purchaseInfo.setValue(10.0);
-		purchaseInfo.setId("compra");
-		purchaseInfo.setSellerEndpoint("http://127.0.0.1:8080/smsupermarket1/smsupermarket1?wsdl");
 		
 		try {
-			String shipperWSDL = getWsdl("shipper.wsdl");
-			System.out.println(shipperWSDL);
+			purchaseInfo.setCustomerInfo(customerInfo);
+			purchaseInfo.setProducts(products);
+			purchaseInfo.setValue(10.0);
+			purchaseInfo.setId("" + getListId());
+			purchaseInfo.setSellerEndpoint(getMyWsdl());
+			
 			WSClient wsShipper = new WSClient(getWsdl("shipper.wsdl"));
 			Item response = wsShipper.request("setDelivery", purchaseInfo.getItem("arg0"));
-			System.out.println(response.toString());
+			return purchaseInfo;
 		} catch (WSDLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,7 +114,7 @@ public abstract class SM {
 			e.printStackTrace();
 		}
 
-		return "OK";
+		return null;
 	}
 
 	protected void init() {

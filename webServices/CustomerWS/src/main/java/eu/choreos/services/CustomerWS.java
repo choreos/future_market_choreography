@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.jws.WebService;
 
 import org.apache.xmlbeans.XmlException;
 
+import eu.choreos.CustomerInfo;
 import eu.choreos.DeliveryInfo;
 import eu.choreos.PurchaseInfo;
 import eu.choreos.models.LowestPrice;
@@ -32,7 +34,7 @@ public class CustomerWS {
 	private List<String> endpoints;
 	static WSClient registry;
 	final ClassLoader loader = CustomerWS.class.getClassLoader();
-	private HashMap<String, HashMap<String, Set<String>>> customerProductLists;
+	private HashMap<String, HashMap<String, Set<String>>> customerProductLists; //<listID, <supermarket, <product>>>
 	private long currentList = 1L;
 
 	public CustomerWS() throws WSDLException, FileNotFoundException,
@@ -69,7 +71,7 @@ public class CustomerWS {
 			Item supermarketItem = registry.request("getList", "Supermarket");
 			List<Item> supermarketList = supermarketItem.getChildAsList("return");
 			HashMap<HashMap<String, Double>, String> supermarketsProductList = new HashMap<HashMap<String, Double>, String>();
-
+			//gets prices from supermarkets	
 			for (Item supermarketEndpoint : supermarketList) {
 				String endpoint = supermarketEndpoint.getContent();
 				WSClient wsSupermarket = new WSClient(endpoint);
@@ -87,6 +89,7 @@ public class CustomerWS {
 			String listId = "" + getListId();
 			customerProductLists.put(listId, new HashMap<String, Set<String>>());
 			Double listPrice = 0d;
+			//finds lowest prices
 			for (String product : products) {
 				String endpoint = "";
 				Double lowestPrice = Double.MAX_VALUE;
@@ -130,7 +133,7 @@ public class CustomerWS {
 		return getPrices;
 	}
 
-	@WebMethod
+	/*@WebMethod
 	public PurchaseInfo makePurchase(String id, String name, String address,
 			String zipcode) throws Exception {
 		String listOfShipper = "";
@@ -171,7 +174,7 @@ public class CustomerWS {
 		zipCode.setContent(wZipcode);
 		personalData.addChild(zipCode);
 		return personalData;
-	}
+	}*/
 
 
 	@WebMethod
@@ -181,7 +184,7 @@ public class CustomerWS {
 			String endpoint = shipperItem.getChild("result").getContent();
 			
 			WSClient shipper = new WSClient(endpoint);
-			Item deliveryItem = shipper.request("getShipmentData", purchaseInfo.getItem("arg0"));
+			Item deliveryItem = shipper.request("getDeliveryStatus", purchaseInfo.getItem("arg0"));
 			
 			DeliveryInfo response = DeliveryInfo.fromItem(deliveryItem);
 			return response;
@@ -199,5 +202,47 @@ public class CustomerWS {
 		return null;
 	}
 	
+	@WebMethod
+	public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo) {
+		HashMap<String, Set<String>> purchaseLists = customerProductLists.get(listId);
+		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
+		
+		//for each supermarket
+		for(String endpoint:purchaseLists.keySet()) {
+			Item purchaseItem = new ItemImpl("purchase");
+			purchaseItem.addChild(customerInfo.getItem("arg1"));
+			for(String product:purchaseLists.get(endpoint)) {
+				Item productItem = new ItemImpl("arg0");
+				productItem.setContent(product);
+				purchaseItem.addChild(productItem);
+			}
+			try {
+				WSClient wsClient = new WSClient(endpoint);
+				Item resultItem = wsClient.request("purchase", purchaseItem);
+				result.add(PurchaseInfo.fromItem(resultItem.getChild("return")));
+			} catch (WSDLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (XmlException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FrameworkException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidOperationNameException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return result.toArray(new PurchaseInfo[1]);
+	}
 
 }

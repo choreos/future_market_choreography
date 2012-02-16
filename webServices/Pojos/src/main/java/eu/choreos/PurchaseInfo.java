@@ -1,5 +1,6 @@
 package eu.choreos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.choreos.vv.clientgenerator.Item;
@@ -38,7 +39,7 @@ public class PurchaseInfo {
 	}
 
 	public void setProducts(List<String> products) {
-		this.products = (String[]) products.toArray();
+		this.products = products.toArray(new String[1]);
 	}
 
 	public void setProducts(String[] products) {
@@ -92,10 +93,14 @@ public class PurchaseInfo {
 		try {
 			purchaseInfo.setId(item.getChild("id").getContent());
 			purchaseInfo.setSellerEndpoint(item.getChild("sellerEndpoint").getContent());
-			purchaseInfo.setProducts(item.getChildAsList("product").toArray(new String[1]));
+			List<String> products = new ArrayList<String>();
+			for(Item i: item.getChildAsList("products")) {
+				products.add(i.getContent());
+			}
+			purchaseInfo.setProducts(products);
 			purchaseInfo.setValue(Double.parseDouble(item.getChild("value").getContent()));
 			purchaseInfo.setCustomerInfo(CustomerInfo.fromItem(item.getChild("customerInfo")));
-		} catch(NoSuchFieldException e){
+		} catch(Exception e){
 			e.printStackTrace();
 			purchaseInfo= null;
 		}
