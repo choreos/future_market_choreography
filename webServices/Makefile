@@ -52,3 +52,13 @@ clean:
 	rm -rf $(CATALINA_HOME)/webapps/smcustomer*
 
 FORCE:
+
+deploy:
+	scp SMRegistry/target/smregistry.war choreos@198.55.33.0:apache-tomcat-7.0.25/webapps/
+	@echo "Sleeping while registry is deployed"
+	sleep 10
+	scp Shipper/target/smshipper.war choreos@198.55.33.3:apache-tomcat-7.0.25/webapps/
+	scp SM1/target/smsupermarket1.war choreos@198.55.33.4:apache-tomcat-7.0.25/webapps/
+	scp SM2/target/smsupermarket2.war choreos@198.55.33.5:apache-tomcat-7.0.25/webapps/
+	scp SM3/target/smsupermarket3.war choreos@198.55.33.6:apache-tomcat-7.0.25/webapps/
+	scp CustomerWS/target/smcustomer.war choreos@198.55.33.7:apache-tomcat-7.0.25/webapps/
