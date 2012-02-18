@@ -11,7 +11,7 @@ public class DeliveryInfo {
 	
 	private String status;
 	
-	private PurchaseInfo purchase;
+	private PurchaseInfo purchaseInfo;
 
 	public String getId() {
 		return id;
@@ -38,11 +38,11 @@ public class DeliveryInfo {
 	}
 
 	public PurchaseInfo getPurchase() {
-		return purchase;
+		return purchaseInfo;
 	}
 
 	public void setPurchase(PurchaseInfo purchase) {
-		this.purchase = purchase;
+		this.purchaseInfo = purchase;
 	}
 	
 	public Item getItem(String tagName) {
@@ -60,7 +60,7 @@ public class DeliveryInfo {
 		i.setContent(status);
 		item.addChild(i);
 		
-		item.addChild(purchase.getItem("purchase"));
+		item.addChild(purchaseInfo.getItem("purchase"));
 		
 		return item;
 	}

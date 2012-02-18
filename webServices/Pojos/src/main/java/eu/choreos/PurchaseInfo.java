@@ -16,7 +16,7 @@ public class PurchaseInfo {
 
 	private Double value;
 
-	private CustomerInfo customer;
+	private CustomerInfo customerInfo;
 
 	public String getId() {
 		return id;
@@ -55,11 +55,11 @@ public class PurchaseInfo {
 	}
 
 	public CustomerInfo getCustomerInfo() {
-		return customer;
+		return customerInfo;
 	}
 
 	public void setCustomerInfo(CustomerInfo customer) {
-		this.customer = customer;
+		this.customerInfo = customer;
 	}
 
 	public Item getItem(String tagName) {
@@ -83,27 +83,30 @@ public class PurchaseInfo {
 			item.addChild(i);
 		}
 
-		item.addChild(customer.getItem("customerInfo"));
+		item.addChild(customerInfo.getItem("customerInfo"));
 
 		return item;
 	}
 
-	public static PurchaseInfo fromItem(Item item){
-		PurchaseInfo purchaseInfo= new PurchaseInfo();
+	public static PurchaseInfo fromItem(Item item) {
+		PurchaseInfo purchaseInfo = new PurchaseInfo();
 		try {
 			purchaseInfo.setId(item.getChild("id").getContent());
-			purchaseInfo.setSellerEndpoint(item.getChild("sellerEndpoint").getContent());
+			purchaseInfo.setSellerEndpoint(item.getChild("sellerEndpoint")
+					.getContent());
 			List<String> products = new ArrayList<String>();
-			for(Item i: item.getChildAsList("products")) {
+			for (Item i : item.getChildAsList("products")) {
 				products.add(i.getContent());
 			}
 			purchaseInfo.setProducts(products);
-			purchaseInfo.setValue(Double.parseDouble(item.getChild("value").getContent()));
-			purchaseInfo.setCustomerInfo(CustomerInfo.fromItem(item.getChild("customerInfo")));
-		} catch(Exception e){
+			purchaseInfo.setValue(Double.parseDouble(item.getChild("value")
+					.getContent()));
+			purchaseInfo.setCustomerInfo(CustomerInfo.fromItem(item
+					.getChild("customerInfo")));
+		} catch (Exception e) {
 			e.printStackTrace();
-			purchaseInfo= null;
+			purchaseInfo = null;
 		}
 		return purchaseInfo;
-		}
+	}
 }
