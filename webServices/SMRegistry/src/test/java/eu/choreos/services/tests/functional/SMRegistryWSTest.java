@@ -4,29 +4,31 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 import java.util.Properties;
 
-import org.apache.xmlbeans.XmlException;
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.WSClient;
-import eu.choreos.vv.exceptions.FrameworkException;
-import eu.choreos.vv.exceptions.InvalidOperationNameException;
-import eu.choreos.vv.exceptions.WSDLException;
+import eu.choreos.services.SMRegistryWS;
 
 public class SMRegistryWSTest {
-    static WSClient registry;
     public final static String ROLE = "Supermarket";
     public final static String ENDPOINT = "http://www.walmart.com";
     static final ClassLoader loader = SMRegistryWSTest.class.getClassLoader();
+    private static SMRegistryWS registry;
 
     @BeforeClass
-    public static void oneTimeSetUp() throws FileNotFoundException, IOException, WSDLException,
-            XmlException, FrameworkException {
+    public static void oneTimeSetUp() throws FileNotFoundException, IOException {
         final String wsdl = getWsdl();
-        registry = new WSClient(wsdl);
+        URL url = new URL(wsdl);
+        QName qname = new QName("http://smregistry.choreos.eu", "SMRegistryWSImplService");
+        Service service = Service.create(url, qname);
+        registry = service.getPort(SMRegistryWS.class);
     }
 
     private static String getWsdl() throws FileNotFoundException, IOException {
@@ -36,26 +38,25 @@ public class SMRegistryWSTest {
     }
 
     @Test
-    public void shouldBeginEmpty() throws InvalidOperationNameException, FrameworkException {
-        Item response = registry.request("getList", ROLE);
-        assertEquals(new Integer(0), response.getChildrenCount());
+    public void shouldBeginEmpty() {
+        List<String> wsdls = registry.getList(ROLE);
+        assertEquals(0, wsdls.size());
     }
 
     @Test
-    public void shouldAddASupermarket() throws InvalidOperationNameException, FrameworkException,
-            NoSuchFieldException {
-        registry.request("add", ROLE, ENDPOINT);
+    public void shouldAddASupermarket() {
+        registry.add(ROLE, ENDPOINT);
 
-        Item response = registry.request("getList", ROLE);
+        List<String> wsdls = registry.getList(ROLE);
 
-        assertEquals(new Integer(1), response.getChildrenCount());
-        assertEquals(ENDPOINT, response.getChild("return").getContent());
+        assertEquals(1, wsdls.size());
+        assertEquals(ENDPOINT, wsdls.get(0));
     }
 
     @Test
-    public void shouldRemoveSupermarket() throws InvalidOperationNameException, FrameworkException {
-        registry.request("remove", ROLE, ENDPOINT);
-        Item response = registry.request("getList", ROLE);
-        assertEquals(new Integer(0), response.getChildrenCount());
+    public void shouldRemoveSupermarket() {
+        registry.remove(ROLE, ENDPOINT);
+        List<String> wsdls = registry.getList(ROLE);
+        assertEquals(0, wsdls.size());
     }
 }
