@@ -9,7 +9,9 @@ import java.util.Set;
 import javax.jws.WebService;
 
 @WebService(targetNamespace = "http://smregistry.choreos.eu",
-        endpointInterface = "eu.choreos.services.SMRegistryWS")
+        endpointInterface = "eu.choreos.services.SMRegistryWS",
+        serviceName = "SMRegistryWSImplService"
+        )
 public class SMRegistryWSImpl implements SMRegistryWS {
 
     private HashMap<String, Set<String>> endpoints;

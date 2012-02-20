@@ -25,51 +25,57 @@ import eu.choreos.vv.exceptions.InvalidOperationNameException;
 import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
-public abstract class SM {
+public abstract class SM implements SMWS {
 
-    protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
-    static WSClient registry;
-    final ClassLoader loader = SM.class.getClassLoader();
-    private final String servicePath;
-    private long currentId = 1l;
-    
-    private synchronized long getListId() {
-    	return currentId++;
-    }
+	protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
+	static WSClient registry;
+	final ClassLoader loader = SM.class.getClassLoader();
+	private final String servicePath;
+	private long currentId = 1l;
 
-    public SM(final String servicePath) throws WSDLException, XmlException, IOException, FrameworkException,
-            InvalidOperationNameException {
-        this.servicePath = servicePath;
-        register();
-        this.init();
-    }
+	private synchronized long getListId() {
+		return currentId++;
+	}
 
-    private void register() throws WSDLException, XmlException, IOException, FrameworkException,
-            InvalidOperationNameException {
-        registry = new WSClient(getRegistryWsdl());
-        registry.request("add", "Supermarket", getMyWsdl());
-    }
+	public SM(final String servicePath) throws WSDLException, XmlException,
+			IOException, FrameworkException, InvalidOperationNameException {
+		this.servicePath = servicePath;
+		register();
+		this.init();
+	}
 
-    private String getMyWsdl() throws MalformedURLException, UnknownHostException {
-        final String hostName = getMyHostName();
-        return "http://" + hostName + ":8080/" + servicePath + "?wsdl";
-    }
+	private void register() throws WSDLException, XmlException, IOException,
+			FrameworkException, InvalidOperationNameException {
+		registry = new WSClient(getRegistryWsdl());
+		registry.request("add", "Supermarket", getMyWsdl());
+	}
 
-    private String getMyHostName() throws UnknownHostException {
-        InetAddress addr = InetAddress.getLocalHost();
-        return addr.getCanonicalHostName();
-    }
+	private String getMyWsdl() throws MalformedURLException,
+			UnknownHostException {
+		final String hostName = getMyHostName();
+		return "http://" + hostName + ":8080/" + servicePath + "?wsdl";
+	}
 
-    private String getRegistryWsdl() throws FileNotFoundException, IOException {
-        return getWsdl("registry.wsdl");
-    }
+	private String getMyHostName() throws UnknownHostException {
+		InetAddress addr = InetAddress.getLocalHost();
+		return addr.getCanonicalHostName();
+	}
 
-    private String getWsdl(String name) throws FileNotFoundException, IOException {
-        Properties properties = new Properties();
-        properties.load(loader.getResourceAsStream("config.properties"));
-        return properties.getProperty(name);
-    }
+	private String getRegistryWsdl() throws FileNotFoundException, IOException {
+		return getWsdl("registry.wsdl");
+	}
 
+	private String getWsdl(String name) throws FileNotFoundException,
+			IOException {
+		Properties properties = new Properties();
+		properties.load(loader.getResourceAsStream("config.properties"));
+		return properties.getProperty(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.choreos.services.SMWS#getPrices(java.lang.String[])
+	 */
+	@Override
 	@WebMethod
 	public ProductPrice[] getPrices(String[] products) {
 
@@ -84,18 +90,24 @@ public abstract class SM {
 		return productPriceList.toArray(new ProductPrice[1]);
 	}
 
-	public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo){
+	/* (non-Javadoc)
+	 * @see eu.choreos.services.SMWS#purchase(java.lang.String[], eu.choreos.CustomerInfo)
+	 */
+	@Override
+	@WebMethod
+	public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo) {
 		PurchaseInfo purchaseInfo = new PurchaseInfo();
-		
+
 		try {
 			purchaseInfo.setCustomerInfo(customerInfo);
 			purchaseInfo.setProducts(products);
 			purchaseInfo.setValue(10.0);
 			purchaseInfo.setId("" + getListId());
 			purchaseInfo.setSellerEndpoint(getMyWsdl());
-			
+
 			WSClient wsShipper = new WSClient(getWsdl("shipper.wsdl"));
-			Item response = wsShipper.request("setDelivery", purchaseInfo.getItem("arg0"));
+			Item response = wsShipper.request("setDelivery",
+					purchaseInfo.getItem("arg0"));
 			return purchaseInfo;
 		} catch (WSDLException e) {
 			// TODO Auto-generated catch block
