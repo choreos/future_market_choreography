@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<build>
-		<finalName>smsupermarket1</finalName>
+		<finalName>supermarket1</finalName>
 	</build>
 
 	<repositories>
@@ -22,12 +22,6 @@
 			<groupId>eu.choreos</groupId>
 			<artifactId>SM</artifactId>
 			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>eu.choreos</groupId>
-			<artifactId>rehearsal</artifactId>
-			<version>0.9</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

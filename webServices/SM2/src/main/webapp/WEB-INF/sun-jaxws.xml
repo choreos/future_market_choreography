@@ -2,5 +2,5 @@
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
 	version="2.0">
 	<endpoint name="SM2" implementation="eu.choreos.services.SM2"
-		url-pattern="/smsupermarket2" />
+		url-pattern="/supermarket2" />
 </endpoints>

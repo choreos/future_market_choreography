@@ -3,7 +3,7 @@ package eu.choreos.services;
 import javax.jws.WebService;
 
 @WebService
-public class SM3 extends SM {
+public class SM3 extends SupermarketWSImpl {
 
     public SM3() throws Exception {
         super("smsupermarket3/smsupermarket3");

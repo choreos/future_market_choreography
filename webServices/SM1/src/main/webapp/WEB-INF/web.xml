@@ -18,7 +18,7 @@ Inc.//DTD Web Application 2.3//EN"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SM1</servlet-name>
-		<url-pattern>/smsupermarket1</url-pattern>
+		<url-pattern>/supermarket1</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>
