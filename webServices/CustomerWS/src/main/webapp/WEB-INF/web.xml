@@ -18,7 +18,7 @@ Inc.//DTD Web Application 2.3//EN"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CustomerWS</servlet-name>
-		<url-pattern>/smcustomer</url-pattern>
+		<url-pattern>/customer</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>
