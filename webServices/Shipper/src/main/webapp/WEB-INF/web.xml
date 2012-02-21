@@ -10,15 +10,15 @@ Inc.//DTD Web Application 2.3//EN"
 		</listener-class>
 	</listener>
 	<servlet>
-		<servlet-name>ShipperWS</servlet-name>
+		<servlet-name>Shipper</servlet-name>
 		<servlet-class>
 			com.sun.xml.ws.transport.http.servlet.WSServlet
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>ShipperWS</servlet-name>
-		<url-pattern>/smshipper</url-pattern>
+		<servlet-name>Shipper</servlet-name>
+		<url-pattern>/shipper</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>
