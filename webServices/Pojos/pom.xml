@@ -13,14 +13,6 @@
 			<url>http://valinhos.ime.usp.br:54080/maven/</url>
 		</repository>
 	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>eu.choreos</groupId>
-			<artifactId>rehearsal</artifactId>
-			<version>0.9</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<pluginManagement>

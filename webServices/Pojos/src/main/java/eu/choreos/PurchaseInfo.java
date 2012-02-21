@@ -1,10 +1,6 @@
 package eu.choreos;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.ItemImpl;
 
 public class PurchaseInfo {
 
@@ -62,48 +58,4 @@ public class PurchaseInfo {
 		this.customer = customer;
 	}
 
-	public Item getItem(String tagName) {
-		Item item = new ItemImpl(tagName);
-
-		Item i = new ItemImpl("id");
-		i.setContent(id);
-		item.addChild(i);
-
-		i = new ItemImpl("sellerEndpoint");
-		i.setContent(sellerEndpoint);
-		item.addChild(i);
-
-		i = new ItemImpl("value");
-		i.setContent(value.toString());
-		item.addChild(i);
-
-		for (String p : products) {
-			i = new ItemImpl("products");
-			i.setContent(p);
-			item.addChild(i);
-		}
-
-		item.addChild(customer.getItem("customerInfo"));
-
-		return item;
-	}
-
-	public static PurchaseInfo fromItem(Item item){
-		PurchaseInfo purchaseInfo= new PurchaseInfo();
-		try {
-			purchaseInfo.setId(item.getChild("id").getContent());
-			purchaseInfo.setSellerEndpoint(item.getChild("sellerEndpoint").getContent());
-			List<String> products = new ArrayList<String>();
-			for(Item i: item.getChildAsList("products")) {
-				products.add(i.getContent());
-			}
-			purchaseInfo.setProducts(products);
-			purchaseInfo.setValue(Double.parseDouble(item.getChild("value").getContent()));
-			purchaseInfo.setCustomerInfo(CustomerInfo.fromItem(item.getChild("customerInfo")));
-		} catch(Exception e){
-			e.printStackTrace();
-			purchaseInfo= null;
-		}
-		return purchaseInfo;
-		}
 }

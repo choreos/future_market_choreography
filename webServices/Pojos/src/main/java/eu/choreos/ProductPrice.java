@@ -1,7 +1,5 @@
 package eu.choreos;
 
-import eu.choreos.vv.clientgenerator.Item;
-
 public class ProductPrice {
 
 	private String product;
@@ -32,26 +30,4 @@ public class ProductPrice {
 		this.price = price;
 	}
 
-	public ProductPrice(Item item) {
-		try {
-			this.product = item.getChild("product").getContent();
-			this.price = Double.parseDouble(item.getChild("price").getContent());
-		} catch (NoSuchFieldException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public ProductPrice fromItem(Item item) {
-		ProductPrice productPrice = new ProductPrice();
-		try {
-			productPrice.setProduct(item.getChild("product").getContent());
-			productPrice.setPrice(Double.parseDouble(item.getChild("price").getContent()));
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-			productPrice = null;
-		}
-		return productPrice;
-	}
 }
