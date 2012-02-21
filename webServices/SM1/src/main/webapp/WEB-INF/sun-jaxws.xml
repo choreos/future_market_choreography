@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
 	version="2.0">
-	<endpoint name="SM1" implementation="eu.choreos.services.SM1"
-		url-pattern="/smsupermarket1" />
+	<endpoint name="Supermarket1" implementation="br.usp.ime.futuremarket.SupermarketImpl1"
+		url-pattern="/supermarket1" />
 </endpoints>
