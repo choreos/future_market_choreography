@@ -1,4 +1,4 @@
-package eu.choreos.services;
+package br.usp.ime.futuremarket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +8,13 @@ import java.util.Set;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "http://smregistry.choreos.eu",
-        endpointInterface = "eu.choreos.services.SMRegistryWS")
-public class SMRegistryWSImpl implements SMRegistryWS {
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+        endpointInterface = "br.usp.ime.futuremarket.Registry")
+public class RegistryImpl implements Registry {
 
     private HashMap<String, Set<String>> endpoints;
 
-    public SMRegistryWSImpl() {
+    public RegistryImpl() {
         endpoints = new HashMap<String, Set<String>>();
     }
 

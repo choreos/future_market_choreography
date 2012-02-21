@@ -1,4 +1,4 @@
-package eu.choreos.services.tests.functional;
+package br.usp.ime.futuremarket.tests.functional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,21 +14,22 @@ import javax.xml.ws.Service;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.services.SMRegistryWS;
+import br.usp.ime.futuremarket.Registry;
 
-public class SMRegistryWSTest {
+
+public class RegistryTest {
     public final static String ROLE = "Supermarket";
     public final static String ENDPOINT = "http://www.walmart.com";
-    static final ClassLoader loader = SMRegistryWSTest.class.getClassLoader();
-    private static SMRegistryWS registry;
+    static final ClassLoader loader = RegistryTest.class.getClassLoader();
+    private static Registry registry;
 
     @BeforeClass
     public static void oneTimeSetUp() throws FileNotFoundException, IOException {
         final String wsdl = getWsdl();
         URL url = new URL(wsdl);
-        QName qname = new QName("http://smregistry.choreos.eu", "SMRegistryWSImplService");
+        QName qname = new QName("http://futuremarket.ime.usp.br", "RegistryImplService");
         Service service = Service.create(url, qname);
-        registry = service.getPort(SMRegistryWS.class);
+        registry = service.getPort(Registry.class);
     }
 
     private static String getWsdl() throws FileNotFoundException, IOException {

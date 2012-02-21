@@ -1,4 +1,4 @@
-package eu.choreos.services;
+package br.usp.ime.futuremarket;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface SMRegistryWS {
+public interface Registry {
 
     @WebMethod
     public List<String> getList(String role);
