@@ -31,7 +31,8 @@
     	<groupId>eu.choreos</groupId>
     	<artifactId>WSClientWR</artifactId>
     	<version>0.1</version>
-    	<scope>provided</scope>
+    	<type>jar</type>
+    	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>eu.choreos</groupId>

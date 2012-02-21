@@ -18,10 +18,42 @@
 	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>eu.choreos</groupId>
-			<artifactId>SM</artifactId>
-			<version>1.0</version>
-		</dependency>
+	    <dependency>
+		<groupId>eu.choreos</groupId>
+		<artifactId>WSClientWR</artifactId>
+		<version>0.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	    </dependency>
+	    <dependency>
+		<groupId>eu.choreos</groupId>
+		<artifactId>Pojos</artifactId>
+		<version>0.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	    </dependency>
+	    <dependency>
+		<groupId>eu.choreos</groupId>
+		<artifactId>Shipper</artifactId>
+		<version>0.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+		<classifier>classes</classifier>
+	    </dependency>
+	    <dependency>
+		<groupId>eu.choreos</groupId>
+		<artifactId>SM</artifactId>
+		<version>1.0</version>
+		<type>jar</type>
+		<scope>compile</scope>
+	    </dependency>
+	    <dependency>
+		<groupId>eu.choreos</groupId>
+		<artifactId>Registry</artifactId>
+		<version>0.1</version>
+		<type>jar</type>
+		<scope>compile</scope>
+		<classifier>classes</classifier>
+	    </dependency>
 	</dependencies>
 </project>
