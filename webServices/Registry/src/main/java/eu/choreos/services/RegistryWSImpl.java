@@ -8,15 +8,15 @@ import java.util.Set;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "http://smregistry.choreos.eu",
-        endpointInterface = "eu.choreos.services.SMRegistryWS",
-        serviceName = "SMRegistryWSImplService"
+@WebService(targetNamespace = "http://registry.choreos.eu",
+        endpointInterface = "eu.choreos.services.RegistryWS",
+        serviceName = "RegistryWSImplService"
         )
-public class SMRegistryWSImpl implements SMRegistryWS {
+public class RegistryWSImpl implements RegistryWS {
 
     private HashMap<String, Set<String>> endpoints;
 
-    public SMRegistryWSImpl() {
+    public RegistryWSImpl() {
         endpoints = new HashMap<String, Set<String>>();
     }
 
@@ -57,4 +57,5 @@ public class SMRegistryWSImpl implements SMRegistryWS {
         } else
             return "Role not found";
     }
+
 }

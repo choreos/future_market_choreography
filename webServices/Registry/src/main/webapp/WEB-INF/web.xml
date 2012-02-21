@@ -10,15 +10,15 @@ Inc.//DTD Web Application 2.3//EN"
 		</listener-class>
 	</listener>
 	<servlet>
-		<servlet-name>SMRegistry</servlet-name>
+		<servlet-name>Registry</servlet-name>
 		<servlet-class>
 			com.sun.xml.ws.transport.http.servlet.WSServlet
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>SMRegistry</servlet-name>
-		<url-pattern>/smregistry</url-pattern>
+		<servlet-name>Registry</servlet-name>
+		<url-pattern>/registry</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>

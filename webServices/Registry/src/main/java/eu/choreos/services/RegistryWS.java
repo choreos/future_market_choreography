@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding.Style;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface SMRegistryWS {
+public interface RegistryWS {
 
     @WebMethod
     public List<String> getList(String role);

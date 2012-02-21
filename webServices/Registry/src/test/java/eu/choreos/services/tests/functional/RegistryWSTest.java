@@ -14,21 +14,21 @@ import javax.xml.ws.Service;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.choreos.services.SMRegistryWS;
+import eu.choreos.services.RegistryWS;
 
-public class SMRegistryWSTest {
+public class RegistryWSTest {
     public final static String ROLE = "Supermarket";
     public final static String ENDPOINT = "http://www.walmart.com";
-    static final ClassLoader loader = SMRegistryWSTest.class.getClassLoader();
-    private static SMRegistryWS registry;
+    static final ClassLoader loader = RegistryWSTest.class.getClassLoader();
+    private static RegistryWS registry;
 
     @BeforeClass
     public static void oneTimeSetUp() throws FileNotFoundException, IOException {
         final String wsdl = getWsdl();
         URL url = new URL(wsdl);
-        QName qname = new QName("http://smregistry.choreos.eu", "SMRegistryWSImplService");
+        QName qname = new QName("http://registry.choreos.eu", "RegistryWSImplService");
         Service service = Service.create(url, qname);
-        registry = service.getPort(SMRegistryWS.class);
+        registry = service.getPort(RegistryWS.class);
     }
 
     private static String getWsdl() throws FileNotFoundException, IOException {
@@ -59,4 +59,5 @@ public class SMRegistryWSTest {
         List<String> wsdls = registry.getList(ROLE);
         assertEquals(0, wsdls.size());
     }
+    
 }
