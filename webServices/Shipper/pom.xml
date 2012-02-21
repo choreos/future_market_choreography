@@ -1,11 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>Shipper</groupId>
+  <groupId>eu.choreos</groupId>
   <artifactId>Shipper</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>war</packaging>
+
   <build>
-  	<finalName>smshipper</finalName>
+    <finalName>shipper</finalName>
+    <plugins>
+	<plugin>
+	    <artifactId>maven-war-plugin</artifactId>
+	    <version>2.1.1</version>
+	    <configuration>
+		<attachClasses>true</attachClasses>
+		<classesClassifier>classes</classesClassifier>
+	    </configuration>
+	</plugin>
+    </plugins>
   </build>
   
   <repositories>
@@ -18,14 +29,23 @@
   
   <dependencies>
     <dependency>
-      <groupId>eu.choreos</groupId>
-      <artifactId>rehearsal</artifactId>
-      <version>0.9</version>
-      <scope>provided</scope>
+    	<groupId>eu.choreos</groupId>
+    	<artifactId>Pojos</artifactId>
+    	<version>0.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>eu.choreos</groupId>
-    	<artifactId>Pojos</artifactId>
+    	<artifactId>Registry</artifactId>
+    	<version>0.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+	<classifier>classes</classifier>
+    </dependency>
+    <dependency>
+    	<groupId>eu.choreos</groupId>
+    	<artifactId>WSClientWR</artifactId>
     	<version>0.1</version>
     	<type>jar</type>
     	<scope>compile</scope>
