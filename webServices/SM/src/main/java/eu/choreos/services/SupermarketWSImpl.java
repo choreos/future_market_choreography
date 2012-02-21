@@ -13,23 +13,16 @@ import java.util.Properties;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import org.apache.xmlbeans.XmlException;
-
 import eu.choreos.CustomerInfo;
 import eu.choreos.ProductPrice;
 import eu.choreos.PurchaseInfo;
-import eu.choreos.vv.clientgenerator.Item;
-import eu.choreos.vv.clientgenerator.WSClient;
-import eu.choreos.vv.exceptions.FrameworkException;
-import eu.choreos.vv.exceptions.InvalidOperationNameException;
-import eu.choreos.vv.exceptions.WSDLException;
 
 @WebService
-public abstract class SM implements SMWS {
+public abstract class SupermarketWSImpl implements SupermarketWS {
 
 	protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
-	static WSClient registry;
-	final ClassLoader loader = SM.class.getClassLoader();
+	static RegistryWS registry;
+	final ClassLoader loader = SupermarketWSImpl.class.getClassLoader();
 	private final String servicePath;
 	private long currentId = 1l;
 
@@ -37,21 +30,19 @@ public abstract class SM implements SMWS {
 		return currentId++;
 	}
 
-	public SM(final String servicePath) throws WSDLException, XmlException,
-			IOException, FrameworkException, InvalidOperationNameException {
+	public SupermarketWSImpl(final String servicePath) throws IOException {
 		this.servicePath = servicePath;
 		register();
 		this.init();
 	}
 
-	private void register() throws WSDLException, XmlException, IOException,
-			FrameworkException, InvalidOperationNameException {
-		registry = new WSClient(getRegistryWsdl());
-		registry.request("add", "Supermarket", getMyWsdl());
+	private void register() throws IOException {
+		registry = WsdlInfo.getPort(getRegistryWsdl(), RegistryWS.class);
+		registry.add("Supermarket",getMyWsdl());
 	}
 
 	private String getMyWsdl() throws MalformedURLException,
-			UnknownHostException {
+	UnknownHostException {
 		final String hostName = getMyHostName();
 		return "http://" + hostName + ":8080/" + servicePath + "?wsdl";
 	}
@@ -66,7 +57,7 @@ public abstract class SM implements SMWS {
 	}
 
 	private String getWsdl(String name) throws FileNotFoundException,
-			IOException {
+	IOException {
 		Properties properties = new Properties();
 		properties.load(loader.getResourceAsStream("config.properties"));
 		return properties.getProperty(name);
@@ -96,36 +87,24 @@ public abstract class SM implements SMWS {
 	@Override
 	@WebMethod
 	public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo) {
-		PurchaseInfo purchaseInfo = new PurchaseInfo();
-
 		try {
+			PurchaseInfo purchaseInfo = new PurchaseInfo();
 			purchaseInfo.setCustomerInfo(customerInfo);
 			purchaseInfo.setProducts(products);
 			purchaseInfo.setValue(10.0);
 			purchaseInfo.setId("" + getListId());
+
 			purchaseInfo.setSellerEndpoint(getMyWsdl());
 
-			WSClient wsShipper = new WSClient(getWsdl("shipper.wsdl"));
-			Item response = wsShipper.request("setDelivery",
-					purchaseInfo.getItem("arg0"));
+			ShipperWS shipperWS = WsdlInfo.getPort(registry.getFirst("Shipper"), ShipperWS.class);
+			shipperWS.setDelivery(purchaseInfo);
+
 			return purchaseInfo;
-		} catch (WSDLException e) {
-			// TODO Auto-generated catch block
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} catch (XmlException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FrameworkException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidOperationNameException e) {
-			// TODO Auto-generated catch block
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 

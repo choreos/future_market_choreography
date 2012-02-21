@@ -11,7 +11,7 @@ import eu.choreos.PurchaseInfo;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface SMWS {
+public interface SupermarketWS {
 
 	@WebMethod
 	public abstract ProductPrice[] getPrices(String[] products);
