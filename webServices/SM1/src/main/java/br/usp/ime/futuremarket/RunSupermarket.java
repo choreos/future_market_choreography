@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 import javax.xml.ws.Endpoint;
 
-public class RunSupermarket1 {
+public class RunSupermarket {
     private static Endpoint endpoint;
 
     static public void start() throws Exception {
-        endpoint = Endpoint.create(new SupermarketImpl1());
+        endpoint = Endpoint.create(new SupermarketImpl());
         endpoint.publish("http://localhost:4321/WS/SM1");
     }
 

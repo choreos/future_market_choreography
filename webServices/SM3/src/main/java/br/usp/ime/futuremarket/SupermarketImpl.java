@@ -4,9 +4,9 @@ import javax.jws.WebService;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
-public class SupermarketImpl3 extends SupermarketImpl {
+public class SupermarketImpl extends AbstractSupermarketImpl {
 
-    public SupermarketImpl3() throws Exception {
+    public SupermarketImpl() throws Exception {
         super(3);
     }
 

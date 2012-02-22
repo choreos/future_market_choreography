@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 
-public abstract class SupermarketImpl implements Supermarket {
+public abstract class AbstractSupermarketImpl implements Supermarket {
 
     protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
     private long currentId = 1l;
@@ -14,7 +14,7 @@ public abstract class SupermarketImpl implements Supermarket {
     private static String WSDL;
     private static Shipper shipper;
 
-    public SupermarketImpl(final int supermarketNumber) {
+    public AbstractSupermarketImpl(final int supermarketNumber) {
         futureMarket = new FutureMarket();
 
         final String relPath = getRelativePath(supermarketNumber);
