@@ -1,12 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.usp.ime.futuremarket</groupId>
-	<artifactId>registry</artifactId>
-	<version>1.0</version>
+	<groupId>eu.choreos</groupId>
+	<artifactId>Registry</artifactId>
+	<version>0.1</version>
 	<packaging>war</packaging>
 
 	<build>
+		<finalName>registry</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -14,7 +15,7 @@
 				<version>2.12</version>
 				<configuration>
 					<excludes>
-						<exclude>br/usp/ime/futuremarket/tests/functional/*.java</exclude>
+						<exclude>eu/choreos/services/tests/functional/*.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
@@ -26,49 +27,22 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
 				<configuration>
-					<warName>registry</warName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>make-a-jar</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-						<configuration>
-							<packaging>jar</packaging>
-							<artifactId>${project.artifactId}</artifactId>
-							<groupId>${project.groupId}</groupId>
-							<version>${project.version}</version>
-							<file>
-								${project.build.directory}/${project.artifactId}-${project.version}.jar
-							</file>
-						</configuration>
-					</execution>
-				</executions>
+			  		<attachClasses>true</attachClasses>
+			    		<classesClassifier>classes</classesClassifier>
+			  	</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
+	<repositories>
+		<repository>
+			<id>ccslrepository</id>
+			<name>ccsl</name>
+			<url>http://valinhos.ime.usp.br:54080/maven/</url>
+		</repository>
+	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -76,11 +50,11 @@
 			<version>4.10</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>jaxws-rt</artifactId>
-			<version>2.2.5</version>
-		</dependency>
-	</dependencies>
+  	<dependency>
+  		<groupId>com.sun.xml.ws</groupId>
+  		<artifactId>jaxws-rt</artifactId>
+  		<version>2.2.5</version>
+  	</dependency>
+  </dependencies>
 
 </project>

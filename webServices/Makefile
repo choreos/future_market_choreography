@@ -14,14 +14,11 @@ customer: pojo registry sm shipper futuremarket
 shipper: registry pojo futuremarket
 	cd Shipper && \
 	mvn clean && \
-	mvn package && \
+	mvn install && \
 	cp -f target/shipper.war $(CATALINA_HOME)/webapps/
 
 registry:
-	cd SMRegistry && \
-	mvn clean && \
-	mvn package && \
-	cp -f target/registry.war $(CATALINA_HOME)/webapps/
+	make -C Registry
 
 sm1: sm FORCE
 	cd SM1 && \
@@ -41,7 +38,7 @@ sm3: sm FORCE
 	mvn package && \
 	cp -f target/supermarket3.war $(CATALINA_HOME)/webapps/
 
-sm: pojo futuremarket shipper
+sm: pojo registry futuremarket shipper
 	cd SM && \
 	mvn clean && \
 	mvn install
@@ -68,3 +65,9 @@ deploy-opencirrus:
 	scp SM2/target/supermarket2.war choreos@198.55.33.5:apache-tomcat-7.0.25/webapps/
 	scp SM3/target/supermarket3.war choreos@198.55.33.6:apache-tomcat-7.0.25/webapps/
 	scp CustomerWS/target/customer.war choreos@198.55.33.7:apache-tomcat-7.0.25/webapps/
+
+clean:
+	rm -rf $(CATALINA_HOME)/webapps/registry.war* \
+	rm -rf $(CATALINA_HOME)/webapps/shipper.war* \
+	rm -rf $(CATALINA_HOME)/webapps/supermarket?.war* \
+	rm -rf $(CATALINA_HOME)/webapps/customer.war*
