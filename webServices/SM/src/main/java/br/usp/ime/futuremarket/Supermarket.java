@@ -11,8 +11,11 @@ public interface Supermarket {
 
     @WebMethod
     public ProductPrice[] getPrices(String[] products);
-    
+
     @WebMethod
     public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo);
-    
+
+    @WebMethod
+    public String getWsdl();
+
 }

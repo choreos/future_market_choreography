@@ -29,6 +29,10 @@ public abstract class SupermarketImpl implements Supermarket {
 
     protected abstract void registerProducts();
 
+    public String getWsdl() {
+        return WSDL;
+    }
+
     private synchronized long getListId() {
         return currentId++;
     }
