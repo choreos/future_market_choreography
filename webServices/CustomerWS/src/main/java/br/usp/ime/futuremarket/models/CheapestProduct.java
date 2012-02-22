@@ -1,4 +1,4 @@
-package eu.choreos.models;
+package br.usp.ime.futuremarket.models;
 
 
 
