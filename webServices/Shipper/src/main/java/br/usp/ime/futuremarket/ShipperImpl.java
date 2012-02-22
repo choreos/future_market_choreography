@@ -10,18 +10,21 @@ import javax.jws.WebService;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
         endpointInterface = "br.usp.ime.futuremarket.Shipper")
-public class ShipperImpl extends FutureMarket implements Shipper {
+public class ShipperImpl implements Shipper {
 
     private static final String REL_PATH = "shipper/shipper";
-    private static final String ROLE = "Shipper";
-
     HashMap<Integer, String> deliveries = new HashMap<Integer, String>();
     private final HashMap<String, DeliveryInfo> deliveryInfoList;
     private long id = 1L;
 
     public ShipperImpl() {
-        super.register(ROLE, REL_PATH);
         deliveryInfoList = new HashMap<String, DeliveryInfo>();
+        register();
+    }
+
+    private void register() {
+        final FutureMarket futureMarket = new FutureMarket();
+        futureMarket.register(FutureMarket.SHIPPER_ROLE, REL_PATH);
     }
 
     @WebMethod
