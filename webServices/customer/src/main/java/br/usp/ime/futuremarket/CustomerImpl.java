@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebMethod;
@@ -19,6 +20,7 @@ public class CustomerImpl implements Customer {
 
     private FutureMarket futureMarket;
     private Shipper shipper;
+    private List<Supermarket> supermarkets;
     // <listID, <supermarket,<product>>>
     private HashMap<String, HashMap<Supermarket, Set<String>>> customerProductLists;
     private long currentList = 1L;
@@ -39,7 +41,7 @@ public class CustomerImpl implements Customer {
     public LowestPrice getLowestPriceForList(String[] products) {
         HashMap<HashMap<String, Double>, Supermarket> supermarketsProductList = new HashMap<HashMap<String, Double>, Supermarket>();
         // gets prices from supermarkets
-        final List<Supermarket> supermarkets = getSupermarkets();
+        supermarkets = getSupermarkets();
 
         for (Supermarket supermarket : supermarkets) {
             ProductPrice[] productPrices = supermarket.getPrices(products);
@@ -102,5 +104,4 @@ public class CustomerImpl implements Customer {
 
         return result.toArray(new PurchaseInfo[1]);
     }
-
 }
