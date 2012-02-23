@@ -94,7 +94,7 @@ public class CustomerImpl implements Customer {
             purchaseInfo = supermarket.purchase(products, customerInfo);
             result.add(purchaseInfo);
         }
-
+        
         return result.toArray(new PurchaseInfo[1]);
     }
 
