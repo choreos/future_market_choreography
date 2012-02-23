@@ -19,12 +19,16 @@ public class FutureMarket {
     private static final String NAMESPACE = "http://futuremarket.ime.usp.br";
 
     private static final String REGISTRY_SERVICE = "RegistryImplService";
+
     public static final String SHIPPER_ROLE = "Shipper";
     public static final String SHIPPER_SERVICE = "ShipperImplService";
 
     public static final String SUPERMARKET_ROLE = "Supermarket";
     public static final String SUPERMARKET_SERVICE = "SupermarketImplService";
-    
+
+    public static final String CUSTOMER_ROLE = "Customer";
+    public static final String CUSTOMER_SERVICE = "CustomerImplService";
+
     public FutureMarket() {
         if (registry == null) {
             registry = getRegistryClient();
