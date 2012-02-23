@@ -13,9 +13,9 @@ public class SupermarketImpl extends AbstractSupermarketImpl {
     protected void registerProducts() {
         priceTable.put("product1", 1.0);
 
-        priceTable.put("product2", 2.0);
+        priceTable.put("product2", 2.6);
 
-        priceTable.put("product3", 3.0);
+        priceTable.put("product3", 3.3);
 
         priceTable.put("product4", 4.0);
 
