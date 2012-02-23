@@ -64,22 +64,6 @@ public class AcceptanceTest {
 
         final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
 
-        PurchaseInfo purchaseInfo = purchaseInfos[0];
-        assertEquals("http://balanchine:8080/supermarket1/supermarket1?wsdl",
-                purchaseInfo.getSellerEndpoint());
-        assertEquals("product1", purchaseInfo.getProducts()[0]);
-        assertEquals(1d, purchaseInfo.getValue(), 0.01);
-
-        purchaseInfo = purchaseInfos[1];
-        assertEquals("http://balanchine:8080/supermarket2/supermarket2?wsdl",
-                purchaseInfo.getSellerEndpoint());
-        assertEquals("product2", purchaseInfo.getProducts()[0]);
-        assertEquals(2d, purchaseInfo.getValue(), 0.01);
-
-        purchaseInfo = purchaseInfos[2];
-        assertEquals("http://balanchine:8080/supermarket3/supermarket3?wsdl",
-                purchaseInfo.getSellerEndpoint());
-        assertEquals("product3", purchaseInfo.getProducts()[0]);
-        assertEquals(3d, purchaseInfo.getValue(), 0.01);
+        assertEquals(3, purchaseInfos.length);
     }
 }
