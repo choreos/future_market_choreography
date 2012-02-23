@@ -17,8 +17,10 @@ shipper: registry pojo futuremarket
 	mvn install && \
 	cp -f target/shipper.war $(CATALINA_HOME)/webapps/
 
-registry:
+registry: FORCE
 	make -C registry
+	@echo "Sleeping 5sec while registry is deployed"
+	sleep 5
 
 supermarket1: supermarket FORCE
 	cd supermarket1 && \
