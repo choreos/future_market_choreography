@@ -12,10 +12,11 @@ import javax.jws.WebService;
 import br.usp.ime.futuremarket.models.LowestPrice;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-endpointInterface = "br.usp.ime.futuremarket.Customer")
+        endpointInterface = "br.usp.ime.futuremarket.Customer")
 public class CustomerImpl implements Customer {
 
-    private List<Supermarket> supermarkets;
+    private static final String REL_PATH = "customer/customer";
+
     private FutureMarket futureMarket;
     private Shipper shipper;
     // <listID, <supermarket,<product>>>
@@ -26,16 +27,20 @@ public class CustomerImpl implements Customer {
         customerProductLists = new HashMap<String, HashMap<Supermarket, Set<String>>>();
 
         futureMarket = new FutureMarket();
-        supermarkets = futureMarket.getClients(FutureMarket.SUPERMARKET_ROLE,
+        futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
+    }
+
+    private List<Supermarket> getSupermarkets() {
+        return futureMarket.getClients(FutureMarket.SUPERMARKET_ROLE,
                 FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
-        shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
-                FutureMarket.SHIPPER_SERVICE, Shipper.class);
     }
 
     @WebMethod
     public LowestPrice getLowestPriceForList(String[] products) {
         HashMap<HashMap<String, Double>, Supermarket> supermarketsProductList = new HashMap<HashMap<String, Double>, Supermarket>();
         // gets prices from supermarkets
+        final List<Supermarket> supermarkets = getSupermarkets();
+
         for (Supermarket supermarket : supermarkets) {
             ProductPrice[] productPrices = supermarket.getPrices(products);
             HashMap<String, Double> productsMap = new HashMap<String, Double>();
@@ -94,7 +99,7 @@ public class CustomerImpl implements Customer {
             purchaseInfo = supermarket.purchase(products, customerInfo);
             result.add(purchaseInfo);
         }
-        
+
         return result.toArray(new PurchaseInfo[1]);
     }
 

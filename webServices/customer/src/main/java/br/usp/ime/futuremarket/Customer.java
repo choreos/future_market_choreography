@@ -13,10 +13,10 @@ public interface Customer {
 
     @WebMethod
     public LowestPrice getLowestPriceForList(String[] products);
-    
+
     @WebMethod
     public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo);
-    
+
     @WebMethod
     public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo);
 
