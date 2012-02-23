@@ -91,7 +91,7 @@ public class CustomerImpl implements Customer {
 
     @WebMethod
     public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo) {
-        HashMap<Supermarket, Set<String>> purchaseLists = customerProductLists.get(listId);
+        Map<Supermarket, Set<String>> purchaseLists = customerProductLists.get(listId);
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
 
         String[] products;
