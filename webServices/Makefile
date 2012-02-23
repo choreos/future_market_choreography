@@ -1,11 +1,11 @@
-all: sm1 sm2 sm3 shipper customer
+all: supermarket1 supermarket2 supermarket3 shipper customer
 
 futuremarket: registry
 	cd futureMarket && \
 	mvn clean && \
 	mvn install
 
-customer: pojo registry sm shipper futuremarket
+customer: pojo registry supermarket shipper futuremarket
 	cd customer && \
 	mvn clean && \
 	mvn package && \
@@ -20,25 +20,25 @@ shipper: registry pojo futuremarket
 registry:
 	make -C registry
 
-sm1: sm FORCE
+supermarket1: supermarket FORCE
 	cd supermarket1 && \
 	mvn clean && \
 	mvn package && \
 	cp -f target/supermarket1.war $(CATALINA_HOME)/webapps/
 
-sm2: sm FORCE
+supermarket2: supermarket FORCE
 	cd supermarket2 && \
 	mvn clean && \
 	mvn package && \
 	cp -f target/supermarket2.war $(CATALINA_HOME)/webapps/
 
-sm3: sm FORCE
+supermarket3: supermarket FORCE
 	cd supermarket3 && \
 	mvn clean && \
 	mvn package && \
 	cp -f target/supermarket3.war $(CATALINA_HOME)/webapps/
 
-sm: pojo registry futuremarket shipper
+supermarket: pojo registry futuremarket shipper
 	cd supermarket && \
 	mvn clean && \
 	mvn install
