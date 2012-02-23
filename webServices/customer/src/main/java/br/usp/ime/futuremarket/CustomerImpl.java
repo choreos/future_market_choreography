@@ -98,8 +98,4 @@ public class CustomerImpl implements Customer {
         return (PurchaseInfo[]) result.toArray();
     }
 
-	@Override
-	public String setDelivery(PurchaseInfo purchaseInfo) {
-		return shipper.setDelivery(purchaseInfo);
-	}
 }

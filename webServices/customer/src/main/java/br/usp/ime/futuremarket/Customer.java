@@ -19,7 +19,5 @@ public interface Customer {
     
     @WebMethod
     public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo);
-    
-    @WebMethod
-    public String setDelivery(PurchaseInfo purchaseInfo);
+
 }
