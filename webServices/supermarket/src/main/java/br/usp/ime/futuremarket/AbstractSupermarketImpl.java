@@ -62,12 +62,22 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         final PurchaseInfo purchaseInfo = new PurchaseInfo();
         purchaseInfo.setCustomerInfo(customerInfo);
         purchaseInfo.setProducts(products);
-        purchaseInfo.setValue(10.0);
+        purchaseInfo.setValue(getTotalPrice(products));
         purchaseInfo.setId("" + getListId());
         purchaseInfo.setSellerEndpoint(WSDL);
 
         shipper.setDelivery(purchaseInfo);
 
         return purchaseInfo;
+    }
+
+    private Double getTotalPrice(String[] products) {
+        Double total = 0d;
+
+        for (String product : products) {
+            total += priceTable.get(product);
+        }
+
+        return total;
     }
 }
