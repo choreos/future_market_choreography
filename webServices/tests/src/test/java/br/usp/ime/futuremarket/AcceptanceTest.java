@@ -66,4 +66,19 @@ public class AcceptanceTest {
 
         assertEquals(3, purchaseInfos.length);
     }
+
+    @Test
+    public void clientShouldBeAbleToGetShipmentData() {
+        final String[] products = { "product1", "product2", "product3" };
+        final LowestPrice list = customer.getLowestPriceForList(products);
+
+        CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setName("JUnit test");
+        customerInfo.setZipcode("01234-567");
+
+        final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
+
+        final DeliveryInfo deliveryInfo = customer.getShipmentData(purchaseInfos[0]);
+        assertEquals("done", deliveryInfo.getStatus());
+    }
 }

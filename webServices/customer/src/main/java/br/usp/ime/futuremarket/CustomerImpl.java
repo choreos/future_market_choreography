@@ -30,6 +30,8 @@ public class CustomerImpl implements Customer {
 
         futureMarket = new FutureMarket();
         futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
+        shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
+                FutureMarket.SHIPPER_SERVICE, Shipper.class);
     }
 
     private List<Supermarket> getSupermarkets() {
