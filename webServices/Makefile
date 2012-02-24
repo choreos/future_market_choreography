@@ -49,6 +49,8 @@ FORCE:
 deploy:
 	make -C registry deploy
 	cp -f shipper/target/shipper.war $(CATALINA_HOME)/webapps/
+	@echo "Sleeping for 10 secs while shipper is deployed
+	sleep 10
 	cp -f supermarket1/target/supermarket1.war $(CATALINA_HOME)/webapps/
 	cp -f supermarket2/target/supermarket2.war $(CATALINA_HOME)/webapps/
 	cp -f supermarket3/target/supermarket3.war $(CATALINA_HOME)/webapps/
