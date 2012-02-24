@@ -1,12 +1,12 @@
-all: registry
+registry: FORCE
+	mvn clean install
 
-registry:
-	mvn clean && \
-	mvn install && \
+deploy:
 	cp -f target/registry.war $(CATALINA_HOME)/webapps/
+	@echo "Sleeping for 10 sec while register is deployed"
+	sleep 10
 
-clean:
-	rm -rf $(CATALINA_HOME)/webapps/registry.war \
+undeploy:
+	rm -rf $(CATALINA_HOME)/webapps/registry.war
 
 FORCE:
-

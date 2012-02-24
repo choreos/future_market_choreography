@@ -1,75 +1,55 @@
 all: supermarket1 supermarket2 supermarket3 shipper customer
+	@echo "==============================================="
+	@echo "=== If you want to deploy, run make deploy. ==="
+	@echo "==============================================="
 
 futuremarket: registry
 	cd futureMarket && \
-	mvn clean && \
-	mvn install
+	mvn clean install
 
 customer: pojo registry supermarket shipper futuremarket
 	cd customer && \
-	mvn clean && \
-	mvn package && \
-	cp -f target/customer.war $(CATALINA_HOME)/webapps/
+	mvn clean install
 
 shipper: registry pojo futuremarket
 	cd shipper && \
-	mvn clean && \
-	mvn install && \
-	cp -f target/shipper.war $(CATALINA_HOME)/webapps/
+	mvn clean install
 
 registry: FORCE
 	make -C registry
-	@echo "Sleeping 5sec while registry is deployed"
-	sleep 5
 
 supermarket1: supermarket FORCE
 	cd supermarket1 && \
-	mvn clean && \
-	mvn package && \
-	cp -f target/supermarket1.war $(CATALINA_HOME)/webapps/
+	mvn clean package
 
 supermarket2: supermarket FORCE
 	cd supermarket2 && \
-	mvn clean && \
-	mvn package && \
-	cp -f target/supermarket2.war $(CATALINA_HOME)/webapps/
+	mvn clean package
 
 supermarket3: supermarket FORCE
 	cd supermarket3 && \
-	mvn clean && \
-	mvn package && \
-	cp -f target/supermarket3.war $(CATALINA_HOME)/webapps/
+	mvn clean package
 
 supermarket: pojo registry futuremarket shipper
 	cd supermarket && \
-	mvn clean && \
-	mvn install
+	mvn clean install
 
 pojo:
 	cd pojos && \
-	mvn clean && \
-	mvn install
+	mvn clean install
 
 undeploy:
-	rm -rf $(CATALINA_HOME)/webapps/registry.war \
+	make -C registry undeploy
 	rm -rf $(CATALINA_HOME)/webapps/shipper.war \
 	rm -rf $(CATALINA_HOME)/webapps/supermarket*.war \
 	rm -rf $(CATALINA_HOME)/webapps/customer.war
 
 FORCE:
 
-deploy-opencirrus:
-	scp registry/target/registry.war choreos@198.55.33.0:apache-tomcat-7.0.25/webapps/
-	@echo "Sleeping while registry is deployed"
-	sleep 10
-	scp shipper/target/shipper.war choreos@198.55.33.3:apache-tomcat-7.0.25/webapps/
-	scp supermarket1/target/supermarket1.war choreos@198.55.33.4:apache-tomcat-7.0.25/webapps/
-	scp supermarket2/target/supermarket2.war choreos@198.55.33.5:apache-tomcat-7.0.25/webapps/
-	scp supermarket3/target/supermarket3.war choreos@198.55.33.6:apache-tomcat-7.0.25/webapps/
-	scp customer/target/customer.war choreos@198.55.33.7:apache-tomcat-7.0.25/webapps/
-
-clean:
-	rm -rf $(CATALINA_HOME)/webapps/registry.war* \
-	rm -rf $(CATALINA_HOME)/webapps/shipper.war* \
-	rm -rf $(CATALINA_HOME)/webapps/supermarket?.war* \
-	rm -rf $(CATALINA_HOME)/webapps/customer.war*
+deploy:
+	make -C registry deploy
+	cp -f shipper/target/shipper.war $(CATALINA_HOME)/webapps/
+	cp -f supermarket1/target/supermarket1.war $(CATALINA_HOME)/webapps/
+	cp -f supermarket2/target/supermarket2.war $(CATALINA_HOME)/webapps/
+	cp -f supermarket3/target/supermarket3.war $(CATALINA_HOME)/webapps/
+	cp -f customer/target/customer.war $(CATALINA_HOME)/webapps/
