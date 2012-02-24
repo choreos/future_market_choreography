@@ -12,31 +12,30 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private static Customer customer = null;
-    private final int threadNumber;
     private static int threadDuration;
-    private BufferedWriter out;
+    private static final String LOG_FILE = "log.txt";
+    private static BufferedWriter out;
 
     public LoadGenerator(final int threadNumber) {
         System.out.println("Thread " + threadNumber + " started.");
-        this.threadNumber = threadNumber;
     }
 
-    private void openLog() {
-        final String filename = "thread" + threadNumber + ".txt";
+    private static BufferedWriter openLog() {
         FileWriter fstream = null;
 
         try {
-            fstream = new FileWriter(filename);
+            fstream = new FileWriter(LOG_FILE);
         } catch (IOException e) {
-            System.err.println("Error while opening " + filename);
+            System.err.println("Error while opening " + LOG_FILE);
             e.printStackTrace();
         }
 
-        out = new BufferedWriter(fstream);
+        return new BufferedWriter(fstream);
     }
 
     public static void main(String[] args) {
         customer = getCustomer();
+        out = openLog();
 
         final int totalThreads = Integer.parseInt(args[0]);
         threadDuration = Integer.parseInt(args[1]);
@@ -45,6 +44,8 @@ public class LoadGenerator implements Runnable {
                 + " seconds:");
 
         runThreads(totalThreads, threadDuration);
+
+        closeLog();
     }
 
     private static void runThreads(final int totalThreads, final int threadDuration) {
@@ -64,7 +65,7 @@ public class LoadGenerator implements Runnable {
         }
     }
 
-    public void closeLog() {
+    private static void closeLog() {
         try {
             out.close();
         } catch (IOException e) {
@@ -79,7 +80,7 @@ public class LoadGenerator implements Runnable {
                 FutureMarket.CUSTOMER_SERVICE, Customer.class);
     }
 
-    public long simulate() {
+    private long simulate() {
         final long start = Calendar.getInstance().getTimeInMillis();
 
         final LowestPrice list = getLowestPriceList();
@@ -92,9 +93,9 @@ public class LoadGenerator implements Runnable {
         return Calendar.getInstance().getTimeInMillis() - start;
     }
 
-    private void logTime(final long duration) {
+    private static synchronized void logTime(final String time, final String duration) {
         try {
-            out.write(Long.toString(duration) + "\n");
+            out.write(time + " " + duration + "\n");
         } catch (IOException e) {
             System.err.println("Error while writing to file");
             e.printStackTrace();
@@ -115,16 +116,14 @@ public class LoadGenerator implements Runnable {
 
     @Override
     public void run() {
-        this.openLog();
-
         final long start = Calendar.getInstance().getTimeInMillis();
 
         long duration;
+        long now;
         while (Calendar.getInstance().getTimeInMillis() - start < threadDuration * 1000) {
+            now = Calendar.getInstance().getTimeInMillis();
             duration = simulate();
-            logTime(duration);
+            logTime(Long.toString(now), Long.toString(duration));
         }
-
-        this.closeLog();
     }
 }
