@@ -41,11 +41,15 @@ public class ShipperImpl implements Shipper {
     }
 
     @WebMethod
-    public DeliveryInfo getDeliveryStatus(PurchaseInfo purchaseInfo) {
-        if (deliveryInfoList.containsKey(purchaseToIdentifier(purchaseInfo))) {
-            return deliveryInfoList.get(purchaseToIdentifier(purchaseInfo));
+    public DeliveryInfo getDeliveryStatus(final PurchaseInfo purchaseInfo) {
+        final String purchaseId = purchaseToIdentifier(purchaseInfo);
+        final DeliveryInfo deliveryInfo = deliveryInfoList.get(purchaseId);
+
+        if (deliveryInfo != null) {
+            deliveryInfoList.remove(purchaseId);
         }
-        return null;
+
+        return deliveryInfo;
     }
 
     @WebMethod
