@@ -18,8 +18,15 @@ public class ShipperImpl implements Shipper {
     private long id = 1L;
 
     public ShipperImpl() {
+        this(true);
+    }
+
+    public ShipperImpl(final boolean useRegistry) {
         deliveryInfoList = new HashMap<String, DeliveryInfo>();
-        register();
+
+        if (useRegistry) {
+            register();
+        }
     }
 
     private void register() {

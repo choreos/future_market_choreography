@@ -13,7 +13,7 @@ public class ShipperTest {
     @Test
     public void shouldDeleteDeliveryStatusAfterRetrieval() {
         final PurchaseInfo purchaseInfo = new PurchaseInfo();
-        final Shipper shipper = new ShipperImpl();
+        final Shipper shipper = new ShipperImpl(false);
 
         shipper.setDelivery(purchaseInfo);
         assertNotNull(shipper.getDeliveryStatus(purchaseInfo));
