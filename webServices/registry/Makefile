@@ -7,6 +7,6 @@ deploy:
 	sleep 10
 
 undeploy:
-	rm -rf $(CATALINA_HOME)/webapps/registry.war
+	rm -rf $(CATALINA_HOME)/webapps/registry*
 
 FORCE:

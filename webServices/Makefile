@@ -40,16 +40,16 @@ pojo:
 
 undeploy:
 	make -C registry undeploy
-	rm -rf $(CATALINA_HOME)/webapps/shipper.war \
-	rm -rf $(CATALINA_HOME)/webapps/supermarket*.war \
-	rm -rf $(CATALINA_HOME)/webapps/customer.war
+	rm -rf $(CATALINA_HOME)/webapps/shipper* \
+	rm -rf $(CATALINA_HOME)/webapps/supermarket* \
+	rm -rf $(CATALINA_HOME)/webapps/customer*
 
 FORCE:
 
 deploy:
 	make -C registry deploy
 	cp -f shipper/target/shipper.war $(CATALINA_HOME)/webapps/
-	@echo "Sleeping for 10 secs while shipper is deployed
+	@echo "Sleeping for 10 sec while shipper is deployed"
 	sleep 10
 	cp -f supermarket1/target/supermarket1.war $(CATALINA_HOME)/webapps/
 	cp -f supermarket2/target/supermarket2.war $(CATALINA_HOME)/webapps/
