@@ -92,18 +92,26 @@ public class CustomerImpl implements Customer {
     }
 
     @WebMethod
-    public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo) {
-        Map<Supermarket, Set<String>> purchaseLists = customerProductLists.get(listId);
+    public PurchaseInfo[] makePurchase(final String listId, final CustomerInfo customerInfo) {
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
+        Map<Supermarket, Set<String>> purchaseLists = customerProductLists.remove(listId);
 
+        if (purchaseLists != null) {
+            buy(customerInfo, result, purchaseLists);
+        }
+
+        return result.toArray(new PurchaseInfo[0]);
+    }
+
+    private void buy(final CustomerInfo customerInfo, final List<PurchaseInfo> result,
+            final Map<Supermarket, Set<String>> purchaseLists) {
         String[] products;
         PurchaseInfo purchaseInfo;
+
         for (Supermarket supermarket : purchaseLists.keySet()) {
             products = purchaseLists.get(supermarket).toArray(new String[1]);
             purchaseInfo = supermarket.purchase(products, customerInfo);
             result.add(purchaseInfo);
         }
-
-        return result.toArray(new PurchaseInfo[1]);
     }
 }

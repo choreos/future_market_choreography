@@ -28,4 +28,23 @@ public class CustomerTest {
 
         assertTrue(purchases.length > 0);
     }
+
+    @Test
+    public void shouldRemoveSupermarketListAfterPurchase() {
+        final FutureMarket futureMarket = new FutureMarket();
+        final Customer customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
+                FutureMarket.CUSTOMER_SERVICE, Customer.class);
+
+        final String[] products = { "product1" };
+        final LowestPrice list = customer.getLowestPriceForList(products);
+
+        final CustomerInfo customerInfo = new CustomerInfo();
+        customerInfo.setName("JUnit test");
+
+        PurchaseInfo[] purchases = customer.makePurchase(list.getId(), customerInfo);
+        assertTrue(purchases.length > 0);
+
+        purchases = customer.makePurchase(list.getId(), customerInfo);
+        assertTrue(purchases.length == 0);
+    }
 }
