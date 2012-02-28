@@ -31,7 +31,7 @@ public class ShipperImpl implements Shipper {
 
     private void register() {
         final FutureMarket futureMarket = new FutureMarket();
-        futureMarket.register(FutureMarket.SHIPPER_ROLE, REL_PATH);
+        futureMarket.register(FutureMarket.SHIPPER_ROLE, "Shipper", REL_PATH);
     }
 
     @WebMethod

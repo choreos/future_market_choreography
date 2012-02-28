@@ -18,9 +18,12 @@ public interface Registry {
     public String getFirst(String role);
 
     @WebMethod
-    public String add(String role, String endpoint);
+    public String add(String role, String name, String endpoint);
 
     @WebMethod
-    public String remove(String role, String endpoint);
+    public String remove(String role, String name);
+    
+    @WebMethod
+    public String getServiceEndpoint(String name);
 
 }

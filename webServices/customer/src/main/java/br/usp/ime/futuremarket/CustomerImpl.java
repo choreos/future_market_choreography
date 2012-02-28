@@ -29,7 +29,7 @@ public class CustomerImpl implements Customer {
         customerProductLists = new HashMap<String, HashMap<Supermarket, Set<String>>>();
 
         futureMarket = new FutureMarket();
-        futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
+        futureMarket.register(FutureMarket.CUSTOMER_ROLE, "Customer", REL_PATH);
         shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
                 FutureMarket.SHIPPER_SERVICE, Shipper.class);
     }

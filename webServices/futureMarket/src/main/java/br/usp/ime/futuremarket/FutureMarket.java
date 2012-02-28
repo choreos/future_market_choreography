@@ -35,10 +35,10 @@ public class FutureMarket {
         }
     }
 
-    protected void register(final String role, final String relativePath) {
+    protected void register(final String role, String name, final String relativePath) {
         final String wsdl = getMyWsdl(relativePath);
 
-        registry.add(role, wsdl);
+        registry.add(role, name, wsdl);
     }
 
     private Registry getRegistryClient() {

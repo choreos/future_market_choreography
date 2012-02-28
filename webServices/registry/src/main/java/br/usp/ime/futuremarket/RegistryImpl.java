@@ -13,9 +13,11 @@ import javax.jws.WebService;
 public class RegistryImpl implements Registry {
 
     private HashMap<String, Set<String>> endpoints;
+    private HashMap<String, String> names;
 
     public RegistryImpl() {
         endpoints = new HashMap<String, Set<String>>();
+        names = new HashMap<String, String>();
     }
 
     @Override
@@ -35,24 +37,38 @@ public class RegistryImpl implements Registry {
     }
 
     @Override
-    public String add(String role, String endpoint) {
+    public String add(String role, String name, String endpoint) {
         if (!endpoints.containsKey(role))
             endpoints.put(role, new HashSet<String>());
         endpoints.get(role).add(endpoint);
+        names.put(name, endpoint);
 
         return "OK";
     }
 
     @Override
-    public String remove(String role, String endpoint) {
-        if (endpoints.containsKey(role)) {
-            Set<String> roleEndpoints = endpoints.get(role);
-            if (roleEndpoints.contains(endpoint)) {
-                roleEndpoints.remove(endpoint);
-                return "OK";
-            } else
-                return "Endpoint not found";
-        } else
-            return "Role not found";
+    public String remove(String role, String name) {
+    	if (names.containsKey(name)){
+    		String endpoint = names.get(name);
+
+    		if (endpoints.containsKey(role)) {
+    			Set<String> roleEndpoints = endpoints.get(role);
+    			if (roleEndpoints.contains(endpoint)) {
+    				roleEndpoints.remove(endpoint);
+    			}
+    		}
+    		
+    		names.remove(name);
+    		return "OK";
+    	} else
+    		return "Endpoint not found";
     }
+
+	@Override
+	public String getServiceEndpoint(String name) {
+		if (names.containsKey(name)){
+			return names.get(name);
+		}
+		return "";
+	}
 }
