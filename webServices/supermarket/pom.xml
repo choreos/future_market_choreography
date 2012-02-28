@@ -4,7 +4,7 @@
 	<artifactId>supermarket</artifactId>
 	<groupId>br.usp.ime.futuremarket</groupId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<dependencies>
 		<dependency>
@@ -25,6 +25,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>supermarket</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
