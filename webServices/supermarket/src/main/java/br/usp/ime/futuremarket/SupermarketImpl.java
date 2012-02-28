@@ -19,8 +19,9 @@ public class SupermarketImpl implements Supermarket {
     private FutureMarket futureMarket;
     private static String WSDL;
     private static Shipper shipper;
+    private String shipperName;
     
-    private static ClassLoader loader = SupermarketImpl.class.getClassLoader();
+    private ClassLoader loader = SupermarketImpl.class.getClassLoader();
     private Properties properties;
     
 
@@ -42,8 +43,9 @@ public class SupermarketImpl implements Supermarket {
         futureMarket.register(FutureMarket.SUPERMARKET_ROLE, "supermarket"+supermarketNumber, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
 
-        shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
-                FutureMarket.SHIPPER_SERVICE, Shipper.class);
+        shipperName = properties.getProperty("shipper.name");
+        if (shipperName == null) shipperName = "Shipper";
+        shipper = futureMarket.getClientByName(shipperName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
 
         this.registerProducts();
     }
@@ -88,6 +90,7 @@ public class SupermarketImpl implements Supermarket {
         purchaseInfo.setValue(getTotalPrice(products));
         purchaseInfo.setId("" + getListId());
         purchaseInfo.setSellerEndpoint(WSDL);
+        purchaseInfo.setShipperName(shipperName);
 
         shipper.setDelivery(purchaseInfo);
 

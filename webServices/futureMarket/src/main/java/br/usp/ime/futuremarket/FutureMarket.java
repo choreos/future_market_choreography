@@ -52,6 +52,13 @@ public class FutureMarket {
 
         return getClient(resultClass, wsdl, serviceName);
     }
+    
+    public <T> T getClientByName(final String name, final String serviceName,
+            final Class<T> resultClass) {
+        final String wsdl = registry.getServiceEndpoint(name);
+
+        return getClient(resultClass, wsdl, serviceName);
+    }
 
     public <T> List<T> getClients(final String role, final String serviceName,
             final Class<T> resultClass) {
