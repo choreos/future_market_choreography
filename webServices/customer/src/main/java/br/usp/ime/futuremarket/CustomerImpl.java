@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -22,11 +24,12 @@ public class CustomerImpl implements Customer {
     private Shipper shipper;
     private List<Supermarket> supermarkets;
     // <listID, <supermarket,<product>>>
-    private HashMap<String, HashMap<Supermarket, Set<String>>> customerProductLists;
-    private long currentList = 1L;
+    private ConcurrentMap<String, ConcurrentMap<Supermarket, Set<String>>> customerProductLists;
+    private long currentList;
 
     public CustomerImpl() {
-        customerProductLists = new HashMap<String, HashMap<Supermarket, Set<String>>>();
+        customerProductLists = new ConcurrentHashMap<String, ConcurrentMap<Supermarket, Set<String>>>();
+        currentList = 0L;
 
         futureMarket = new FutureMarket();
         futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
@@ -55,7 +58,7 @@ public class CustomerImpl implements Customer {
         }
 
         String listId = "" + getListId();
-        customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
+        customerProductLists.put(listId, new ConcurrentHashMap<Supermarket, Set<String>>());
         Double listPrice = 0d;
         // finds lowest prices
         for (String product : products) {
@@ -76,14 +79,22 @@ public class CustomerImpl implements Customer {
     }
 
     private void addProduct(String listId, Supermarket supermarket, String product) {
-        if (customerProductLists.get(listId).get(supermarket) == null) {
-            customerProductLists.get(listId).put(supermarket, new HashSet<String>());
+        final ConcurrentMap<Supermarket, Set<String>> supermarketLists = customerProductLists
+                .get(listId);
+
+        if (supermarketLists.get(supermarket) == null) {
+            supermarketLists.put(supermarket, new HashSet<String>());
         }
-        customerProductLists.get(listId).get(supermarket).add(product);
+
+        supermarketLists.get(supermarket).add(product);
     }
 
-    private synchronized long getListId() {
-        return currentList++;
+    private long getListId() {
+        synchronized (this) {
+            currentList++;
+        }
+
+        return currentList;
     }
 
     @WebMethod
@@ -94,22 +105,24 @@ public class CustomerImpl implements Customer {
     @WebMethod
     public PurchaseInfo[] makePurchase(final String listId, final CustomerInfo customerInfo) {
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
-        Map<Supermarket, Set<String>> purchaseLists = customerProductLists.remove(listId);
+        final Map<Supermarket, Set<String>> purchaseLists = customerProductLists.remove(listId);
 
         if (purchaseLists != null) {
-            buy(customerInfo, result, purchaseLists);
+            buy(customerInfo, purchaseLists, result);
+            purchaseLists.clear();
         }
 
         return result.toArray(new PurchaseInfo[0]);
     }
 
-    private void buy(final CustomerInfo customerInfo, final List<PurchaseInfo> result,
-            final Map<Supermarket, Set<String>> purchaseLists) {
+    private void buy(final CustomerInfo customerInfo,
+            final Map<Supermarket, Set<String>> purchaseLists, final List<PurchaseInfo> result) {
+        final Set<Supermarket> supermarkets = purchaseLists.keySet();
         String[] products;
         PurchaseInfo purchaseInfo;
 
-        for (Supermarket supermarket : purchaseLists.keySet()) {
-            products = purchaseLists.get(supermarket).toArray(new String[1]);
+        for (Supermarket supermarket : supermarkets) {
+            products = purchaseLists.get(supermarket).toArray(new String[0]);
             purchaseInfo = supermarket.purchase(products, customerInfo);
             result.add(purchaseInfo);
         }

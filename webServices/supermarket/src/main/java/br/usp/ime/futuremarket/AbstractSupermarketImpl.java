@@ -8,14 +8,16 @@ import javax.jws.WebMethod;
 
 public abstract class AbstractSupermarketImpl implements Supermarket {
 
-    protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
-    private long currentId = 1l;
+    protected HashMap<String, Double> priceTable;
+    private long currentId;
     private FutureMarket futureMarket;
     private static String WSDL;
     private static Shipper shipper;
 
     public AbstractSupermarketImpl(final int supermarketNumber) {
         futureMarket = new FutureMarket();
+        priceTable = new HashMap<String, Double>();
+        currentId = 0l;
 
         final String relPath = getRelativePath(supermarketNumber);
         futureMarket.register(FutureMarket.SUPERMARKET_ROLE, relPath);
@@ -33,8 +35,12 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         return WSDL;
     }
 
-    private synchronized long getListId() {
-        return currentId++;
+    private long getListId() {
+        synchronized (this) {
+            currentId++;
+        }
+
+        return currentId;
     }
 
     private String getRelativePath(final int supermarketNumber) {

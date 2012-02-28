@@ -14,7 +14,4 @@ public interface Shipper {
 
     @WebMethod
     public DeliveryInfo getDeliveryStatus(PurchaseInfo purchaseInfo);
-
-    @WebMethod
-    public String getDateAndTime(String id);
 }
