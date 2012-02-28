@@ -87,10 +87,17 @@ public class LoadGenerator implements Runnable {
 
         final PurchaseInfo[] purchaseInfos = customer
                 .makePurchase(list.getId(), new CustomerInfo());
+        verifyPurchase(purchaseInfos);
 
         requestShipmentData(purchaseInfos);
 
         return Calendar.getInstance().getTimeInMillis() - start;
+    }
+
+    private void verifyPurchase(PurchaseInfo[] purchaseInfos) {
+        if (purchaseInfos.length != 3) {
+            System.err.println("Purchase test failed!");
+        }
     }
 
     private static synchronized void logTime(final String time, final String duration) {
@@ -103,15 +110,33 @@ public class LoadGenerator implements Runnable {
     }
 
     private void requestShipmentData(final PurchaseInfo[] purchaseInfos) {
+        DeliveryInfo deliveryInfo;
+
         for (PurchaseInfo purchaseInfo : purchaseInfos) {
-            customer.getShipmentData(purchaseInfo);
+            deliveryInfo = customer.getShipmentData(purchaseInfo);
+            verifyDelivery(deliveryInfo);
+        }
+    }
+
+    private void verifyDelivery(final DeliveryInfo deliveryInfo) {
+        if (deliveryInfo == null || !deliveryInfo.getStatus().equals("done")) {
+            System.err.println("Shipment test failed!");
         }
     }
 
     private LowestPrice getLowestPriceList() {
         final String[] products = { "product1", "product2", "product3" };
         final LowestPrice list = customer.getLowestPriceForList(products);
+
+        verifyList(list);
+
         return list;
+    }
+
+    private void verifyList(LowestPrice list) {
+        if (!list.getPrice().equals(6d)) {
+            System.err.println("Price list test failed!");
+        }
     }
 
     @Override
