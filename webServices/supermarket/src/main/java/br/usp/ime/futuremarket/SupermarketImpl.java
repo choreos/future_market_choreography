@@ -1,24 +1,43 @@
 package br.usp.ime.futuremarket;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import javax.jws.WebMethod;
+import javax.jws.WebService;
 
-public abstract class AbstractSupermarketImpl implements Supermarket {
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+endpointInterface = "br.usp.ime.futuremarket.Supermarket")
+public class SupermarketImpl implements Supermarket {
 
     protected HashMap<String, Double> priceTable = new HashMap<String, Double>();
+    protected HashMap<String, Integer> stockItems = new HashMap<String, Integer>();
     private long currentId = 1l;
     private FutureMarket futureMarket;
     private static String WSDL;
     private static Shipper shipper;
+    
+    private static ClassLoader loader = SupermarketImpl.class.getClassLoader();
+    private Properties properties;
+    
 
-    public AbstractSupermarketImpl(final int supermarketNumber) {
+    public SupermarketImpl() {
         futureMarket = new FutureMarket();
+        
+        properties = new Properties();
 
+        try {
+            properties.load(loader.getResourceAsStream("supermarket.properties"));
+        } catch (IOException e) {
+            System.out.println("Could not read resources/supermarket.properties");
+        }
+
+        final String supermarketNumber = properties.getProperty("supermarketNumber");
         final String relPath = getRelativePath(supermarketNumber);
-        futureMarket.register(FutureMarket.SUPERMARKET_ROLE, relPath);
+        futureMarket.register(FutureMarket.SUPERMARKET_ROLE, "supermarket"+supermarketNumber, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
 
         shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
@@ -26,8 +45,6 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
 
         this.registerProducts();
     }
-
-    protected abstract void registerProducts();
 
     public String getWsdl() {
         return WSDL;
@@ -37,7 +54,7 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         return currentId++;
     }
 
-    private String getRelativePath(final int supermarketNumber) {
+    private String getRelativePath(final String supermarketNumber) {
         String path = "supermarket" + supermarketNumber;
         path = path + "/" + path;
 
@@ -79,5 +96,14 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         }
 
         return total;
+    }
+    
+    private void registerProducts(){
+        for(int i=1; i<=10; i++){
+        	// product<i>.price=x
+        	// product<i>.stockItems=y
+        	priceTable.put("product"+i, Double.parseDouble(properties.getProperty("product"+i+".price")));
+        	stockItems.put("product"+i, Integer.parseInt(properties.getProperty("product"+i+".stock")));
+        }
     }
 }
