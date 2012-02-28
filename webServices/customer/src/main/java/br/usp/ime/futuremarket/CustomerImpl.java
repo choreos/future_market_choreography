@@ -29,7 +29,7 @@ public class CustomerImpl implements Customer {
         currentList = 0L;
 
         futureMarket = new FutureMarket();
-        futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
+        futureMarket.register(FutureMarket.CUSTOMER_ROLE, "Customer", REL_PATH);
         shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
                 FutureMarket.SHIPPER_SERVICE, Shipper.class);
     }
