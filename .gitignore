@@ -13,3 +13,4 @@ target/
 # One should use properties template
 *.properties
 *.orig
+*.log
