@@ -7,6 +7,8 @@ public class PurchaseInfo {
     private String id;
 
     private String sellerEndpoint;
+    
+    private String shipperName;
 
     private String[] products;
 
@@ -30,7 +32,15 @@ public class PurchaseInfo {
         this.sellerEndpoint = sellerEndpoint;
     }
 
-    public String[] getProducts() {
+    public String getShipperName() {
+		return shipperName;
+	}
+
+	public void setShipperName(String shipperName) {
+		this.shipperName = shipperName;
+	}
+
+	public String[] getProducts() {
         return products;
     }
 
