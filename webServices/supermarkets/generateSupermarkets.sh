@@ -11,7 +11,6 @@ for sm in `ls --color=never -d */`; do \
 	mvn package; \
 	cd -; \
 	cp ${SMDIR}/target/supermarket.war ./supermarket${i}.war; \
-	cp *.war ${CATALINA_HOME}/webapps/; \
 	cd ..; \
 done;
 

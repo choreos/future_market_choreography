@@ -12,9 +12,6 @@
     <module>registry</module>
     <module>futureMarket</module>
     <module>supermarket</module>
-    <module>supermarket1</module>
-    <module>supermarket2</module>
-    <module>supermarket3</module>
     <module>customer</module>
     <module>shipper</module>
   </modules>  

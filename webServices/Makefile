@@ -1,4 +1,4 @@
-all: supermarket1 supermarket2 supermarket3 shipper customer
+all: customer
 	@echo "==============================================="
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
@@ -18,21 +18,11 @@ shipper: registry pojo futuremarket
 registry: FORCE
 	make -C registry
 
-supermarket1: supermarket FORCE
-	cd supermarket1 && \
-	mvn clean package
-
-supermarket2: supermarket FORCE
-	cd supermarket2 && \
-	mvn clean package
-
-supermarket3: supermarket FORCE
-	cd supermarket3 && \
-	mvn clean package
-
 supermarket: pojo registry futuremarket shipper
 	cd supermarket && \
-	mvn clean install
+	mvn clean install && \
+	cd ../supermarkets && \
+	./generateSupermarkets.sh
 
 pojo:
 	cd pojos && \
@@ -51,7 +41,5 @@ deploy:
 	cp -f shipper/target/shipper.war $(CATALINA_HOME)/webapps/
 	@echo "Sleeping for 10 sec while shipper is deployed"
 	sleep 10
-	cp -f supermarket1/target/supermarket1.war $(CATALINA_HOME)/webapps/
-	cp -f supermarket2/target/supermarket2.war $(CATALINA_HOME)/webapps/
-	cp -f supermarket3/target/supermarket3.war $(CATALINA_HOME)/webapps/
+	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f customer/target/customer.war $(CATALINA_HOME)/webapps/
