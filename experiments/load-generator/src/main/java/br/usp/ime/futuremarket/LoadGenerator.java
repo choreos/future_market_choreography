@@ -70,7 +70,8 @@ public class LoadGenerator implements Runnable {
 
         executor.shutdown();
         try {
-            while (!executor.awaitTermination(threadDuration + 60, TimeUnit.SECONDS));
+            while (!executor.awaitTermination(threadDuration + 60, TimeUnit.SECONDS))
+                ;
         } catch (InterruptedException e) {
             executor.shutdownNow();
         }
@@ -103,6 +104,7 @@ public class LoadGenerator implements Runnable {
 
     private PurchaseInfo[] purchase(final LowestPrice list) {
         final long start = Calendar.getInstance().getTimeInMillis();
+
         final PurchaseInfo[] purchaseInfos = customer
                 .makePurchase(list.getId(), new CustomerInfo());
         final long end = Calendar.getInstance().getTimeInMillis();
