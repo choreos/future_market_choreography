@@ -136,6 +136,7 @@ public class CustomerImpl implements Customer {
         for (Supermarket supermarket : purchaseLists.keySet()) {
             products = purchaseLists.get(supermarket).toArray(new String[1]);
             purchaseInfo = supermarket.purchase(products, customerInfo);
+            shipper.setDelivery(purchaseInfo);
             result.add(purchaseInfo);
         }
     }
