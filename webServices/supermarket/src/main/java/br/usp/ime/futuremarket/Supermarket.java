@@ -1,5 +1,7 @@
 package br.usp.ime.futuremarket;
 
+import java.util.Set;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -10,10 +12,10 @@ import javax.jws.soap.SOAPBinding.Style;
 public interface Supermarket {
 
     @WebMethod
-    public ProductPrice[] getPrices(String[] products);
+    public ProductPrice[] getPrices(Set<ProductQuantity> products);
 
     @WebMethod
-    public PurchaseInfo purchase(String[] products, CustomerInfo customerInfo);
+    public PurchaseInfo purchase(Set<ProductQuantity> products, CustomerInfo customerInfo);
 
     @WebMethod
     public String getWsdl();

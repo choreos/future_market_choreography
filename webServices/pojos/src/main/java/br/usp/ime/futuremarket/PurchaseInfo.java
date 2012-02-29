@@ -1,6 +1,6 @@
 package br.usp.ime.futuremarket;
 
-import java.util.List;
+import java.util.Set;
 
 public class PurchaseInfo {
 
@@ -10,7 +10,7 @@ public class PurchaseInfo {
     
     private String shipperName;
 
-    private String[] products;
+    private Set<ProductQuantity> products;
 
     private Double value;
 
@@ -40,15 +40,11 @@ public class PurchaseInfo {
 		this.shipperName = shipperName;
 	}
 
-	public String[] getProducts() {
+	public Set<ProductQuantity> getProducts() {
         return products;
     }
 
-    public void setProducts(List<String> products) {
-        this.products = products.toArray(new String[1]);
-    }
-
-    public void setProducts(String[] products) {
+    public void setProducts(Set<ProductQuantity> products) {
         this.products = products;
     }
 

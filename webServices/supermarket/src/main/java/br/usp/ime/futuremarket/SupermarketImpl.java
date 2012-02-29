@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -21,16 +22,14 @@ public class SupermarketImpl implements Supermarket {
     private static Shipper shipper;
     private String shipperName;
     
-    private ClassLoader loader = SupermarketImpl.class.getClassLoader();
-    private Properties properties;
-    
+    private ClassLoader loader = SupermarketImpl.class.getClassLoader();   
 
     public SupermarketImpl() {
         futureMarket = new FutureMarket();
         priceTable = new HashMap<String, Double>();
         stockItems = new HashMap<String, Integer>();
         currentId = 0l;
-        properties = new Properties();
+        Properties properties = new Properties();
 
         try {
             properties.load(loader.getResourceAsStream("supermarket.properties"));
@@ -47,7 +46,7 @@ public class SupermarketImpl implements Supermarket {
         if (shipperName == null) shipperName = "Shipper";
         shipper = futureMarket.getClientByName(shipperName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
 
-        this.registerProducts();
+        this.registerProducts(properties);
     }
 
     public String getWsdl() {
@@ -70,12 +69,12 @@ public class SupermarketImpl implements Supermarket {
     }
 
     @WebMethod
-    public ProductPrice[] getPrices(String[] products) {
+    public ProductPrice[] getPrices(Set<ProductQuantity> products) {
         List<ProductPrice> productPriceList = new ArrayList<ProductPrice>();
-        for (String product : products) {
-            Double price = priceTable.get(product);
+        for (ProductQuantity product : products) {
+            Double price = priceTable.get(product.getProduct());
             if (price != null) {
-                productPriceList.add(new ProductPrice(product, price));
+                productPriceList.add(new ProductPrice(product.getProduct(), price));
             }
         }
 
@@ -83,8 +82,11 @@ public class SupermarketImpl implements Supermarket {
     }
 
     @WebMethod
-    public PurchaseInfo purchase(final String[] products, final CustomerInfo customerInfo) {
-        final PurchaseInfo purchaseInfo = new PurchaseInfo();
+    public PurchaseInfo purchase(final Set<ProductQuantity> products, final CustomerInfo customerInfo) {
+        
+    	final PurchaseInfo purchaseInfo = new PurchaseInfo();
+    	
+    	try {
         purchaseInfo.setCustomerInfo(customerInfo);
         purchaseInfo.setProducts(products);
         purchaseInfo.setValue(getTotalPrice(products));
@@ -93,26 +95,35 @@ public class SupermarketImpl implements Supermarket {
         purchaseInfo.setShipperName(shipperName);
 
         shipper.setDelivery(purchaseInfo);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
 
         return purchaseInfo;
     }
 
-    private Double getTotalPrice(String[] products) {
+    private Double getTotalPrice(Set<ProductQuantity> products) {
         Double total = 0d;
 
-        for (String product : products) {
-            total += priceTable.get(product);
+        for (ProductQuantity product : products) {
+            total += priceTable.get(product.getProduct()) * product.getQuantity();
         }
 
         return total;
     }
     
-    private void registerProducts(){
+    private void registerProducts(Properties properties){
+    	System.out.println(getWsdl() + "=============================================");
         for(int i=1; i<=10; i++){
         	// product<i>.price=x
-        	// product<i>.stockItems=y
-        	priceTable.put("product"+i, Double.parseDouble(properties.getProperty("product"+i+".price")));
-        	stockItems.put("product"+i, Integer.parseInt(properties.getProperty("product"+i+".stock")));
+        	// product<i>.stock=y
+        	String product = "product"+i;
+        	Double price = Double.parseDouble(properties.getProperty("product"+i+".price"));
+        	Integer stock = Integer.parseInt(properties.getProperty("product"+i+".stock"));
+        	priceTable.put(product, price);
+        	stockItems.put(product, stock);
+        	
+        	System.out.println(product + " costs " + priceTable.get(product));
         }
     }
 }

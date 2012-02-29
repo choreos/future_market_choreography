@@ -1,5 +1,7 @@
 package br.usp.ime.futuremarket;
 
+import java.util.Set;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -14,7 +16,7 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 public interface Customer {
 
     @WebMethod
-    public LowestPrice getLowestPriceForList(String[] products);
+    public LowestPrice getLowestPriceForList(Set<ProductQuantity> products);
 
     @WebMethod
     public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo);

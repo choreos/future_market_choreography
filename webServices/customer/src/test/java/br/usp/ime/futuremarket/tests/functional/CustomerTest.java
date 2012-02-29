@@ -2,11 +2,15 @@ package br.usp.ime.futuremarket.tests.functional;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 import br.usp.ime.futuremarket.Customer;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.FutureMarket;
+import br.usp.ime.futuremarket.ProductQuantity;
 import br.usp.ime.futuremarket.PurchaseInfo;
 import br.usp.ime.futuremarket.models.LowestPrice;
 
@@ -18,7 +22,9 @@ public class CustomerTest {
         final Customer customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
                 FutureMarket.CUSTOMER_SERVICE, Customer.class);
 
-        final String[] products = { "product1" };
+        final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
+        products.add(new ProductQuantity("product1", 1));
+        
         final LowestPrice list = customer.getLowestPriceForList(products);
 
         final CustomerInfo customerInfo = new CustomerInfo();
@@ -35,7 +41,8 @@ public class CustomerTest {
         final Customer customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
                 FutureMarket.CUSTOMER_SERVICE, Customer.class);
 
-        final String[] products = { "product1" };
+        final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
+        products.add(new ProductQuantity("product1", 1));
         final LowestPrice list = customer.getLowestPriceForList(products);
 
         final CustomerInfo customerInfo = new CustomerInfo();
