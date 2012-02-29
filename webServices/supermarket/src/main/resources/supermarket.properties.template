@@ -1,5 +1,8 @@
+this.name=Supermarket1
+this.role=Supermarket
 shipper.name=Shipper
-supermarketNumber=1
+seller.name=Suplyer1
+
 
 product1.price=1.0
 product1.stock=10

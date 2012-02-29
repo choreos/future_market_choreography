@@ -22,6 +22,9 @@ public class SupermarketImpl implements Supermarket {
     private static Shipper shipper;
     private String shipperName;
     
+    private String serviceName;
+    private String serviceRole;
+    
     private ClassLoader loader = SupermarketImpl.class.getClassLoader();   
 
     public SupermarketImpl() {
@@ -37,9 +40,11 @@ public class SupermarketImpl implements Supermarket {
             System.out.println("Could not read resources/supermarket.properties");
         }
 
-        final String supermarketNumber = properties.getProperty("supermarketNumber");
-        final String relPath = getRelativePath(supermarketNumber);
-        futureMarket.register(FutureMarket.SUPERMARKET_ROLE, "supermarket"+supermarketNumber, relPath);
+        serviceName = properties.getProperty("this.name");
+        serviceRole = properties.getProperty("this.role");
+        
+        final String relPath = getRelativePath();
+        futureMarket.register(serviceRole, serviceName, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
 
         shipperName = properties.getProperty("shipper.name");
@@ -61,9 +66,8 @@ public class SupermarketImpl implements Supermarket {
         return currentId;
     }
 
-    private String getRelativePath(final String supermarketNumber) {
-        String path = "supermarket" + supermarketNumber;
-        path = path + "/" + path;
+    private String getRelativePath() {
+        String path = serviceName + "/endpoint";
 
         return path;
     }
@@ -113,17 +117,12 @@ public class SupermarketImpl implements Supermarket {
     }
     
     private void registerProducts(Properties properties){
-    	System.out.println(getWsdl() + "=============================================");
         for(int i=1; i<=10; i++){
-        	// product<i>.price=x
-        	// product<i>.stock=y
         	String product = "product"+i;
         	Double price = Double.parseDouble(properties.getProperty("product"+i+".price"));
         	Integer stock = Integer.parseInt(properties.getProperty("product"+i+".stock"));
         	priceTable.put(product, price);
         	stockItems.put(product, stock);
-        	
-        	System.out.println(product + " costs " + priceTable.get(product));
         }
     }
 }
