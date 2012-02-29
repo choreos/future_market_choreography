@@ -11,9 +11,10 @@
     <module>pojos</module>
     <module>registry</module>
     <module>futureMarket</module>
+    <module>bank</module>
+    <module>shipper</module>
     <module>supermarket</module>
     <module>customer</module>
-    <module>shipper</module>
   </modules>  
 
   <properties>

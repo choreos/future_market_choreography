@@ -28,6 +28,9 @@ public class FutureMarket {
 
     public static final String CUSTOMER_ROLE = "Customer";
     public static final String CUSTOMER_SERVICE = "CustomerImplService";
+    
+    public static final String BANK_ROLE = "Bank";
+    public static final String BANK_SERVICE = "BankImplService";
 
     public FutureMarket() {
         if (registry == null) {
