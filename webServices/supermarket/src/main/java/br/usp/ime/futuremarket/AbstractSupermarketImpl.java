@@ -12,7 +12,6 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
     private long currentId;
     private FutureMarket futureMarket;
     private static String WSDL;
-    private static Shipper shipper;
 
     public AbstractSupermarketImpl(final int supermarketNumber) {
         futureMarket = new FutureMarket();
@@ -22,9 +21,6 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         final String relPath = getRelativePath(supermarketNumber);
         futureMarket.register(FutureMarket.SUPERMARKET_ROLE, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
-
-        shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
-                FutureMarket.SHIPPER_SERVICE, Shipper.class);
 
         this.registerProducts();
     }
@@ -72,7 +68,6 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         purchaseInfo.setId("" + getListId());
         purchaseInfo.setSellerEndpoint(WSDL);
 
-        shipper.setDelivery(purchaseInfo);
 
         return purchaseInfo;
     }
