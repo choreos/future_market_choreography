@@ -1,8 +1,10 @@
 this.name=Supermarket1
 this.role=Supermarket
 shipper.name=Shipper
-seller.name=Suplyer1
+seller.name=Supplier1
 
+purchase.trigger=3
+purchase.quantity=10
 
 product1.price=1.0
 product1.stock=10

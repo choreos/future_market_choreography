@@ -3,6 +3,7 @@ package br.usp.ime.futuremarket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -24,6 +25,13 @@ public class SupermarketImpl implements Supermarket {
     
     private String serviceName;
     private String serviceRole;
+    private String sellerName;
+    private Supermarket seller;
+    
+    private Integer purchaseTrigger;
+    private Integer purchaseQuantity;
+    
+    private CustomerInfo customerInfo;
     
     private ClassLoader loader = SupermarketImpl.class.getClassLoader();   
 
@@ -43,6 +51,10 @@ public class SupermarketImpl implements Supermarket {
         serviceName = properties.getProperty("this.name");
         serviceRole = properties.getProperty("this.role");
         
+        purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
+        purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
+        
+        
         final String relPath = getRelativePath();
         futureMarket.register(serviceRole, serviceName, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
@@ -50,6 +62,14 @@ public class SupermarketImpl implements Supermarket {
         shipperName = properties.getProperty("shipper.name");
         if (shipperName == null) shipperName = "Shipper";
         shipper = futureMarket.getClientByName(shipperName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
+        
+        sellerName = properties.getProperty("seller.name");
+        
+        customerInfo = new CustomerInfo();
+        customerInfo.setEndpoint(this.getWsdl());
+        customerInfo.setId(serviceName+"ID");
+        customerInfo.setName(serviceName);
+        customerInfo.setZipcode("5555555");
 
         this.registerProducts(properties);
     }
@@ -85,28 +105,70 @@ public class SupermarketImpl implements Supermarket {
         return productPriceList.toArray(new ProductPrice[1]);
     }
 
+    private void printStock() {
+    	for(String  p: stockItems.keySet()) {
+    		System.out.println(p + " - " + stockItems.get(p));
+    	}
+    }
+    
     @WebMethod
     public PurchaseInfo purchase(final Set<ProductQuantity> products, final CustomerInfo customerInfo) {
-        
     	final PurchaseInfo purchaseInfo = new PurchaseInfo();
-    	
     	try {
-        purchaseInfo.setCustomerInfo(customerInfo);
-        purchaseInfo.setProducts(products);
-        purchaseInfo.setValue(getTotalPrice(products));
-        purchaseInfo.setId("" + getListId());
-        purchaseInfo.setSellerEndpoint(WSDL);
-        purchaseInfo.setShipperName(shipperName);
-
-        shipper.setDelivery(purchaseInfo);
+	        purchaseInfo.setCustomerInfo(customerInfo);
+	        purchaseInfo.setProducts(products);
+	        purchaseInfo.setValue(getTotalPrice(products));
+	        purchaseInfo.setId("" + getListId());
+	        purchaseInfo.setSellerEndpoint(WSDL);
+	        purchaseInfo.setShipperName(shipperName);
+	        
+	        if (sellerName != null)
+	        	updateStock(products);
+	        
+	        shipper.setDelivery(purchaseInfo);
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
-
         return purchaseInfo;
     }
 
-    private Double getTotalPrice(Set<ProductQuantity> products) {
+    private void updateStock(Set<ProductQuantity> products) {
+    	Set<ProductQuantity> productsToPurchase = new HashSet<ProductQuantity>();
+
+    	for(ProductQuantity productQuantity:products) {
+    		String product = productQuantity.getProduct();
+    		Integer quantity = productQuantity.getQuantity();
+    		Integer stock = stockItems.get(product);
+    		Integer newStock = stock-quantity;
+    		stockItems.put(product, newStock);
+    		
+    		if (newStock <= purchaseTrigger) {
+    			productsToPurchase.add(new ProductQuantity(product, quantityToPurchase(product)));
+    		}
+    	}
+    	
+    	if (!productsToPurchase.isEmpty()) {
+    		seller = futureMarket.getClientByName(sellerName, FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
+    		seller.purchase(productsToPurchase, customerInfo);
+    	}	
+    	
+    	for(ProductQuantity p: productsToPurchase) {
+    		stockItems.put(p.getProduct(), stockItems.get(p.getProduct()) + p.getQuantity());
+    	}
+		
+	}
+
+	private Integer quantityToPurchase(String product) {
+    	
+    	Integer quantity = purchaseQuantity;
+    	Integer currentStock = stockItems.get(product);
+    	if (quantity + currentStock <=purchaseTrigger)
+    		quantity += purchaseTrigger-currentStock;
+    	
+		return quantity;
+	}
+
+	private Double getTotalPrice(Set<ProductQuantity> products) {
         Double total = 0d;
 
         for (ProductQuantity product : products) {
