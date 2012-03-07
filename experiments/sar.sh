@@ -1,8 +1,11 @@
 #!/bin/bash
 
-DAY=01
-START=00:00:00
-END=23:59:59
+START_TSTAMP=0123456789
+END_TSTAMP=0123456789
+
+DAY=$(date -d @$START_TSTAMP +%d)
+START=$(date -d @$START_TSTAMP +%H:%M:%S)
+END=$(date -d @$END_TSTAMP +%H:%M:%S)
 
 # Received and Transmitted kB/sec
 sar -n DEV -f /var/log/sysstat/sa$DAY -s $START -e $END | grep eth0 | grep -v ^Average | tr -s ' ' | cut -f 1,6,7 -d ' '> net_sar.out
