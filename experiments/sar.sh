@@ -14,4 +14,4 @@ sar -n DEV -f /var/log/sysstat/sa$DAY -s $START -e $END | grep eth0 | grep -v ^A
 sar -f /var/log/sysstat/sa$DAY -s $START -e $END | grep ^[0-9] | grep -v idle | tr -s ' ' | cut -f 1,9 -d ' ' > cpu_sar.out
 
 # Memory usage (used, buffer, cache)
-sar -r -f /var/log/sysstat/sa$DAY -s $START -e $END | grep ^[0-9] | grep -v  kbm | tr -s ' ' | cut -f 1,3,5,6 -d ' ' > mem_sar.out
+sar -r -f /var/log/sysstat/sa$DAY -s $START -e $END | grep ^[0-9] | grep -v  kbm | tr -s ' ' | cut -f 1,4,6,7 -d ' ' > mem_sar.out
