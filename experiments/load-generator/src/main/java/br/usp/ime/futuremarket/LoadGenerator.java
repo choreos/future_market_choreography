@@ -125,7 +125,7 @@ public class LoadGenerator implements Runnable {
     private static synchronized void logTime(final BufferedWriter out, final long start,
             final long end) {
         try {
-            out.write(start + " " + (end - start) + "\n");
+            out.write(end + " " + (end - start) + "\n");
         } catch (IOException e) {
             System.err.println("Error while writing to file");
             e.printStackTrace();
