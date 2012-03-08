@@ -22,6 +22,8 @@ public class LoadGenerator implements Runnable {
     private static BufferedWriter purchase;
     private static BufferedWriter shipment;
 
+    private String listId;
+
     public LoadGenerator(final int threadNumber) {
         System.out.println("Thread " + threadNumber + " started.");
     }
@@ -96,6 +98,7 @@ public class LoadGenerator implements Runnable {
 
     private void simulate() {
         final LowestPrice list = getLowestPriceList();
+        listId = list.getId();
 
         final PurchaseInfo[] purchaseInfos = purchase(list);
 
@@ -122,10 +125,24 @@ public class LoadGenerator implements Runnable {
         }
     }
 
-    private static synchronized void logTime(final BufferedWriter out, final long start,
-            final long end) {
+    private static void logTime(final BufferedWriter out, final long start, final long end,
+            String... extraCols) {
+        String line = end + " " + (end - start);
+
+        for (String column : extraCols) {
+            line = line + " " + column;
+        }
+
+        line = line + "\n";
+
+        write(out, line);
+    }
+
+    private static void write(final BufferedWriter out, String line) {
         try {
-            out.write(end + " " + (end - start) + "\n");
+            synchronized (LoadGenerator.class) {
+                out.write(line + "\n");
+            }
         } catch (IOException e) {
             System.err.println("Error while writing to file");
             e.printStackTrace();
@@ -142,7 +159,7 @@ public class LoadGenerator implements Runnable {
             deliveryInfo = customer.getShipmentData(purchaseInfo);
             end = Calendar.getInstance().getTimeInMillis();
 
-            logTime(shipment, start, end);
+            logTime(shipment, start, end, listId);
 
             verifyDelivery(deliveryInfo);
         }
