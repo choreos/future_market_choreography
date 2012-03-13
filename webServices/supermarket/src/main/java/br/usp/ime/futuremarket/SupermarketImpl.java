@@ -139,7 +139,7 @@ public class SupermarketImpl implements Supermarket {
     		String product = productQuantity.getProduct();
     		Integer quantity = productQuantity.getQuantity();
     		Integer stock = stockItems.get(product);
-    		Integer newStock = stock-quantity;
+    		Integer newStock = stock - quantity;
     		stockItems.put(product, newStock);
     		
     		if (newStock <= purchaseTrigger) {

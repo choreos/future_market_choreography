@@ -2,7 +2,7 @@
 
 SMDIR=../../supermarket
 
-for sm in `ls --color=never -d */`; do \
+for sm in `ls -d */`; do \
 	i=`basename ${sm}`; \
 	cd $i; \
 	cp *.properties ${SMDIR}/src/main/resources/; \
