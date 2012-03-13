@@ -6,7 +6,10 @@ customerorchnet_sarout <- read.table("./customer/orch/net_sar.out",head=FALSE,se
 customerorchcpu_sarout <- read.table("./customer/orch/cpu_sar.out",head=FALSE,sep=" ")
 
 png("customerorchcpu.png")
-plot.ts(customerorchcpu_sarout[,1],customerorchcpu_sarout[,2],xlab="Timestamp",ylab="CPU_usage(%)",main="Orchestration",type="l")
+plot.ts(customerorchcpu_sarout[customerorchcpu_sarout[,2]=0,1],100-customerorchcpu_sarout[customerorchcpu_sarout[,2]=0,2],xlab="Timestamp",ylab="CPU_usage(%)",main="Orchestration",type="l", ylim=c=(0,100))
+lines(customerorchcpu_sarout[customerorchcpu_sarout[,2]=0,1],100-customerorchnet_sarout[customerorchcpu_sarout[,2]=1,3],col="red")
+lines(customerorchcpu_sarout[customerorchcpu_sarout[,2]=0,1],100-customerorchnet_sarout[customerorchcpu_sarout[,2]=2,3],col="blue")
+lines(customerorchcpu_sarout[customerorchcpu_sarout[,2]=0,1],100-customerorchnet_sarout[customerorchcpu_sarout[,2]=3,3],col="green")
 dev.off()
 
 png("customerchorcpu.png")
@@ -27,11 +30,11 @@ dev.off()
 
 
 png("customerchormem.png")
-plot.ts(customerchormem_sarout[,1],customerchormem_sarout[,2]-customerchormem_sarout[,3]-customerchormem_sarout[,4],xlab="Timestamp",ylab="Mem_usage",main="Choreography",type="l")
+plot.ts(customerchormem_sarout[,1],customerchormem_sarout[,2]-customerchormem_sarout[,3]-customerchormem_sarout[,4],xlab="Timestamp",ylab="Mem_usage(kb)",main="Choreography",type="l")
 dev.off()
 
 png("customerorchmem.png")
-plot.ts(customerorchmem_sarout[,1],customerorchmem_sarout[,2]-customerorchmem_sarout[,3]-customerorchmem_sarout[,4],xlab="Timestamp",ylab="Mem_usage",main="Orchestration",type="l")
+plot.ts(customerorchmem_sarout[,1],customerorchmem_sarout[,2]-customerorchmem_sarout[,3]-customerorchmem_sarout[,4],xlab="Timestamp",ylab="Mem_usage(kb)",main="Orchestration",type="l")
 dev.off()
 
 
