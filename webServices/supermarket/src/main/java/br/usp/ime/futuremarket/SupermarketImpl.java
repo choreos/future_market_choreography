@@ -21,8 +21,9 @@ public class SupermarketImpl implements Supermarket {
     private FutureMarket futureMarket;
     private static String WSDL;
     private static Shipper shipper;
+    private static Bank bank;
     private String shipperName;
-    
+    private String bankName;
     private String serviceName;
     private String serviceRole;
     private String sellerName;
@@ -62,6 +63,10 @@ public class SupermarketImpl implements Supermarket {
         shipperName = properties.getProperty("shipper.name");
         if (shipperName == null) shipperName = "Shipper";
         shipper = futureMarket.getClientByName(shipperName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
+        
+        bankName = properties.getProperty("bank.name");
+        if (bankName == null) bankName = "Bank";
+        bank = futureMarket.getClientByName(bankName, FutureMarket.BANK_SERVICE, Bank.class);
         
         sellerName = properties.getProperty("seller.name");
         
@@ -124,7 +129,7 @@ public class SupermarketImpl implements Supermarket {
 	        
 	        if (sellerName != null)
 	        	updateStock(products);
-	        
+	        bank.requestPayment(purchaseInfo, customerInfo);
 	        shipper.setDelivery(purchaseInfo);
     	} catch(Exception e) {
     		e.printStackTrace();

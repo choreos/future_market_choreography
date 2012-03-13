@@ -22,6 +22,11 @@
 			<artifactId>shipper</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>bank</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

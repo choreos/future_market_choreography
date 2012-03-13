@@ -2,8 +2,9 @@ this.name=Supermarket1
 this.role=Supermarket
 shipper.name=Shipper
 seller.name=Supplier1
+bank.name=Bank
 
-purchase.trigger=3
+purchase.quantity.trigger= 3
 purchase.quantity=10
 
 product1.price=1.0
