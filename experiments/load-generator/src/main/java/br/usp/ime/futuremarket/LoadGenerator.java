@@ -12,7 +12,7 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private static Customer customer = null;
-    private static int threadDuration;
+    private static final int THREADS_TIMEOUT = 360;
 
     private static final String LOWEST_PRICE_LOG = "lowest_price.log";
     private static final String PURCHASE_LOG = "purchase.log";
@@ -22,10 +22,26 @@ public class LoadGenerator implements Runnable {
     private static BufferedWriter purchase;
     private static BufferedWriter shipment;
 
+    private static int minSimulationsPerThread;
+    private static int extraSimulationMaxThreadNumber;
+    private int threadSimulations;
+
     private String listId;
 
     public LoadGenerator(final int threadNumber) {
-        System.out.println("Thread " + threadNumber + " started.");
+        if (threadNumber < extraSimulationMaxThreadNumber) {
+            threadSimulations = minSimulationsPerThread + 1;
+        } else {
+            threadSimulations = minSimulationsPerThread;
+        }
+
+        System.out.println("Thread " + threadNumber + " started for " + threadSimulations
+                + " simulations.");
+    }
+
+    private static void calcThreadSimulations(int totalThreads, int simulations) {
+        minSimulationsPerThread = simulations / totalThreads;
+        extraSimulationMaxThreadNumber = simulations % totalThreads;
     }
 
     private static void openLogs() {
@@ -49,30 +65,30 @@ public class LoadGenerator implements Runnable {
 
     public static void main(String[] args) {
         customer = getCustomer();
-        openLogs();
 
         final int totalThreads = Integer.parseInt(args[0]);
-        threadDuration = Integer.parseInt(args[1]);
+        final int simulations = Integer.parseInt(args[1]);
+        calcThreadSimulations(totalThreads, simulations);
 
-        System.out.println(totalThreads + " threads will be created for " + threadDuration
-                + " seconds:");
+        System.out.println(totalThreads + " threads will be created for " + simulations
+                + " simulations:");
 
-        runThreads(totalThreads, threadDuration);
-
+        openLogs();
+        runThreads(totalThreads);
         closeLogs();
     }
 
-    private static void runThreads(final int totalThreads, final int threadDuration) {
+    private static void runThreads(final int totalThreads) {
         ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
 
-        for (int i = 0; i < totalThreads; i++) {
-            Runnable worker = new LoadGenerator(i);
+        for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
+            Runnable worker = new LoadGenerator(threadNumber);
             executor.execute(worker);
         }
 
         executor.shutdown();
         try {
-            while (!executor.awaitTermination(threadDuration + 60, TimeUnit.SECONDS))
+            while (!executor.awaitTermination(THREADS_TIMEOUT, TimeUnit.SECONDS))
                 ;
         } catch (InterruptedException e) {
             executor.shutdownNow();
@@ -132,7 +148,6 @@ public class LoadGenerator implements Runnable {
         for (String column : extraCols) {
             line = line + " " + column;
         }
-
         line = line + "\n";
 
         write(out, line);
@@ -193,9 +208,7 @@ public class LoadGenerator implements Runnable {
 
     @Override
     public void run() {
-        final long start = Calendar.getInstance().getTimeInMillis();
-
-        while (Calendar.getInstance().getTimeInMillis() - start < threadDuration * 1000) {
+        for (int i = 0; i < threadSimulations; i++) {
             simulate();
         }
     }
