@@ -148,12 +148,11 @@ public class LoadGenerator implements Runnable {
         for (String column : extraCols) {
             line = line + " " + column;
         }
-        line = line + "\n";
 
-        write(out, line);
+        writeln(out, line);
     }
 
-    private static void write(final BufferedWriter out, String line) {
+    private static void writeln(final BufferedWriter out, String line) {
         try {
             synchronized (LoadGenerator.class) {
                 out.write(line + "\n");
