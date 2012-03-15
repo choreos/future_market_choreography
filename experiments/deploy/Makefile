@@ -36,10 +36,16 @@ customer: shipper registry
 	scp ../../webServices/customer/target/customer.war choreos@$(CUSTOMER_HOST):/tmp/
 	ssh $(CUSTOMER_HOST) "mv /tmp/customer.war" $(WEBAPPS_DIR)/
 
+tomcat-start:
+	for host in $(ALL_HOSTS); do \
+    echo $$host; \
+		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/startup.sh"; \
+	done
+
 tomcat-shutdown:
 	-for host in $(ALL_HOSTS); do \
     echo $$host; \
-		ssh opencirrus-$$host.hpl.hp.com "sudo $(CATALINA_HOME)/bin/shutdown.sh"; \
+		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/shutdown.sh"; \
 		sleep 2; \
 		killall java; \
 	done
@@ -47,7 +53,7 @@ tomcat-shutdown:
 tomcat-remove:
 	for host in $(ALL_HOSTS); do \
     echo $$host; \
-		ssh opencirrus-$$host.hpl.hp.com "sudo rm -rf $(CATALINA_HOME)"; \
+		ssh opencirrus-$$host.hpl.hp.com "rm -rf $(CATALINA_HOME)"; \
 	done
 
 tomcat-copy:
