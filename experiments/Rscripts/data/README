@@ -1,0 +1,186 @@
+directory structure for the experiment results
+.
+├── chor
+│   ├── sar
+│   │   ├── broker
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── registry
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── shipper
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── sm1
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── sm2
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   └── sm3
+│   │       ├── cpu_sar.out
+│   │       ├── mem_sar.out
+│   │       └── net_sar.out
+│   └── time
+│       ├── 100
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 150
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 200
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 250
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 300
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 350
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 400
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 450
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 50
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 500
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 550
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 600
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 650
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 700
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 750
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       └── 800
+│           ├── lowest_price.log
+│           ├── purchase.log
+│           └── shipment.log
+├── orch
+│   ├── sar
+│   │   ├── broker
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── registry
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── shipper
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── sm1
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   ├── sm2
+│   │   │   ├── cpu_sar.out
+│   │   │   ├── mem_sar.out
+│   │   │   └── net_sar.out
+│   │   └── sm3
+│   │       ├── cpu_sar.out
+│   │       ├── mem_sar.out
+│   │       └── net_sar.out
+│   └── time
+│       ├── 100
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 150
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 200
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 250
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 300
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 350
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 400
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 450
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 50
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 500
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 550
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 600
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 650
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 700
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       ├── 750
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   └── shipment.log
+│       └── 800
+│           ├── lowest_price.log
+│           ├── purchase.log
+│           └── shipment.log
+└── README
+
