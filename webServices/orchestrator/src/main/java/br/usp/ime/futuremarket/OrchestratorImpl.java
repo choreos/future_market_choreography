@@ -14,24 +14,27 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
 endpointInterface = "br.usp.ime.futuremarket.Customer")
-public class CustomerImpl implements Customer {
+public class OrchestratorImpl implements Orchestrator {
 
 	private static final String REL_PATH = "customer/customer";
 
 	private FutureMarket futureMarket;
 	private Shipper shipper;
+	private Bank bank;
 	private List<Supermarket> supermarkets;
 	// <listID, <supermarket,<productquantity>>>
 	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
 	private long currentList;
 
-	public CustomerImpl() {
+	public OrchestratorImpl() {
 		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
 		currentList = 0L;
 		futureMarket = new FutureMarket();
-		futureMarket.register(FutureMarket.CUSTOMER_ROLE, "Customer", REL_PATH);
+		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, "Customer", REL_PATH);
 		shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
 				FutureMarket.SHIPPER_SERVICE, Shipper.class);
+		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
+				FutureMarket.BANK_SERVICE, Bank.class);
 	}
 
 	private List<Supermarket> getSupermarkets() {
@@ -131,5 +134,18 @@ public class CustomerImpl implements Customer {
 			purchaseInfo = supermarket.purchase(purchaseLists.get(supermarket), customerInfo);
 			result.add(purchaseInfo);
 		}
+	}
+
+	@Override
+	public PurchaseInfo[] makeSMPurchase(String name,
+			Set<ProductQuantity> products, CustomerInfo customerInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String requestPayment(PurchaseInfo purchaseInfo,
+			CustomerInfo customerInfo) {
+		return bank.requestPayment(purchaseInfo, customerInfo);
 	}
 }

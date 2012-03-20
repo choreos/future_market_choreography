@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.usp.ime.futuremarket</groupId>
-	<artifactId>customer</artifactId>
+	<artifactId>orchestrator</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
 
@@ -19,7 +19,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warName>customer</warName>
+					<warName>orchestrator</warName>
 				</configuration>
 			</plugin>
 			<plugin>

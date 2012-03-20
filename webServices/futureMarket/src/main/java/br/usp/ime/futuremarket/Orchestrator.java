@@ -13,7 +13,7 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED)
-public interface Customer {
+public interface Orchestrator {
 
     @WebMethod
     public LowestPrice getLowestPriceForList(Set<ProductQuantity> products);
@@ -23,5 +23,11 @@ public interface Customer {
 
     @WebMethod
     public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo);
+    
+    @WebMethod
+    public PurchaseInfo[] makeSMPurchase(String name, Set<ProductQuantity> products, CustomerInfo customerInfo);
+
+    @WebMethod
+	public String requestPayment(PurchaseInfo purchaseInfo, CustomerInfo customerInfo);
 
 }

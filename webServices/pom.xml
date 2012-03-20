@@ -14,7 +14,7 @@
     <module>bank</module>
     <module>shipper</module>
     <module>supermarket</module>
-    <module>customer</module>
+    <module>orchestrator</module>
   </modules>  
 
   <properties>

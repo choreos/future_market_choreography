@@ -26,8 +26,8 @@ public class FutureMarket {
     public static final String SUPERMARKET_ROLE = "Supermarket";
     public static final String SUPERMARKET_SERVICE = "SupermarketImplService";
 
-    public static final String CUSTOMER_ROLE = "Customer";
-    public static final String CUSTOMER_SERVICE = "CustomerImplService";
+    public static final String ORCHESTRATOR_ROLE = "Orchestrator";
+    public static final String ORCHESTRATOR_SERVICE = "OrchestratorImplService";
     
     public static final String BANK_ROLE = "Bank";
     public static final String BANK_SERVICE = "BankImplService";

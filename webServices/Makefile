@@ -1,4 +1,4 @@
-all: customer
+all: orchestrator
 	@echo "==============================================="
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
@@ -7,8 +7,8 @@ futuremarket: registry
 	cd futureMarket && \
 	mvn clean install
 
-customer: supermarket 
-	cd customer && \
+orchestrator: supermarket 
+	cd orchestrator && \
 	mvn clean install
 
 shipper: pojo futuremarket
@@ -39,7 +39,7 @@ undeploy:
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upermarket* \
 	rm -rf $(CATALINA_HOME)/webapps/{m,M}anufacturer* \
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upplier* \
-	rm -rf $(CATALINA_HOME)/webapps/{c,C}ustomer*
+	rm -rf $(CATALINA_HOME)/webapps/{O,o}rchestrator*
 
 FORCE:
 
@@ -52,4 +52,4 @@ deploy:
 	@echo "Sleeping for 7 sec while bank is deployed"
 	sleep 7
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
-	cp -f customer/target/customer.war $(CATALINA_HOME)/webapps/
+	cp -f orchestrator/target/orchestrator.war $(CATALINA_HOME)/webapps/

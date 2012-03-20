@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import br.usp.ime.futuremarket.Customer;
+import br.usp.ime.futuremarket.Orchestrator;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.FutureMarket;
 import br.usp.ime.futuremarket.ProductQuantity;
@@ -19,8 +19,8 @@ public class CustomerTest {
     @Test
     public void shouldBeAbleToMakePurchase() {
         final FutureMarket futureMarket = new FutureMarket();
-        final Customer customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
-                FutureMarket.CUSTOMER_SERVICE, Customer.class);
+        final Orchestrator customer = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE,
+                FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
 
         final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity("product1", 1));
@@ -38,8 +38,8 @@ public class CustomerTest {
     @Test
     public void shouldRemoveSupermarketListAfterPurchase() {
         final FutureMarket futureMarket = new FutureMarket();
-        final Customer customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
-                FutureMarket.CUSTOMER_SERVICE, Customer.class);
+        final Orchestrator customer = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE,
+                FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
 
         final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity("product1", 1));
