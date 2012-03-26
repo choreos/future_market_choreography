@@ -19,5 +19,8 @@ public interface Supermarket {
 
     @WebMethod
     public String getWsdl();
+    
+    @WebMethod
+    public ProductQuantity[] getStock(); 
 
 }

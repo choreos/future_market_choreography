@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -163,13 +165,18 @@ public class SupermarketImpl implements Supermarket {
 		
 	}
 
-	private Integer quantityToPurchase(String product) {
-    	
+    private Integer quantityToPurchase(String product) {
+
     	Integer quantity = purchaseQuantity;
     	Integer currentStock = stockItems.get(product);
-    	if (quantity + currentStock <=purchaseTrigger)
-    		quantity += purchaseTrigger-currentStock;
-    	
+    	if (quantity + currentStock <= purchaseTrigger){
+    		if (currentStock < 0) {
+    			quantity += purchaseTrigger - currentStock;
+    		} else { 
+    			quantity += purchaseTrigger;
+    		}
+    	}
+
 		return quantity;
 	}
 
@@ -192,4 +199,16 @@ public class SupermarketImpl implements Supermarket {
         	stockItems.put(product, stock);
         }
     }
+    
+    public ProductQuantity[] getStock() {
+    	Set<ProductQuantity> result = new HashSet<ProductQuantity>();
+    	Iterator<Map.Entry<String, Integer>> it = this.stockItems.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Integer> pair = it.next();
+            result.add(new ProductQuantity(pair.getKey(), pair.getValue()));
+        }
+    	
+    	return result.toArray(new ProductQuantity[1]);
+    }
+    
 }

@@ -34,10 +34,12 @@ pojo:
 
 undeploy:
 	make -C registry undeploy
-	rm -rf $(CATALINA_HOME)/webapps/shipper* \
-	rm -rf $(CATALINA_HOME)/webapps/bank* \
-	rm -rf $(CATALINA_HOME)/webapps/supermarket* \
-	rm -rf $(CATALINA_HOME)/webapps/customer*
+	rm -rf $(CATALINA_HOME)/webapps/{s,S}hipper* \
+	rm -rf $(CATALINA_HOME)/webapps/{b,B}ank* \
+	rm -rf $(CATALINA_HOME)/webapps/{s,S}upermarket* \
+	rm -rf $(CATALINA_HOME)/webapps/{m,M}anufacturer* \
+	rm -rf $(CATALINA_HOME)/webapps/{s,S}upplier* \
+	rm -rf $(CATALINA_HOME)/webapps/{c,C}ustomer*
 
 FORCE:
 
