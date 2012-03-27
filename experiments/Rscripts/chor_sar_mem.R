@@ -5,7 +5,7 @@ roles = c("chor_broker","chor_registry","chor_shipper","chor_sm1","chor_sm2","ch
 png("png/chor_sar_mem%d.png")
 for (i in 1:length(chor_mem)) {
  frame <- chor_mem[[i]]
- plot.ts(frame[,1],frame[,2]-frame[,3]-frame[,4],xlab="Timestamp",ylab="Mem_usage(kb)",main="Choreography",type="l")
+ plot.ts(frame[,1],frame[,2]-frame[,3]-frame[,4],xlab="Timestamp",ylab="Mem_usage(kb)",main=roles[i],type="l")
 }
 dev.off()
 
