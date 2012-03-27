@@ -13,10 +13,10 @@ import javax.jws.WebService;
 import br.usp.ime.futuremarket.models.LowestPrice;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-endpointInterface = "br.usp.ime.futuremarket.Customer")
+endpointInterface = "br.usp.ime.futuremarket.Orchestrator")
 public class OrchestratorImpl implements Orchestrator {
 
-	private static final String REL_PATH = "customer/customer";
+	private static final String REL_PATH = "orchestrator/orchestrator";
 
 	private FutureMarket futureMarket;
 	private Shipper shipper;
@@ -30,7 +30,7 @@ public class OrchestratorImpl implements Orchestrator {
 		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
 		currentList = 0L;
 		futureMarket = new FutureMarket();
-		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, "Customer", REL_PATH);
+		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, "Orchestrator", REL_PATH);
 		shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
 				FutureMarket.SHIPPER_SERVICE, Shipper.class);
 		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
@@ -139,8 +139,19 @@ public class OrchestratorImpl implements Orchestrator {
 	@Override
 	public PurchaseInfo[] makeSMPurchase(String name,
 			Set<ProductQuantity> products, CustomerInfo customerInfo) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
+		Map<Supermarket, Set<ProductQuantity>> purchaseLists = new HashMap<Supermarket, Set<ProductQuantity>>();
+		
+		Supermarket sm = futureMarket.getClientByName(name, FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
+		purchaseLists.put(sm, products);
+
+		if (purchaseLists != null) {
+			buy(customerInfo, result, purchaseLists);
+			purchaseLists.clear();
+		}
+
+		return result.toArray(new PurchaseInfo[0]);
 	}
 
 	@Override
