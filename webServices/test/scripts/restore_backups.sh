@@ -10,8 +10,8 @@ FUTUREDIR=${BASEDIR}/../../futureMarket
 echo "restore supermarkets"
 if [ -d "${SMSDIR}" ]
 then
-    rm -rf ${SMSDIR} \
-    cp -r ${BACKUPDIR}/supermarkets ${SMSDIR}
+    find $SMSDIR -depth 1 -not -name \*.sh -exec rm -rf {} \;
+    find $BACKUPDIR/supermarkets -depth 1 -not -name \*.sh -exec cp -r {} $SMSDIR \;
 fi
 
 echo "restore futureMarket config"
