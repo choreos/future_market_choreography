@@ -1,10 +1,10 @@
-REGISTRY_HOST=opencirrus-07901.hpl.hp.com
+REGISTRY_HOST=opencirrus-07912.hpl.hp.com
 SHIPPER_HOST=opencirrus-07904.hpl.hp.com
 SM1_HOST=opencirrus-07905.hpl.hp.com
 SM2_HOST=opencirrus-07906.hpl.hp.com
 SM3_HOST=opencirrus-07907.hpl.hp.com
 CUSTOMER_HOST=opencirrus-07908.hpl.hp.com
-ALL_HOSTS=07901 07904 07905 07906 07907 07908
+ALL_HOSTS=07912 07904 07905 07906 07907 07908
 
 CATALINA_HOME=/home/choreos/apache-tomcat-7.0.25
 WEBAPPS_DIR=$(CATALINA_HOME)/webapps
