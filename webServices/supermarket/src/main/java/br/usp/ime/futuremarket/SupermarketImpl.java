@@ -156,8 +156,9 @@ public class SupermarketImpl implements Supermarket {
     	
     	if (!productsToPurchase.isEmpty()) {
     		seller = futureMarket.getClientByName(sellerName, FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
-    		seller.purchase(productsToPurchase, customerInfo);
-    	}	
+    		PurchaseInfo purchaseInfo = seller.purchase(productsToPurchase, customerInfo);
+    		shipper.getDeliveryStatus(purchaseInfo);
+    	}
     	
     	for(ProductQuantity p: productsToPurchase) {
     		stockItems.put(p.getProduct(), stockItems.get(p.getProduct()) + p.getQuantity());
