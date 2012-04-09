@@ -132,6 +132,8 @@ public class OrchestratorImpl implements Orchestrator {
             }
             System.out.println("productQuantities: " + productQuantities);*/
 			purchaseInfo = supermarket.purchase(purchaseLists.get(supermarket), customerInfo);
+			shipper.setDelivery(purchaseInfo);
+			bank.requestPayment(purchaseInfo, customerInfo);
 			result.add(purchaseInfo);
 		}
 	}

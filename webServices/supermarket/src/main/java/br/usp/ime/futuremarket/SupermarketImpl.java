@@ -22,8 +22,6 @@ public class SupermarketImpl implements Supermarket {
     private long currentId;
     private FutureMarket futureMarket;
     private static String WSDL;
-    private static Shipper shipper;
-    private static Bank bank;
     private static Orchestrator orchestrator;
     private String shipperName;
     private String bankName;
@@ -62,14 +60,6 @@ public class SupermarketImpl implements Supermarket {
         futureMarket.register(serviceRole, serviceName, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
 
-        shipperName = properties.getProperty("shipper.name");
-        if (shipperName == null) shipperName = "Shipper";
-        shipper = futureMarket.getClientByName(shipperName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
-        
-        bankName = properties.getProperty("bank.name");
-        if (bankName == null) bankName = "Bank";
-        bank = futureMarket.getClientByName(bankName, FutureMarket.BANK_SERVICE, Bank.class);
-        
 		orchestrator = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE, 
 				FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
         
@@ -135,7 +125,6 @@ public class SupermarketImpl implements Supermarket {
 	        if (sellerName != null)
 	        	updateStock(products);
 	        orchestrator.requestPayment(purchaseInfo, customerInfo);
-	        shipper.setDelivery(purchaseInfo);
     	} catch(Exception e) {
     		e.printStackTrace();
     	}

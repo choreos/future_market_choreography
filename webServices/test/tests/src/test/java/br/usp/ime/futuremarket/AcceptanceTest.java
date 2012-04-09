@@ -11,7 +11,7 @@ import org.junit.Test;
 import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class AcceptanceTest {
-    private static Customer customer;
+    private static Orchestrator orchestrator;
     private LowestPrice list;
 	private static Set<ProductQuantity> products;
 	private static FutureMarket futureMarket;
@@ -35,9 +35,9 @@ public class AcceptanceTest {
     @BeforeClass
     public static void createClients() {
         futureMarket = new FutureMarket();
-        customer = futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
+        orchestrator = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE,
 
-        FutureMarket.CUSTOMER_SERVICE, Customer.class);
+        FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class AcceptanceTest {
     public void product1LowestPriceShouldBe1() {
     	products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity(PRODUCT1,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
 
         assertEquals(1.0d, list.getPrice(), 0.01d);
     }
@@ -55,7 +55,7 @@ public class AcceptanceTest {
     public void product2LowestPriceShouldBe10() {
     	products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity(PRODUCT2,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
 
         assertEquals(1.0d, list.getPrice(), 0.01d);
     }
@@ -65,7 +65,7 @@ public class AcceptanceTest {
     public void product3LowestPriceShouldBe1() {
     	products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity(PRODUCT3,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
 
         assertEquals(1.0d, list.getPrice(), 0.01d);
     }
@@ -77,7 +77,7 @@ public class AcceptanceTest {
     	products.add(new ProductQuantity(PRODUCT3,1));
     	products.add(new ProductQuantity(PRODUCT2,1));
     	products.add(new ProductQuantity(PRODUCT1,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
         
         assertEquals(1d+1d+1d, list.getPrice(),0.01d);
     }
@@ -88,9 +88,9 @@ public class AcceptanceTest {
     	products.add(new ProductQuantity(PRODUCT3,1));
     	products.add(new ProductQuantity(PRODUCT2,1));
     	products.add(new ProductQuantity(PRODUCT1,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
         
-        final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
+        final PurchaseInfo[] purchaseInfos = orchestrator.makePurchase(list.getId(), customerInfo);
         assertEquals(1, purchaseInfos.length);
     }
 
@@ -98,8 +98,8 @@ public class AcceptanceTest {
     public void supermarketShouldBeAbleToRenewStock(){
     	products = new HashSet<ProductQuantity>();
     	products.add(new ProductQuantity(PRODUCT1,200));
-    	list = customer.getLowestPriceForList(products);
-    	final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
+    	list = orchestrator.getLowestPriceForList(products);
+    	final PurchaseInfo[] purchaseInfos = orchestrator.makePurchase(list.getId(), customerInfo);
     	assertEquals(1, purchaseInfos.length);
     }	
     
@@ -109,10 +109,10 @@ public class AcceptanceTest {
     	products.add(new ProductQuantity(PRODUCT3,1));
     	products.add(new ProductQuantity(PRODUCT2,1));
     	products.add(new ProductQuantity(PRODUCT1,1));
-        list = customer.getLowestPriceForList(products);
+        list = orchestrator.getLowestPriceForList(products);
         
-        final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
-        final DeliveryInfo deliveryInfo = customer.getShipmentData(purchaseInfos[0]);        
+        final PurchaseInfo[] purchaseInfos = orchestrator.makePurchase(list.getId(), customerInfo);
+        final DeliveryInfo deliveryInfo = orchestrator.getShipmentData(purchaseInfos[0]);        
         assertEquals("done", deliveryInfo.getStatus());
     }
     
