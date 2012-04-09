@@ -124,7 +124,6 @@ public class SupermarketImpl implements Supermarket {
 	        
 	        if (sellerName != null)
 	        	updateStock(products);
-	        orchestrator.requestPayment(purchaseInfo, customerInfo);
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -147,7 +146,10 @@ public class SupermarketImpl implements Supermarket {
     	}
     	
     	if (!productsToPurchase.isEmpty()) {
-    		orchestrator.makeSMPurchase(sellerName, productsToPurchase, customerInfo);
+    		PurchaseInfo[] purchaseInfoList = orchestrator.makeSMPurchase(sellerName, productsToPurchase, customerInfo);
+    		for(PurchaseInfo purchaseInfo: purchaseInfoList){
+    			orchestrator.getShipmentData(purchaseInfo);
+    		}
     	}	
     	
     	for(ProductQuantity p: productsToPurchase) {
