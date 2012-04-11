@@ -36,11 +36,7 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
     }
 
     private long getListId() {
-        synchronized (this) {
-            currentId++;
-        }
-
-        return currentId;
+    	return Math.round(Math.random() * Math.pow(2, 64));
     }
 
     private String getRelativePath(final int supermarketNumber) {

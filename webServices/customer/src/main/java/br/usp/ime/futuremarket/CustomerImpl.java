@@ -65,9 +65,7 @@ public class CustomerImpl implements Customer {
     }
 
     private void initializeMap(String listId) {
-        synchronized (this) {
             customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
-        }
     }
 
     private double getProductPrice(String product, ProductPrice[] productPrices) {
@@ -94,16 +92,14 @@ public class CustomerImpl implements Customer {
     }
 
     private void addProduct(String listId, Supermarket supermarket, String product) {
-        synchronized (this) {
             if (customerProductLists.get(listId).get(supermarket) == null) {
                 customerProductLists.get(listId).put(supermarket, new HashSet<String>());
             }
             customerProductLists.get(listId).get(supermarket).add(product);
-        }
     }
 
-    private synchronized long getListId() {
-        return currentList++;
+    private long getListId() {
+    	return Math.round(Math.random() * Math.pow(2, 64));
     }
 
     @WebMethod
@@ -116,9 +112,7 @@ public class CustomerImpl implements Customer {
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
         Map<Supermarket, Set<String>> purchaseLists = null;
 
-        synchronized (this) {
-            purchaseLists = customerProductLists.remove(listId);
-        }
+        purchaseLists = customerProductLists.remove(listId);
 
         if (purchaseLists != null) {
             buy(customerInfo, result, purchaseLists);

@@ -47,11 +47,7 @@ public class ShipperImpl implements Shipper {
     }
 
     private long getDeliveryId() {
-        synchronized (this) {
-            deliveryId++;
-        }
-
-        return deliveryId;
+    	return Math.round(Math.random() * Math.pow(2, 64));
     }
 
     @WebMethod
