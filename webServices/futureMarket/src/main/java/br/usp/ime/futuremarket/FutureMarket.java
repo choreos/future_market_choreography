@@ -6,13 +6,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 public class FutureMarket {
+	private static HashMap<Thread, Random> randomMap = new HashMap<Thread, Random>();
+	
     private static Registry registry;
     static final ClassLoader loader = FutureMarket.class.getClassLoader();
 
@@ -112,5 +117,9 @@ public class FutureMarket {
         }
 
         return addr.getCanonicalHostName();
+    }
+    
+    public static double nextID(Thread threadId) {
+    	return Math.random() * Math.pow(2, 64);
     }
 }

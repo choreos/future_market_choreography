@@ -42,7 +42,7 @@ public class CustomerImpl implements Customer {
     @WebMethod
     public LowestPrice getLowestPriceForList(String[] products) {
         Map<Supermarket, ProductPrice[]> supermarketsPrices = getSupermarketsPrices(products);
-        final String listId = Long.toString(getListId());
+        final String listId = Double.toString(getListId());
         initializeMap(listId);
 
         double cheapestPrice, price, totalPrice = 0;
@@ -65,7 +65,7 @@ public class CustomerImpl implements Customer {
     }
 
     private void initializeMap(String listId) {
-            customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
+    		customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
     }
 
     private double getProductPrice(String product, ProductPrice[] productPrices) {
@@ -92,14 +92,15 @@ public class CustomerImpl implements Customer {
     }
 
     private void addProduct(String listId, Supermarket supermarket, String product) {
-            if (customerProductLists.get(listId).get(supermarket) == null) {
-                customerProductLists.get(listId).put(supermarket, new HashSet<String>());
-            }
+    		if (customerProductLists.get(listId).get(supermarket) == null) {
+    			customerProductLists.get(listId).put(supermarket, new HashSet<String>());
+			
+		}
             customerProductLists.get(listId).get(supermarket).add(product);
     }
 
-    private long getListId() {
-    	return Math.round(Math.random() * Math.pow(2, 64));
+    private double getListId() {
+    	return FutureMarket.nextID(Thread.currentThread());
     }
 
     @WebMethod
@@ -112,7 +113,7 @@ public class CustomerImpl implements Customer {
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
         Map<Supermarket, Set<String>> purchaseLists = null;
 
-        purchaseLists = customerProductLists.remove(listId);
+        	purchaseLists = customerProductLists.remove(listId);
 
         if (purchaseLists != null) {
             buy(customerInfo, result, purchaseLists);

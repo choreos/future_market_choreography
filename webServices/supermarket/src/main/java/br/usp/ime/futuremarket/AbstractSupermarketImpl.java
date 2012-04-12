@@ -1,6 +1,7 @@
 package br.usp.ime.futuremarket;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,8 +14,12 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
     private FutureMarket futureMarket;
     private static String WSDL;
     private static Shipper shipper;
+    
+    private int smNumber;
 
     public AbstractSupermarketImpl(final int supermarketNumber) {
+    	smNumber = supermarketNumber;
+    	
         futureMarket = new FutureMarket();
         priceTable = new HashMap<String, Double>();
         currentId = 0l;
@@ -35,8 +40,8 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         return WSDL;
     }
 
-    private long getListId() {
-    	return Math.round(Math.random() * Math.pow(2, 64));
+    private double getListId() {
+    	return FutureMarket.nextID(Thread.currentThread());
     }
 
     private String getRelativePath(final int supermarketNumber) {
