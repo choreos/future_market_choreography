@@ -24,7 +24,6 @@ public class SupermarketImpl implements Supermarket {
     private static String WSDL;
     private static Orchestrator orchestrator;
     private String shipperName;
-    private String bankName;
     private String serviceName;
     private String serviceRole;
     private String sellerName;
@@ -51,7 +50,7 @@ public class SupermarketImpl implements Supermarket {
 
         serviceName = properties.getProperty("this.name");
         serviceRole = properties.getProperty("this.role");
-        
+        shipperName = properties.getProperty("shipper.name");
         purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
         

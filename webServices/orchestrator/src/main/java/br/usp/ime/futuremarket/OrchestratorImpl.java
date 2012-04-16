@@ -19,7 +19,6 @@ public class OrchestratorImpl implements Orchestrator {
 	private static final String REL_PATH = "orchestrator/orchestrator";
 
 	private FutureMarket futureMarket;
-	private Shipper shipper;
 	private Bank bank;
 	private List<Supermarket> supermarkets;
 	// <listID, <supermarket,<productquantity>>>
@@ -31,8 +30,6 @@ public class OrchestratorImpl implements Orchestrator {
 		currentList = 0L;
 		futureMarket = new FutureMarket();
 		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, "Orchestrator", REL_PATH);
-		shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
-				FutureMarket.SHIPPER_SERVICE, Shipper.class);
 		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
 				FutureMarket.BANK_SERVICE, Bank.class);
 	}
@@ -99,6 +96,8 @@ public class OrchestratorImpl implements Orchestrator {
 
 	@WebMethod
 	public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo) {
+		Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(),
+		FutureMarket.SHIPPER_SERVICE, Shipper.class);
 		return shipper.getDeliveryStatus(purchaseInfo);
 	}
 
@@ -132,6 +131,7 @@ public class OrchestratorImpl implements Orchestrator {
             }
             System.out.println("productQuantities: " + productQuantities);*/
 			purchaseInfo = supermarket.purchase(purchaseLists.get(supermarket), customerInfo);
+			Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(), FutureMarket.SHIPPER_SERVICE, Shipper.class);
 			shipper.setDelivery(purchaseInfo);
 			bank.requestPayment(purchaseInfo, customerInfo);
 			result.add(purchaseInfo);
