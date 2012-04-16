@@ -19,7 +19,6 @@ public class CustomerImpl implements Customer {
 	private static final String REL_PATH = "customer/customer";
 
 	private FutureMarket futureMarket;
-	private Shipper shipper;
 	private List<Supermarket> supermarkets;
 	// <listID, <supermarket,<productquantity>>>
 	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
@@ -30,8 +29,6 @@ public class CustomerImpl implements Customer {
 		currentList = 0L;
 		futureMarket = new FutureMarket();
 		futureMarket.register(FutureMarket.CUSTOMER_ROLE, "Customer", REL_PATH);
-		shipper = futureMarket.getFirstClient(FutureMarket.SHIPPER_ROLE,
-				FutureMarket.SHIPPER_SERVICE, Shipper.class);
 	}
 
 	private List<Supermarket> getSupermarkets() {
@@ -96,6 +93,8 @@ public class CustomerImpl implements Customer {
 
 	@WebMethod
 	public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo) {
+		Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(),
+				FutureMarket.SHIPPER_SERVICE, Shipper.class);
 		return shipper.getDeliveryStatus(purchaseInfo);
 	}
 

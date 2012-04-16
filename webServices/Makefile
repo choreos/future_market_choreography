@@ -13,7 +13,9 @@ customer: supermarket
 
 shipper: pojo futuremarket
 	cd shipper && \
-	mvn clean install
+	mvn clean install && \
+	cd ../shippers && \
+	./generateShippers.sh
 
 bank: pojo futuremarket
 	cd bank && \
@@ -45,7 +47,7 @@ FORCE:
 
 deploy:
 	make -C registry deploy
-	cp -f shipper/target/shipper.war $(CATALINA_HOME)/webapps/
+	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
 	@echo "Sleeping for 7 sec while shipper is deployed"
 	sleep 7
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
