@@ -18,7 +18,7 @@ Inc.//DTD Web Application 2.3//EN"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Shipper</servlet-name>
-		<url-pattern>/shipper</url-pattern>
+		<url-pattern>/endpoint</url-pattern>
 	</servlet-mapping>
 	<session-config>
 		<session-timeout>120</session-timeout>
