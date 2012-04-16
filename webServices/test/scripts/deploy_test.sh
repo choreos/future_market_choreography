@@ -2,6 +2,7 @@
 
 BASEDIR=`pwd`
 SMSDIR=${BASEDIR}/../../supermarkets
+SHIPPERSDIR=${BASEDIR}/../../shippers
 BACKUPDIR=${BASEDIR}/backup
 FUTUREDIR=${BASEDIR}/../../futureMarket
 
@@ -29,7 +30,11 @@ then
 	then
 	    find $SMSDIR -depth 1 -not -name \*.sh -exec cp -r {} $BACKUPDIR/supermarkets/ \; 
     fi
-
+    echo "backup shippers"
+    if [ -d "${SHIPPERSDIR}" ]
+	then
+	    find $SHIPPERSDIR -depth 1 -not -name \*.sh -exec cp -r {} $BACKUPDIR/shippers/ \;
+    fi
     echo "backup futureMarket config"
     #futuremarket config backup
     if [ -f "${FUTUREDIR}/src/main/resources/config.properties" ]
@@ -44,6 +49,10 @@ case $TESTCASE in
     #copy supermarkets dir
     find $SMSDIR -depth 1 -not -name \*.sh | xargs rm -rf 
     cp -r ${BASEDIR}/$TESTCASE/supermarkets/* ${SMSDIR}
+
+    #copy shippers dir
+        find $SHIPPERSDIR -depth 1 -not -name \*.sh | xargs rm -rf 
+    cp -r ${BASEDIR}/$TESTCASE/shippers/* ${SHIPPERSDIR}
 
     #copy futuremarket config
     cp ${BASEDIR}/$TESTCASE/config.properties ${FUTUREDIR}/src/main/resources/
