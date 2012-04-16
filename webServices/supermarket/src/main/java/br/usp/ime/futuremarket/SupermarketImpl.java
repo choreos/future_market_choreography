@@ -157,7 +157,9 @@ public class SupermarketImpl implements Supermarket {
     	if (!productsToPurchase.isEmpty()) {
     		seller = futureMarket.getClientByName(sellerName, FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
     		PurchaseInfo purchaseInfo = seller.purchase(productsToPurchase, customerInfo);
-    		shipper.getDeliveryStatus(purchaseInfo);
+    		String shipperPurchaseName = purchaseInfo.getShipperName();
+    		Shipper shipperPurchase = futureMarket.getClientByName(shipperPurchaseName, FutureMarket.SHIPPER_SERVICE, Shipper.class);
+    		shipperPurchase.getDeliveryStatus(purchaseInfo);
     	}
     	
     	for(ProductQuantity p: productsToPurchase) {
@@ -200,7 +202,7 @@ public class SupermarketImpl implements Supermarket {
         	stockItems.put(product, stock);
         }
     }
-    
+
     public ProductQuantity[] getStock() {
     	Set<ProductQuantity> result = new HashSet<ProductQuantity>();
     	Iterator<Map.Entry<String, Integer>> it = this.stockItems.entrySet().iterator();
