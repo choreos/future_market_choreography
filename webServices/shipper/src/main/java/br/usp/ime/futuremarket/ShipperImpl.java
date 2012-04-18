@@ -37,7 +37,7 @@ public class ShipperImpl implements Shipper {
     public String setDelivery(final PurchaseInfo purchaseInfo) {
         final DeliveryInfo deliveryInfo = new DeliveryInfo();
         deliveryInfo.setPurchase(purchaseInfo);
-        deliveryInfo.setId(Double.toString(getDeliveryId()));
+        deliveryInfo.setId("" + getDeliveryId());
         deliveryInfo.setDate(new Date().toString());
         deliveryInfo.setStatus("done");
 
@@ -46,8 +46,8 @@ public class ShipperImpl implements Shipper {
         return "OK";
     }
 
-    private double getDeliveryId() {
-    	return FutureMarket.nextID(Thread.currentThread());
+    private String getDeliveryId() {
+    	return FutureMarket.nextID();
     }
 
     @WebMethod

@@ -42,7 +42,7 @@ public class CustomerImpl implements Customer {
     @WebMethod
     public LowestPrice getLowestPriceForList(String[] products) {
         Map<Supermarket, ProductPrice[]> supermarketsPrices = getSupermarketsPrices(products);
-        final String listId = Double.toString(getListId());
+        final String listId = "" + getListId();
         initializeMap(listId);
 
         double cheapestPrice, price, totalPrice = 0;
@@ -99,8 +99,8 @@ public class CustomerImpl implements Customer {
             customerProductLists.get(listId).get(supermarket).add(product);
     }
 
-    private double getListId() {
-    	return FutureMarket.nextID(Thread.currentThread());
+    private String getListId() {
+    	return FutureMarket.nextID();
     }
 
     @WebMethod

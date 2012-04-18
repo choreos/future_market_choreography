@@ -33,6 +33,8 @@ public class FutureMarket {
 
     public static final String CUSTOMER_ROLE = "Customer";
     public static final String CUSTOMER_SERVICE = "CustomerImplService";
+    
+    private static final Random randimId = new Random();
 
     public FutureMarket() {
         if (registry == null) {
@@ -119,7 +121,10 @@ public class FutureMarket {
         return addr.getCanonicalHostName();
     }
     
-    public static double nextID(Thread threadId) {
-    	return Math.random() * Math.pow(2, 64);
+    public static String nextID() {
+    	return "" + System.nanoTime();
+//    	return "" + randimId.nextLong();
+//    	return java.util.UUID.randomUUID().toString();
+//    	return Math.random() * Math.pow(2, 64);
     }
 }

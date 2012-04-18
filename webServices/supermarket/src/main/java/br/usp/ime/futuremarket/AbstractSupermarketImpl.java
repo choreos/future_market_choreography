@@ -40,8 +40,8 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
         return WSDL;
     }
 
-    private double getListId() {
-    	return FutureMarket.nextID(Thread.currentThread());
+    private String getListId() {
+    	return FutureMarket.nextID();
     }
 
     private String getRelativePath(final int supermarketNumber) {
