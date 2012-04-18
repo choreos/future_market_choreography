@@ -21,16 +21,16 @@ for (i in 1:length(all_data)) {
 	data <- all_data[[i]]
 
 banco = data.frame(Threads=c(050,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800),
-			 Mean_of_Mem_Usage = c(mean(data[[1]][2]-data[[1]][3]-data[[1]][4]),mean(data[[2]][2]-data[[2]][3]-data[[2]][4]),mean(data[[3]][2]-data[[3]][3]-data[[3]][4]),mean(data[[4]][2]-data[[4]][3]-data[[4]][4]),mean(data[[5]][2]-data[[5]][3]-data[[5]][4]),mean(data[[6]][2]-data[[6]][3]-data[[6]][4]),mean(data[[7]][2]-data[[7]][3]-data[[7]][4]),mean(data[[8]][2]-data[[8]][3]-data[[8]][4]),mean(data[[9]][2]-data[[9]][3]-data[[9]][4]),mean(data[[10]][2]-data[[10]][3]-data[[10]][4]),mean(data[[11]][2]-data[[11]][3]-data[[11]][4]),mean(data[[12]][2]-data[[12]][3]-data[[12]][4]),mean(data[[13]][2]-data[[13]][3]-data[[13]][4]),mean(data[[14]][2]-data[[14]][3]-data[[14]][4]),mean(data[[15]][2]-data[[15]][3]-data[[15]][4]),mean(data[[16]][2]-data[[16]][3]-data[[16]][4])),
+			 Mean_of_Mem_Usage_kb = c(mean(data[[1]][2]-data[[1]][3]-data[[1]][4]),mean(data[[2]][2]-data[[2]][3]-data[[2]][4]),mean(data[[3]][2]-data[[3]][3]-data[[3]][4]),mean(data[[4]][2]-data[[4]][3]-data[[4]][4]),mean(data[[5]][2]-data[[5]][3]-data[[5]][4]),mean(data[[6]][2]-data[[6]][3]-data[[6]][4]),mean(data[[7]][2]-data[[7]][3]-data[[7]][4]),mean(data[[8]][2]-data[[8]][3]-data[[8]][4]),mean(data[[9]][2]-data[[9]][3]-data[[9]][4]),mean(data[[10]][2]-data[[10]][3]-data[[10]][4]),mean(data[[11]][2]-data[[11]][3]-data[[11]][4]),mean(data[[12]][2]-data[[12]][3]-data[[12]][4]),mean(data[[13]][2]-data[[13]][3]-data[[13]][4]),mean(data[[14]][2]-data[[14]][3]-data[[14]][4]),mean(data[[15]][2]-data[[15]][3]-data[[15]][4]),mean(data[[16]][2]-data[[16]][3]-data[[16]][4])),
 			 sigma=c(sd(data[[1]][2]-data[[1]][3]-data[[1]][4]),sd(data[[2]][2]-data[[2]][3]-data[[2]][4]),sd(data[[3]][2]-data[[3]][3]-data[[3]][4]),sd(data[[4]][2]-data[[4]][3]-data[[4]][4]),sd(data[[5]][2]-data[[5]][3]-data[[5]][4]),sd(data[[6]][2]-data[[6]][3]-data[[6]][4]),sd(data[[7]][2]-data[[7]][3]-data[[7]][4]),sd(data[[8]][2]-data[[8]][3]-data[[8]][4]),sd(data[[9]][2]-data[[9]][3]-data[[9]][4]),sd(data[[10]][2]-data[[10]][3]-data[[10]][4]),sd(data[[11]][2]-data[[11]][3]-data[[11]][4]),sd(data[[12]][2]-data[[12]][3]-data[[12]][4]),sd(data[[13]][2]-data[[13]][3]-data[[13]][4]),sd(data[[14]][2]-data[[14]][3]-data[[14]][4]),sd(data[[15]][2]-data[[15]][3]-data[[15]][4]),sd(data[[16]][2]-data[[16]][3]-data[[16]][4])))
 
 # Mean Variation
-	limits = aes(ymax = Mean_of_Mem_Usage + sigma, ymin= Mean_of_Mem_Usage - sigma)
+	limits = aes(ymax = Mean_of_Mem_Usage_kb + sigma, ymin= Mean_of_Mem_Usage_kb - sigma)
 
 # Plot
 	png(name[i])
 
-	print(ggplot(banco, aes(x=Threads,y=Mean_of_Mem_Usage)) + geom_point() + geom_errorbar(limits, width=50))
+	print(ggplot(banco, aes(x=Threads,y=Mean_of_Mem_Usage_kb)) + geom_point() + geom_errorbar(limits, width=50) + scale_y_continuous(limits=c(0,5000000)))
 	dev.off()
 }
 
