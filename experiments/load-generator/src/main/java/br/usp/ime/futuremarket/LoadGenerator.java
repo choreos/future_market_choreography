@@ -22,26 +22,12 @@ public class LoadGenerator implements Runnable {
     private static BufferedWriter purchase;
     private static BufferedWriter shipment;
 
-    private static int minSimulationsPerThread;
-    private static int extraSimulationMaxThreadNumber;
-    private int threadSimulations;
+    private static int threadSimulations;
 
     private String listId;
 
     public LoadGenerator(final int threadNumber) {
-        if (threadNumber < extraSimulationMaxThreadNumber) {
-            threadSimulations = minSimulationsPerThread + 1;
-        } else {
-            threadSimulations = minSimulationsPerThread;
-        }
-
-        System.out.println("Thread " + threadNumber + " started for " + threadSimulations
-                + " simulations.");
-    }
-
-    private static void calcThreadSimulations(int totalThreads, int simulations) {
-        minSimulationsPerThread = simulations / totalThreads;
-        extraSimulationMaxThreadNumber = simulations % totalThreads;
+        System.out.println("Thread " + threadNumber + " has started.");
     }
 
     private static void openLogs() {
@@ -67,11 +53,10 @@ public class LoadGenerator implements Runnable {
         customer = getCustomer();
 
         final int totalThreads = Integer.parseInt(args[0]);
-        final int simulations = Integer.parseInt(args[1]);
-        calcThreadSimulations(totalThreads, simulations);
+        threadSimulations = Integer.parseInt(args[1]);
 
-        System.out.println(totalThreads + " threads will be created for " + simulations
-                + " simulations:");
+        System.out.println(totalThreads + " threads will be created for " + threadSimulations
+                + " simulations each:");
 
         openLogs();
         runThreads(totalThreads);
