@@ -22,11 +22,9 @@ public class CustomerImpl implements Customer {
     private Shipper shipper;
     // <listID, <supermarket,<product>>>
     private Map<String, Map<Supermarket, Set<String>>> customerProductLists;
-    private long currentList;
 
     public CustomerImpl() {
         customerProductLists = new HashMap<String, Map<Supermarket, Set<String>>>();
-        currentList = 0L;
 
         futureMarket = new FutureMarket();
         futureMarket.register(FutureMarket.CUSTOMER_ROLE, REL_PATH);
@@ -65,7 +63,7 @@ public class CustomerImpl implements Customer {
     }
 
     private void initializeMap(String listId) {
-    		customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
+        customerProductLists.put(listId, new HashMap<Supermarket, Set<String>>());
     }
 
     private double getProductPrice(String product, ProductPrice[] productPrices) {
@@ -92,15 +90,15 @@ public class CustomerImpl implements Customer {
     }
 
     private void addProduct(String listId, Supermarket supermarket, String product) {
-    		if (customerProductLists.get(listId).get(supermarket) == null) {
-    			customerProductLists.get(listId).put(supermarket, new HashSet<String>());
-			
-		}
-            customerProductLists.get(listId).get(supermarket).add(product);
+        if (customerProductLists.get(listId).get(supermarket) == null) {
+            customerProductLists.get(listId).put(supermarket, new HashSet<String>());
+
+        }
+        customerProductLists.get(listId).get(supermarket).add(product);
     }
 
     private String getListId() {
-    	return FutureMarket.nextID();
+        return FutureMarket.nextID();
     }
 
     @WebMethod
@@ -113,7 +111,7 @@ public class CustomerImpl implements Customer {
         List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
         Map<Supermarket, Set<String>> purchaseLists = null;
 
-        	purchaseLists = customerProductLists.remove(listId);
+        purchaseLists = customerProductLists.remove(listId);
 
         if (purchaseLists != null) {
             buy(customerInfo, result, purchaseLists);
