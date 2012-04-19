@@ -12,6 +12,7 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private static Customer customer = null;
+    private static String[] products = new String[300];
     private static final int THREADS_TIMEOUT = 360;
 
     private static final String LOWEST_PRICE_LOG = "lowest_price.log";
@@ -51,6 +52,7 @@ public class LoadGenerator implements Runnable {
 
     public static void main(String[] args) {
         customer = getCustomer();
+        populateProductList();
 
         final int totalThreads = Integer.parseInt(args[0]);
         threadSimulations = Integer.parseInt(args[1]);
@@ -61,6 +63,12 @@ public class LoadGenerator implements Runnable {
         openLogs();
         runThreads(totalThreads);
         closeLogs();
+    }
+
+    private static void populateProductList() {
+        for (int i = 0; i < 300; i++) {
+            products[i] = "product" + (i + 1);
+        }
     }
 
     private static void runThreads(final int totalThreads) {
@@ -111,6 +119,7 @@ public class LoadGenerator implements Runnable {
 
         final PurchaseInfo[] purchaseInfos = customer
                 .makePurchase(list.getId(), new CustomerInfo());
+
         final long end = Calendar.getInstance().getTimeInMillis();
 
         logTime(purchase, start, end);
@@ -171,8 +180,6 @@ public class LoadGenerator implements Runnable {
     }
 
     private LowestPrice getLowestPriceList() {
-        final String[] products = { "product1", "product2", "product3" };
-
         final long start = Calendar.getInstance().getTimeInMillis();
         final LowestPrice list = customer.getLowestPriceForList(products);
         final long end = Calendar.getInstance().getTimeInMillis();
@@ -185,8 +192,8 @@ public class LoadGenerator implements Runnable {
     }
 
     private void verifyList(LowestPrice list) {
-        if (!list.getPrice().equals(6d)) {
-            System.err.println("Price list test failed!");
+        if (!list.getPrice().equals(45150.0)) {
+            System.err.println("Price list test failed! Price is " + list.getPrice());
         }
     }
 
