@@ -32,11 +32,7 @@ public abstract class AbstractSupermarketImpl implements Supermarket {
     }
 
     private long getListId() {
-        synchronized (this) {
-            currentId++;
-        }
-
-        return currentId;
+        return FutureMarket.nextID();
     }
 
     private String getRelativePath(final int supermarketNumber) {

@@ -113,4 +113,8 @@ public class FutureMarket {
 
         return addr.getCanonicalHostName();
     }
+
+	public static long nextID() {
+		return System.nanoTime();
+	}
 }
