@@ -65,3 +65,5 @@ tomcat-install:
     echo $$host; \
 		ssh opencirrus-$$host.hpl.hp.com "cd && tar xjf $(TOMCAT_FILE)"; \
 	done
+
+tomcat-reinstall: tomcat-shutdown tomcat-remove tomcat-install tomcat-start
