@@ -91,7 +91,7 @@ public class AcceptanceTest {
         list = customer.getLowestPriceForList(products);
         
         final PurchaseInfo[] purchaseInfos = customer.makePurchase(list.getId(), customerInfo);
-        assertEquals(1, purchaseInfos.length);
+        assertEquals(3, purchaseInfos.length);
     }
 
     @Test
