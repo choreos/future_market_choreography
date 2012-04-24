@@ -25,8 +25,7 @@ public class ShipperImpl implements Shipper {
     }
 
     public ShipperImpl(final boolean useRegistry) {
-    	Properties properties = initProperties();
-        serviceName = properties.getProperty("this.name");
+    	
         deliveryInfoList = new ConcurrentHashMap<String, DeliveryInfo>();
         deliveryId = 0l;
 
@@ -54,6 +53,8 @@ public class ShipperImpl implements Shipper {
 	}
 
     private void register() {
+    	Properties properties = initProperties();
+        serviceName = properties.getProperty("this.name");
     	final String REL_PATH = getRelativePath();
         final FutureMarket futureMarket = new FutureMarket();
         futureMarket.register(FutureMarket.SHIPPER_ROLE, serviceName, REL_PATH);

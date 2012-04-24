@@ -91,7 +91,7 @@ public class AcceptanceTest {
         list = orchestrator.getLowestPriceForList(products);
         
         final PurchaseInfo[] purchaseInfos = orchestrator.makePurchase(list.getId(), customerInfo);
-        assertEquals(1, purchaseInfos.length);
+        assertEquals(3, purchaseInfos.length);
     }
 
     @Test
