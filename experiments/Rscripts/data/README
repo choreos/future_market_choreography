@@ -1,902 +1,1941 @@
-.
+data/
 ├── chor
-│   ├── 050
+│   ├── sar
 │   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
+│   │   │   ├── 050
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 100
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 150
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 200
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 250
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 300
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 350
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 400
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 450
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 500
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 550
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 600
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 650
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 700
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 750
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   └── 800
+│   │   │       ├── cpu_sar.out
+│   │   │       ├── mem_sar.out
+│   │   │       └── net_sar.out
 │   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
+│   │   │   ├── 050
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 100
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 150
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 200
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 250
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 300
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 350
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 400
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 450
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 500
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 550
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 600
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 650
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 700
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 750
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   └── 800
+│   │   │       ├── cpu_sar.out
+│   │   │       ├── mem_sar.out
+│   │   │       └── net_sar.out
 │   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
+│   │   │   ├── 050
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 100
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 150
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 200
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 250
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 300
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 350
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 400
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 450
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 500
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 550
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 600
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 650
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 700
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 750
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   └── 800
+│   │   │       ├── cpu_sar.out
+│   │   │       ├── mem_sar.out
+│   │   │       └── net_sar.out
 │   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
+│   │   │   ├── 050
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 100
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 150
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 200
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 250
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 300
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 350
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 400
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 450
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 500
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 550
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 600
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 650
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 700
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 750
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   └── 800
+│   │   │       ├── cpu_sar.out
+│   │   │       ├── mem_sar.out
+│   │   │       └── net_sar.out
 │   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
+│   │   │   ├── 050
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 100
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 150
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 200
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 250
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 300
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 350
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 400
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 450
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 500
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 550
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 600
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 650
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 700
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   ├── 750
+│   │   │   │   ├── cpu_sar.out
+│   │   │   │   ├── mem_sar.out
+│   │   │   │   └── net_sar.out
+│   │   │   └── 800
+│   │   │       ├── cpu_sar.out
+│   │   │       ├── mem_sar.out
+│   │   │       └── net_sar.out
 │   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 100
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 150
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 200
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 250
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 300
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 350
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 400
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 450
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 500
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 550
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 600
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 650
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 700
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 750
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   └── 800
-│       ├── broker
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── lowest_price.log
-│       ├── purchase.log
-│       ├── registry
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── shipment.log
-│       ├── shipper
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── sm1
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── sm2
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       └── sm3
-│           ├── cpu_sar.out
-│           ├── mem_sar.out
-│           └── net_sar.out
-├── orch
-│   ├── 050
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 100
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 150
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 200
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 250
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 300
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 350
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 400
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 450
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 500
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 550
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 600
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 650
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 700
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   ├── 750
-│   │   ├── broker
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── lowest_price.log
-│   │   ├── purchase.log
-│   │   ├── registry
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── shipment.log
-│   │   ├── shipper
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm1
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   ├── sm2
-│   │   │   ├── cpu_sar.out
-│   │   │   ├── mem_sar.out
-│   │   │   └── net_sar.out
-│   │   └── sm3
-│   │       ├── cpu_sar.out
-│   │       ├── mem_sar.out
-│   │       └── net_sar.out
-│   └── 800
-│       ├── broker
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── lowest_price.log
-│       ├── purchase.log
-│       ├── registry
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── shipment.log
-│       ├── shipper
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── sm1
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       ├── sm2
-│       │   ├── cpu_sar.out
-│       │   ├── mem_sar.out
-│       │   └── net_sar.out
-│       └── sm3
-│           ├── cpu_sar.out
-│           ├── mem_sar.out
-│           └── net_sar.out
-└── README
+│   │       ├── 050
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 100
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 150
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 200
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 250
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 300
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 350
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 400
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 450
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 500
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 550
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 600
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 650
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 700
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       ├── 750
+│   │       │   ├── cpu_sar.out
+│   │       │   ├── mem_sar.out
+│   │       │   └── net_sar.out
+│   │       └── 800
+│   │           ├── cpu_sar.out
+│   │           ├── mem_sar.out
+│   │           └── net_sar.out
+│   └── time
+│       ├── 001
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 002
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 003
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 004
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 005
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 006
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 007
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 008
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 009
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 010
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 011
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 012
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 013
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 014
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 015
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 016
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 017
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 018
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 019
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 020
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 050
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 100
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 150
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 200
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 250
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 300
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 350
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 400
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 450
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 500
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 550
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 600
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 650
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 700
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       ├── 750
+│       │   ├── broker_stat_begin.out
+│       │   ├── broker_stat_end.out
+│       │   ├── lowest_price.log
+│       │   ├── purchase.log
+│       │   ├── registry_stat_begin.out
+│       │   ├── registry_stat_end.out
+│       │   ├── shipment.log
+│       │   ├── shipper_stat_begin.out
+│       │   ├── shipper_stat_end.out
+│       │   ├── sm1_stat_begin.out
+│       │   ├── sm1_stat_end.out
+│       │   ├── sm2_stat_begin.out
+│       │   ├── sm2_stat_end.out
+│       │   ├── sm3_stat_begin.out
+│       │   └── sm3_stat_end.out
+│       └── 800
+│           ├── broker_stat_begin.out
+│           ├── broker_stat_end.out
+│           ├── lowest_price.log
+│           ├── purchase.log
+│           ├── registry_stat_begin.out
+│           ├── registry_stat_end.out
+│           ├── shipment.log
+│           ├── shipper_stat_begin.out
+│           ├── shipper_stat_end.out
+│           ├── sm1_stat_begin.out
+│           ├── sm1_stat_end.out
+│           ├── sm2_stat_begin.out
+│           ├── sm2_stat_end.out
+│           ├── sm3_stat_begin.out
+│           └── sm3_stat_end.out
+└── orch
+    ├── sar
+    │   ├── broker
+    │   │   ├── 050
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 100
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 150
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 200
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 250
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 300
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 350
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 400
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 450
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 500
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 550
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 600
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 650
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 700
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 750
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   └── 800
+    │   │       ├── cpu_sar.out
+    │   │       ├── mem_sar.out
+    │   │       └── net_sar.out
+    │   ├── registry
+    │   │   ├── 050
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 100
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 150
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 200
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 250
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 300
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 350
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 400
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 450
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 500
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 550
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 600
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 650
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 700
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 750
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   └── 800
+    │   │       ├── cpu_sar.out
+    │   │       ├── mem_sar.out
+    │   │       └── net_sar.out
+    │   ├── shipper
+    │   │   ├── 050
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 100
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 150
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 200
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 250
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 300
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 350
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 400
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 450
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 500
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 550
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 600
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 650
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 700
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 750
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   └── 800
+    │   │       ├── cpu_sar.out
+    │   │       ├── mem_sar.out
+    │   │       └── net_sar.out
+    │   ├── sm1
+    │   │   ├── 050
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 100
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 150
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 200
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 250
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 300
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 350
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 400
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 450
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 500
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 550
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 600
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 650
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 700
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 750
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   └── 800
+    │   │       ├── cpu_sar.out
+    │   │       ├── mem_sar.out
+    │   │       └── net_sar.out
+    │   ├── sm2
+    │   │   ├── 050
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 100
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 150
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 200
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 250
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 300
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 350
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 400
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 450
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 500
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 550
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 600
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 650
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 700
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   ├── 750
+    │   │   │   ├── cpu_sar.out
+    │   │   │   ├── mem_sar.out
+    │   │   │   └── net_sar.out
+    │   │   └── 800
+    │   │       ├── cpu_sar.out
+    │   │       ├── mem_sar.out
+    │   │       └── net_sar.out
+    │   └── sm3
+    │       ├── 050
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 100
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 150
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 200
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 250
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 300
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 350
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 400
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 450
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 500
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 550
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 600
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 650
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 700
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       ├── 750
+    │       │   ├── cpu_sar.out
+    │       │   ├── mem_sar.out
+    │       │   └── net_sar.out
+    │       └── 800
+    │           ├── cpu_sar.out
+    │           ├── mem_sar.out
+    │           └── net_sar.out
+    └── time
+        ├── 001
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 002
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 003
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 004
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 005
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 006
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 007
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 008
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 009
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 010
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 011
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 012
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 013
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 014
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 015
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 016
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 017
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 018
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 019
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 020
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 050
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 100
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 150
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 200
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 250
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 300
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 350
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 400
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 450
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 500
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 550
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 600
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 650
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 700
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        ├── 750
+        │   ├── broker_stat_begin.out
+        │   ├── broker_stat_end.out
+        │   ├── lowest_price.log
+        │   ├── purchase.log
+        │   ├── registry_stat_begin.out
+        │   ├── registry_stat_end.out
+        │   ├── shipment.log
+        │   ├── shipper_stat_begin.out
+        │   ├── shipper_stat_end.out
+        │   ├── sm1_stat_begin.out
+        │   ├── sm1_stat_end.out
+        │   ├── sm2_stat_begin.out
+        │   ├── sm2_stat_end.out
+        │   ├── sm3_stat_begin.out
+        │   └── sm3_stat_end.out
+        └── 800
+            ├── broker_stat_begin.out
+            ├── broker_stat_end.out
+            ├── lowest_price.log
+            ├── purchase.log
+            ├── registry_stat_begin.out
+            ├── registry_stat_end.out
+            ├── shipment.log
+            ├── shipper_stat_begin.out
+            ├── shipper_stat_end.out
+            ├── sm1_stat_begin.out
+            ├── sm1_stat_end.out
+            ├── sm2_stat_begin.out
+            ├── sm2_stat_end.out
+            ├── sm3_stat_begin.out
+            └── sm3_stat_end.out
 
-226 directories, 673 files
+282 directories, 1656 files
