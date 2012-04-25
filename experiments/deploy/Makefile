@@ -1,10 +1,10 @@
-REGISTRY_HOST=opencirrus-07901.hpl.hp.com
+REGISTRY_HOST=opencirrus-07912.hpl.hp.com
 SHIPPER_HOST=opencirrus-07904.hpl.hp.com
 SM1_HOST=opencirrus-07905.hpl.hp.com
 SM2_HOST=opencirrus-07906.hpl.hp.com
 SM3_HOST=opencirrus-07907.hpl.hp.com
 CUSTOMER_HOST=opencirrus-07908.hpl.hp.com
-ALL_HOSTS=07901 07904 07905 07906 07907 07908
+ALL_HOSTS=07912 07904 07905 07906 07907 07908
 
 CATALINA_HOME=/home/choreos/apache-tomcat-7.0.25
 WEBAPPS_DIR=$(CATALINA_HOME)/webapps
@@ -36,18 +36,22 @@ customer: shipper registry
 	scp ../../webServices/customer/target/customer.war choreos@$(CUSTOMER_HOST):/tmp/
 	ssh $(CUSTOMER_HOST) "mv /tmp/customer.war" $(WEBAPPS_DIR)/
 
+tomcat-start:
+	for host in $(ALL_HOSTS); do \
+    echo $$host; \
+		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/startup.sh"; \
+	done
+
 tomcat-shutdown:
 	-for host in $(ALL_HOSTS); do \
     echo $$host; \
-		ssh opencirrus-$$host.hpl.hp.com "sudo $(CATALINA_HOME)/bin/shutdown.sh"; \
-		sleep 2; \
-		killall java; \
+		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/shutdown.sh && sleep 2 && killall java"; \
 	done
 
 tomcat-remove:
 	for host in $(ALL_HOSTS); do \
     echo $$host; \
-		ssh opencirrus-$$host.hpl.hp.com "sudo rm -rf $(CATALINA_HOME)"; \
+		ssh opencirrus-$$host.hpl.hp.com "rm -rf $(CATALINA_HOME)"; \
 	done
 
 tomcat-copy:
@@ -59,3 +63,5 @@ tomcat-install:
     echo $$host; \
 		ssh opencirrus-$$host.hpl.hp.com "cd && tar xjf $(TOMCAT_FILE)"; \
 	done
+
+tomcat-reinstall: tomcat-shutdown tomcat-remove tomcat-install tomcat-start
