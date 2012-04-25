@@ -12,7 +12,8 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private static Customer customer = null;
-    private static int threadDuration;
+    private static String[] products = new String[300];
+    private static final int THREADS_TIMEOUT = 360;
 
     private static final String LOWEST_PRICE_LOG = "lowest_price.log";
     private static final String PURCHASE_LOG = "purchase.log";
@@ -22,8 +23,12 @@ public class LoadGenerator implements Runnable {
     private static BufferedWriter purchase;
     private static BufferedWriter shipment;
 
+    private static int threadSimulations;
+
+    private String listId;
+
     public LoadGenerator(final int threadNumber) {
-        System.out.println("Thread " + threadNumber + " started.");
+        System.out.println("Thread " + threadNumber + " has started.");
     }
 
     private static void openLogs() {
@@ -47,30 +52,36 @@ public class LoadGenerator implements Runnable {
 
     public static void main(String[] args) {
         customer = getCustomer();
-        openLogs();
+        populateProductList();
 
         final int totalThreads = Integer.parseInt(args[0]);
-        threadDuration = Integer.parseInt(args[1]);
+        threadSimulations = Integer.parseInt(args[1]);
 
-        System.out.println(totalThreads + " threads will be created for " + threadDuration
-                + " seconds:");
+        System.out.println(totalThreads + " threads will be created for " + threadSimulations
+                + " simulations each:");
 
-        runThreads(totalThreads, threadDuration);
-
+        openLogs();
+        runThreads(totalThreads);
         closeLogs();
     }
 
-    private static void runThreads(final int totalThreads, final int threadDuration) {
+    private static void populateProductList() {
+        for (int i = 0; i < 300; i++) {
+            products[i] = "product" + (i + 1);
+        }
+    }
+
+    private static void runThreads(final int totalThreads) {
         ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
 
-        for (int i = 0; i < totalThreads; i++) {
-            Runnable worker = new LoadGenerator(i);
+        for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
+            Runnable worker = new LoadGenerator(threadNumber);
             executor.execute(worker);
         }
 
         executor.shutdown();
         try {
-            while (!executor.awaitTermination(threadDuration + 60, TimeUnit.SECONDS))
+            while (!executor.awaitTermination(THREADS_TIMEOUT, TimeUnit.SECONDS))
                 ;
         } catch (InterruptedException e) {
             executor.shutdownNow();
@@ -96,6 +107,7 @@ public class LoadGenerator implements Runnable {
 
     private void simulate() {
         final LowestPrice list = getLowestPriceList();
+        listId = list.getId();
 
         final PurchaseInfo[] purchaseInfos = purchase(list);
 
@@ -107,6 +119,7 @@ public class LoadGenerator implements Runnable {
 
         final PurchaseInfo[] purchaseInfos = customer
                 .makePurchase(list.getId(), new CustomerInfo());
+
         final long end = Calendar.getInstance().getTimeInMillis();
 
         logTime(purchase, start, end);
@@ -122,10 +135,22 @@ public class LoadGenerator implements Runnable {
         }
     }
 
-    private static synchronized void logTime(final BufferedWriter out, final long start,
-            final long end) {
+    private static void logTime(final BufferedWriter out, final long start, final long end,
+            String... extraCols) {
+        String line = end + " " + (end - start);
+
+        for (String column : extraCols) {
+            line = line + " " + column;
+        }
+
+        writeln(out, line);
+    }
+
+    private static void writeln(final BufferedWriter out, String line) {
         try {
-            out.write(start + " " + (end - start) + "\n");
+            synchronized (LoadGenerator.class) {
+                out.write(line + "\n");
+            }
         } catch (IOException e) {
             System.err.println("Error while writing to file");
             e.printStackTrace();
@@ -142,7 +167,7 @@ public class LoadGenerator implements Runnable {
             deliveryInfo = customer.getShipmentData(purchaseInfo);
             end = Calendar.getInstance().getTimeInMillis();
 
-            logTime(shipment, start, end);
+            logTime(shipment, start, end, listId);
 
             verifyDelivery(deliveryInfo);
         }
@@ -155,8 +180,6 @@ public class LoadGenerator implements Runnable {
     }
 
     private LowestPrice getLowestPriceList() {
-        final String[] products = { "product1", "product2", "product3" };
-
         final long start = Calendar.getInstance().getTimeInMillis();
         final LowestPrice list = customer.getLowestPriceForList(products);
         final long end = Calendar.getInstance().getTimeInMillis();
@@ -169,16 +192,14 @@ public class LoadGenerator implements Runnable {
     }
 
     private void verifyList(LowestPrice list) {
-        if (!list.getPrice().equals(6d)) {
-            System.err.println("Price list test failed!");
+        if (!list.getPrice().equals(45150.0)) {
+            System.err.println("Price list test failed! Price is " + list.getPrice());
         }
     }
 
     @Override
     public void run() {
-        final long start = Calendar.getInstance().getTimeInMillis();
-
-        while (Calendar.getInstance().getTimeInMillis() - start < threadDuration * 1000) {
+        for (int i = 0; i < threadSimulations; i++) {
             simulate();
         }
     }
