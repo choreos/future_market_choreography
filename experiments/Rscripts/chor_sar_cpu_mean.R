@@ -29,7 +29,7 @@ banco = data.frame(Threads=c(050,100,150,200,250,300,350,400,450,500,550,600,650
 # Plot
 	png(name[i])
 
-	print(ggplot(banco, aes(x=Threads,y=Mean_of_cpu_usage)) + geom_point() + geom_errorbar(limits, width=50) + scale_y_continuous(limits=c(0,100)))
+	print(ggplot(banco, aes(x=Threads,y=Mean_of_cpu_usage)) + geom_point() + geom_errorbar(limits, width=50))
 	dev.off()
 }
 

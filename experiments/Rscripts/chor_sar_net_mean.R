@@ -53,7 +53,7 @@ for (i in 1:length(all_data)) {
 # Plot
 	png(name[i])
 
-	print(ggplot(banco, aes(x=Threads, linetype="legend")) + geom_line(aes(y=Mean_of_Upload, linetype="transmitted(kB)")) + geom_errorbar(ulimits, width=50) + geom_line(aes(y=Mean_of_Download, linetype="received(kB)")) + geom_errorbar(dlimits, width=50) + scale_y_continuous(limits=c(0,2000)))
+	print(ggplot(banco, aes(x=Threads, linetype="legend")) + geom_line(aes(y=Mean_of_Upload, linetype="transmitted(kB)")) + geom_errorbar(ulimits, width=50) + geom_line(aes(y=Mean_of_Download, linetype="received(kB)")) + geom_errorbar(dlimits, width=50))
 	dev.off()
 }
 
