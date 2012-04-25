@@ -1,5 +1,5 @@
-REGISTRY_HOST=opencirrus-07912.hpl.hp.com
-SHIPPER_HOST=opencirrus-07904.hpl.hp.com
+REGISTRY_HOST=opencirrus-07904.hpl.hp.com
+SHIPPER_HOST=opencirrus-07912.hpl.hp.com
 SM1_HOST=opencirrus-07905.hpl.hp.com
 SM2_HOST=opencirrus-07906.hpl.hp.com
 SM3_HOST=opencirrus-07907.hpl.hp.com
@@ -45,9 +45,7 @@ tomcat-start:
 tomcat-shutdown:
 	-for host in $(ALL_HOSTS); do \
     echo $$host; \
-		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/shutdown.sh"; \
-		sleep 2; \
-		killall java; \
+		ssh opencirrus-$$host.hpl.hp.com "$(CATALINA_HOME)/bin/shutdown.sh && sleep 2 && killall java"; \
 	done
 
 tomcat-remove:
