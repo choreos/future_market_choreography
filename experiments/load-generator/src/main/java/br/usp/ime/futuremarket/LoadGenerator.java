@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +14,7 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private static Customer customer = null;
-    private static String[] products = new String[300];
+    private static Set<ProductQuantity> products = new HashSet<ProductQuantity>();
     private static final int THREADS_TIMEOUT = 360;
 
     private static final String LOWEST_PRICE_LOG = "lowest_price.log";
@@ -66,8 +68,13 @@ public class LoadGenerator implements Runnable {
     }
 
     private static void populateProductList() {
-        for (int i = 0; i < 300; i++) {
-            products[i] = "product" + (i + 1);
+        String product;
+        int quantity;
+
+        for (int i = 0; i < 10; i++) {
+            product = "product" + (i + 1);
+            quantity = i + 1;
+            products.add(new ProductQuantity(product, quantity));
         }
     }
 
@@ -130,8 +137,8 @@ public class LoadGenerator implements Runnable {
     }
 
     private void verifyPurchase(PurchaseInfo[] purchaseInfos) {
-        if (purchaseInfos.length != 3) {
-            System.err.println("Purchase test failed!");
+        if (purchaseInfos.length != 5) {
+            System.err.println("Purchase test failed! Length is " + purchaseInfos.length);
         }
     }
 
@@ -192,7 +199,7 @@ public class LoadGenerator implements Runnable {
     }
 
     private void verifyList(LowestPrice list) {
-        if (!list.getPrice().equals(45150.0)) {
+        if (!list.getPrice().equals(1215.0)) {
             System.err.println("Price list test failed! Price is " + list.getPrice());
         }
     }
