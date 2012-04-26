@@ -23,6 +23,7 @@ function createFiles() {
 	START=$(date -d @$START_TSTAMP +%H:%M:%S)
 	END=$(date -d @$END_TSTAMP +%H:%M:%S)	
 	DIR=$ROOT_DIR/$THREADS	
+	if [ ! -d $DIR ] ; then mkdir $DIR; fi
 	
 	# Received and Transmitted kB/sec
 	sar -n DEV -f /var/log/sysstat/sa$DAY -s $START -e $END | grep eth0 | grep -v ^Average | tr -s ' ' | cut -f 1,6,7 -d ' '> $DIR/net_sar.out
