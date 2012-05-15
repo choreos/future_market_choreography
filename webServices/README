@@ -5,3 +5,14 @@ Inside each WS folder, run:
   $ mvn package
 
 If the project requires rehearsal, add it as a provided dependency, otherwise javax/servlet and javax/el will conflict with tomcat ones.
+
+How to run use cases:
+
+- go to test/scripts/
+- run:
+  $ sh deploy_test.sh <Y/N> <number of use_case>
+  Y if you would like make backup of supermarkets and shippers and futureMarket properties
+- go to webServices folder
+- start the tomcat
+- run in webServices:
+  $ make deploy
