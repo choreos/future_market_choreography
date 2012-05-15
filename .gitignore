@@ -10,6 +10,7 @@ target/
 .classpath
 .project
 .settings
+*.swp
 # One should use properties template
 *.properties
 *.orig
