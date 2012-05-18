@@ -1,10 +1,12 @@
 package br.usp.ime.futuremarket;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.jws.WebMethod;
@@ -18,18 +20,35 @@ public class OrchestratorImpl implements Orchestrator {
 
 	private static final String REL_PATH = "orchestrator/orchestrator";
 
+    static final ClassLoader loader = OrchestratorImpl.class.getClassLoader();
+
 	private FutureMarket futureMarket;
 	private Bank bank;
 	private List<Supermarket> supermarkets;
 	// <listID, <supermarket,<productquantity>>>
 	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
 	private long currentList;
+	
+	private Properties getProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(loader.getResourceAsStream("orchestrator.properties"));
+        return properties;
+	}
 
 	public OrchestratorImpl() {
 		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
 		currentList = 0L;
 		futureMarket = new FutureMarket();
-		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, "Orchestrator", REL_PATH);
+		
+		
+		String serviceName = "Orchestrator"; // default name
+		try {
+			serviceName = getProperties().getProperty("this.name");
+		} catch (IOException e) {
+			System.out.println("Could not open orchestrator properties");
+		}
+		
+		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, serviceName, REL_PATH);
 		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
 				FutureMarket.BANK_SERVICE, Bank.class);
 	}
