@@ -26,7 +26,7 @@ supermarket: shipper bank
 	cd ../supermarkets && \
 	./generateSupermarkets.sh
 
-orchestrator: registry
+orchestrator: supermarket
 	cd orchestrator && \
 	mvn clean install && \
 	cd ../orchestrators && \
@@ -50,9 +50,12 @@ FORCE:
 deploy:
 	make -C registry deploy
 	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
-	@echo "Sleeping for 7 sec while shipper is deployed"
+	@echo "Sleeping for 7 sec while shippers are deployed"
 	sleep 7
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
-	@echo "Sleeping for 7 sec while orchestrator is deployed"
+	@echo "Sleeping for 7 sec while bank is deployed"
+	sleep 7
+	cp -f orchestrators/*/*.war $(CATALINA_HOME)/webapps/
+	@echo "Sleeping for 7 sec while orchestrators are deployed"
 	sleep 7
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
