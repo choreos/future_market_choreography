@@ -7,10 +7,6 @@ futuremarket: registry pojo
 	cd futureMarket && \
 	mvn clean install
 
-orchestrator: supermarket 
-	cd orchestrator && \
-	mvn clean install
-
 shipper: futuremarket
 	cd shipper && \
 	mvn clean install && \
@@ -29,6 +25,12 @@ supermarket: shipper bank
 	mvn clean install && \
 	cd ../supermarkets && \
 	./generateSupermarkets.sh
+
+orchestrator: registry
+	cd orchestrator && \
+	mvn clean install && \
+	cd ../orchestrators && \
+	./generateOrchestrators.sh
 
 pojo:
 	cd pojos && \
@@ -51,9 +53,6 @@ deploy:
 	@echo "Sleeping for 7 sec while shipper is deployed"
 	sleep 7
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
-	@echo "Sleeping for 7 sec while bank is deployed"
-	sleep 7
-	cp -f orchestrator/target/orchestrator.war $(CATALINA_HOME)/webapps/
 	@echo "Sleeping for 7 sec while orchestrator is deployed"
 	sleep 7
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASEDIR=`pwd`
+ORCHSDIR=${BASEDIR}/../../orchestrators
 SMSDIR=${BASEDIR}/../../supermarkets
 SHIPPERSDIR=${BASEDIR}/../../shippers
 BACKUPDIR=${BASEDIR}/backup
@@ -24,6 +25,11 @@ print_help ()
 # make backup
 if [ $BACKUP == "y" ]
 then  
+    echo "backup orchestrators"
+    if [ -d "${ORCHSDIR}" ]
+	then
+	    find $ORCHSDIR -maxdepth 1 -mindepth 1 -not -name \*.sh -exec cp -r {} $BACKUPDIR/orchestrations/ \;
+    fi
     #supermarkets dir
     echo "backup supermarkets"
     if [ -d "${SMSDIR}" ]
@@ -45,7 +51,11 @@ fi
 
 echo "applying test configurations"
 case $TESTCASE in
-[1-3])
+[1-4])
+    #copy orchetsrations dir
+    find $ORCHSDIR -maxdepth 1 -mindepth 1 -not -name \*.sh | xargs rm -rf
+    cp -r ${BASEDIR}/$TESTCASE/orchestrators/* ${ORCHSDIR}
+
     #copy supermarkets dir
     find $SMSDIR -maxdepth 1 -mindepth 1 -not -name \*.sh | xargs rm -rf
     cp -r ${BASEDIR}/$TESTCASE/supermarkets/* ${SMSDIR}
