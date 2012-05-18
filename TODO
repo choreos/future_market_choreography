@@ -1,7 +1,13 @@
 TODO
 
-SMs are not starting
+At `make deploy`, sometimes registry is not deployed. Neither listed on tomcat.
+
+SMs are not starting (since the WSDL orchestrator is under a different address)
 Fix AcceptanceTest to use orchestrator1
+    Both of them were not working because orchestrator was not registering itself properly
+    I tried to fix this, but without success yet
+    TODO: debug last changes (create and see logs on Orchestrator, Registry, and Supermarket)
+
 If orchetsrator pass some kind of correlation ID, avoid multiple orchestrator to use the same ID
 Rewrite load generator to stress all the orchestrators (this will be achieved through the round robin provied by FutureMarket)
 Improve AcceptanceTest to use all the orchestrators
