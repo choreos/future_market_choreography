@@ -18,10 +18,9 @@ import br.usp.ime.futuremarket.models.LowestPrice;
 endpointInterface = "br.usp.ime.futuremarket.Orchestrator")
 public class OrchestratorImpl implements Orchestrator {
 
-	private static final String REL_PATH = "orchestrator/orchestrator";
-
     static final ClassLoader loader = OrchestratorImpl.class.getClassLoader();
 
+    private String serviceName;
 	private FutureMarket futureMarket;
 	private Bank bank;
 	private List<Supermarket> supermarkets;
@@ -34,6 +33,12 @@ public class OrchestratorImpl implements Orchestrator {
         properties.load(loader.getResourceAsStream("orchestrator.properties"));
         return properties;
 	}
+	
+    private String getRelativePath() {
+ 
+    	String path = serviceName + "/orchestrator";
+        return path;
+    }
 
 	public OrchestratorImpl() {
 		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
@@ -41,14 +46,15 @@ public class OrchestratorImpl implements Orchestrator {
 		futureMarket = new FutureMarket();
 		
 		
-		String serviceName = "Orchestrator"; // default name
+		serviceName = "Orchestrator"; // default name
 		try {
 			serviceName = getProperties().getProperty("this.name");
 		} catch (IOException e) {
 			System.out.println("Could not open orchestrator properties");
 		}
 		
-		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, serviceName, REL_PATH);
+		String relPath = getRelativePath();
+		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, serviceName, relPath);
 		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
 				FutureMarket.BANK_SERVICE, Bank.class);
 	}
