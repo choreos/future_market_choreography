@@ -131,6 +131,8 @@ public class OrchestratorImpl implements Orchestrator {
 		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
 		Map<Supermarket, Set<ProductQuantity>> purchaseLists = null;
 
+		System.out.println("Purchase at " + serviceName);
+		
 		synchronized (this) {
 			purchaseLists = customerProductLists.remove(listId);
 		}

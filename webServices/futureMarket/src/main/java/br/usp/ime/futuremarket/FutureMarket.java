@@ -34,7 +34,7 @@ public class FutureMarket {
     
     public static final String BANK_ROLE = "Bank";
     public static final String BANK_SERVICE = "BankImplService";
-
+    
     public FutureMarket() {
 
     }
@@ -56,11 +56,10 @@ public class FutureMarket {
         final String wsdl = getRegistryWsdl();
         return getClient(Registry.class, wsdl, REGISTRY_SERVICE);
     }
-
+    
     public <T> T getFirstClient(final String role, final String serviceName,
             final Class<T> resultClass) {
         final String wsdl = getRegistry().getFirst(role);
-
         return getClient(resultClass, wsdl, serviceName);
     }
     

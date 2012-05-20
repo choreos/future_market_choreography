@@ -87,6 +87,11 @@
 			<version>2.2.5</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>future-market</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 </project>
