@@ -15,6 +15,8 @@ public class RegistryImpl implements Registry {
     private HashMap<String, Set<String>> endpoints;
     private HashMap<String, String> names;
 
+    private static int orchRobin = -1;
+
     public RegistryImpl() {
         endpoints = new HashMap<String, Set<String>>();
         names = new HashMap<String, String>();
@@ -30,6 +32,10 @@ public class RegistryImpl implements Registry {
 
     @Override
     public String getFirst(String role) {
+    	
+    	if (role.equals(FutureMarket.ORCHESTRATOR_ROLE))
+    		return getOrchestratorWsdl();
+    	
         if (endpoints.containsKey(role))
             return (String) endpoints.get(role).iterator().next();
         else
@@ -71,4 +77,17 @@ public class RegistryImpl implements Registry {
 		}
 		return "";
 	}
+	
+    private String getOrchestratorWsdl() {
+    	
+    	List<String> wsdls = getList(FutureMarket.ORCHESTRATOR_ROLE);
+    	int n = wsdls.size();
+    	synchronized(RegistryImpl.class) {
+    		orchRobin = (orchRobin + 1) % n;
+    	}
+    	String orchWsdl = wsdls.get(orchRobin);
+    	System.out.println("Selected orchestration: " + orchWsdl);
+    	return orchWsdl;
+    }
+    
 }
