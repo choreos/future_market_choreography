@@ -169,6 +169,8 @@ public class OrchestratorImpl implements Orchestrator {
 	public PurchaseInfo[] makeSMPurchase(String name,
 			Set<ProductQuantity> products, CustomerInfo customerInfo) {
 		
+		System.out.println("Purchase at " + serviceName);
+
 		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
 		Map<Supermarket, Set<ProductQuantity>> purchaseLists = new HashMap<Supermarket, Set<ProductQuantity>>();
 		
