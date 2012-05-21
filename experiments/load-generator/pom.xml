@@ -43,11 +43,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>customer</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>future-market</artifactId>
 			<version>1.0</version>
 		</dependency>
