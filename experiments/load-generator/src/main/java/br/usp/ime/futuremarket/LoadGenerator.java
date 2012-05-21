@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import br.usp.ime.futuremarket.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
-    private static Orchestrator orchestrator = null;
+    private Orchestrator orchestrator = null;
     private static Set<ProductQuantity> products = new HashSet<ProductQuantity>();
     private static final int THREADS_TIMEOUT = 360;
 
@@ -30,6 +30,7 @@ public class LoadGenerator implements Runnable {
     private String listId;
 
     public LoadGenerator(final int threadNumber) {
+        orchestrator = getOrchestrator();
         System.out.println("Thread " + threadNumber + " has started.");
     }
 
@@ -53,7 +54,6 @@ public class LoadGenerator implements Runnable {
     }
 
     public static void main(String[] args) {
-        orchestrator = getOrchestrator();
         populateProductList();
 
         final int totalThreads = Integer.parseInt(args[0]);
