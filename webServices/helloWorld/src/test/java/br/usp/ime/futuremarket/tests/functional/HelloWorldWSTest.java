@@ -1,4 +1,4 @@
-package br.usp.ime.futuremarket.functional;
+package br.usp.ime.futuremarket.tests.functional;
 
 import static org.junit.Assert.assertEquals;
 
