@@ -121,7 +121,7 @@ public class SupermarketImpl implements Supermarket {
 	        purchaseInfo.setSellerEndpoint(WSDL);
 	        purchaseInfo.setShipperName(shipperName);
 	        
-	        if (sellerName != null)
+	        if (sellerName != null  && !sellerName.trim().equals(""))
 	        	updateStock(products);
     	} catch(Exception e) {
     		e.printStackTrace();
