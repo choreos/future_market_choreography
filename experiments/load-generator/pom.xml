@@ -43,7 +43,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>customer</artifactId>
+			<artifactId>orchestrator</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
