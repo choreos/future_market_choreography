@@ -26,6 +26,9 @@ public class FutureMarket {
     public static final String SUPERMARKET_ROLE = "Supermarket";
     public static final String SUPERMARKET_SERVICE = "SupermarketImplService";
 
+    public static final String SUPPLIER_ROLE = "Supplier";
+    public static final String MANUFACTURER_ROLE = "Manufacturer";
+
     public static final String ORCHESTRATOR_ROLE = "Orchestrator";
     public static final String ORCHESTRATOR_SERVICE = "OrchestratorImplService";
     
@@ -33,32 +36,37 @@ public class FutureMarket {
     public static final String BANK_SERVICE = "BankImplService";
 
     public FutureMarket() {
-        if (registry == null) {
+
+    }
+    
+    private static Registry getRegistry() {
+    	if (registry == null) {
             registry = getRegistryClient();
         }
+    	return registry;
     }
 
     protected void register(final String role, String name, final String relativePath) {
         final String wsdl = getMyWsdl(relativePath);
 
-        registry.add(role, name, wsdl);
+        getRegistry().add(role, name, wsdl);
     }
 
-    private Registry getRegistryClient() {
+    private static Registry getRegistryClient() {
         final String wsdl = getRegistryWsdl();
         return getClient(Registry.class, wsdl, REGISTRY_SERVICE);
     }
 
     public <T> T getFirstClient(final String role, final String serviceName,
             final Class<T> resultClass) {
-        final String wsdl = registry.getFirst(role);
+        final String wsdl = getRegistry().getFirst(role);
 
         return getClient(resultClass, wsdl, serviceName);
     }
     
     public <T> T getClientByName(final String name, final String serviceName,
             final Class<T> resultClass) {
-        final String wsdl = registry.getServiceEndpoint(name);
+        final String wsdl = getRegistry().getServiceEndpoint(name);
 
         return getClient(resultClass, wsdl, serviceName);
     }
@@ -66,7 +74,7 @@ public class FutureMarket {
     public <T> List<T> getClients(final String role, final String serviceName,
             final Class<T> resultClass) {
         final List<T> clients = new ArrayList<T>();
-        final List<String> wsdls = registry.getList(role);
+        final List<String> wsdls = getRegistry().getList(role);
 
         T t;
         for (String wsdl : wsdls) {
@@ -77,7 +85,7 @@ public class FutureMarket {
         return clients;
     }
 
-    private <T> T getClient(final Class<T> resultClass, final String wsdl, final String serviceName) {
+    private static <T> T getClient(final Class<T> resultClass, final String wsdl, final String serviceName) {
         final QName qname = new QName(NAMESPACE, serviceName);
         URL url = null;
 
@@ -122,5 +130,12 @@ public class FutureMarket {
         }
 
         return addr.getCanonicalHostName();
+    }
+    
+    public void reset(String role) {
+    	for(String endpoint: getRegistry().getList(role)) {
+			Supermarket supermarket = getClient(Supermarket.class, endpoint, FutureMarket.SUPERMARKET_SERVICE);
+			supermarket.reset();
+		}
     }
 }

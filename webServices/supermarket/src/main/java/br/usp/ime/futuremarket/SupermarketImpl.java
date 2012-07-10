@@ -40,37 +40,43 @@ public class SupermarketImpl implements Supermarket {
         priceTable = new HashMap<String, Double>();
         stockItems = new HashMap<String, Integer>();
         currentId = 0l;
-        Properties properties = new Properties();
 
-        try {
-            properties.load(loader.getResourceAsStream("supermarket.properties"));
-        } catch (IOException e) {
-            System.out.println("Could not read resources/supermarket.properties");
-        }
+        reset();
 
-        serviceName = properties.getProperty("this.name");
-        serviceRole = properties.getProperty("this.role");
-        shipperName = properties.getProperty("shipper.name");
-        purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
-        purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
-        
-        
         final String relPath = getRelativePath();
         futureMarket.register(serviceRole, serviceName, relPath);
         WSDL = futureMarket.getMyWsdl(relPath);
 
-		orchestrator = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE, 
-				FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
-        
-        sellerName = properties.getProperty("seller.name");
-        
-        customerInfo = new CustomerInfo();
-        customerInfo.setEndpoint(this.getWsdl());
-        customerInfo.setId(serviceName+"ID");
-        customerInfo.setName(serviceName);
-        customerInfo.setZipcode("5555555");
-
-        this.registerProducts(properties);
+    }
+    
+    @WebMethod
+    public void reset() {
+    	Properties properties = new Properties();
+    	try {
+    		properties.load(loader.getResourceAsStream("supermarket.properties"));
+    	} catch (IOException e) {
+    		System.out.println("Could not read resources/supermarket.properties");
+    	}
+    	
+    	serviceName = properties.getProperty("this.name");
+    	serviceRole = properties.getProperty("this.role");
+    	shipperName = properties.getProperty("shipper.name");
+    	purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
+    	purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
+    	
+    	orchestrator = futureMarket.getFirstClient(FutureMarket.ORCHESTRATOR_ROLE, 
+    			FutureMarket.ORCHESTRATOR_SERVICE, Orchestrator.class);
+    	
+    	sellerName = properties.getProperty("seller.name");
+    	
+    	customerInfo = new CustomerInfo();
+    	customerInfo.setEndpoint(this.getWsdl());
+    	customerInfo.setId(serviceName+"ID");
+    	customerInfo.setName(serviceName);
+    	customerInfo.setZipcode("5555555");
+    	
+    	this.registerProducts(properties);
+    	
     }
 
     public String getWsdl() {

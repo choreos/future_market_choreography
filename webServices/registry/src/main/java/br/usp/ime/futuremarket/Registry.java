@@ -25,5 +25,8 @@ public interface Registry {
     
     @WebMethod
     public String getServiceEndpoint(String name);
+    
+    @WebMethod
+    public void resetAll();
 
 }

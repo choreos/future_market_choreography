@@ -21,6 +21,9 @@ public interface Supermarket {
     public String getWsdl();
     
     @WebMethod
-    public ProductQuantity[] getStock(); 
+    public ProductQuantity[] getStock();
+    
+    @WebMethod
+    public void reset();
 
 }

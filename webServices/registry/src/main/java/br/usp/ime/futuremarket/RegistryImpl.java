@@ -12,12 +12,16 @@ import javax.jws.WebService;
         endpointInterface = "br.usp.ime.futuremarket.Registry")
 public class RegistryImpl implements Registry {
 
+	//      HashMap<role, Set<endpoint>>
     private HashMap<String, Set<String>> endpoints;
+    //      HashMap<name, endpoint>
     private HashMap<String, String> names;
+    private FutureMarket futureMarket;
 
     public RegistryImpl() {
         endpoints = new HashMap<String, Set<String>>();
         names = new HashMap<String, String>();
+        futureMarket = new FutureMarket();
     }
 
     @Override
@@ -71,4 +75,12 @@ public class RegistryImpl implements Registry {
 		}
 		return "";
 	}
+	
+	@Override
+	public void resetAll() {
+		futureMarket.reset(FutureMarket.SUPERMARKET_ROLE);
+		futureMarket.reset(FutureMarket.SUPPLIER_ROLE);
+		futureMarket.reset(FutureMarket.MANUFACTURER_ROLE);
+	}
+
 }
