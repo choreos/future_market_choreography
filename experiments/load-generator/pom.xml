@@ -23,7 +23,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>br.usp.ime.futuremarket.LoadGenerator</mainClass>
+							<mainClass>br.usp.ime.futuremarket.HelloWorldLG</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -55,6 +55,11 @@
 			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>helloWorld</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
 		</dependency>
 	</dependencies>
 

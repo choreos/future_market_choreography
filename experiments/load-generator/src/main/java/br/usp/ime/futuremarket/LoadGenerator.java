@@ -25,12 +25,52 @@ public class LoadGenerator implements Runnable {
     private static BufferedWriter purchase;
     private static BufferedWriter shipment;
 
-    private static int threadSimulations;
+    // Requests per minute
+    private static int initialFreq;
+    private static int endingFreq;
+    private static int maxThreads;
+
+    private static int threadPeriod;
+    private static double period;
 
     private String listId;
 
+    public static void main(String[] args) throws InvalidArgumentException {
+        readArgs(args);
+
+        customer = getCustomer();
+        populateProductList();
+
+        openLogs();
+        runSimulations();
+        closeLogs();
+    }
+
     public LoadGenerator(final int threadNumber) {
         System.out.println("Thread " + threadNumber + " has started.");
+    }
+
+    private static void readArgs(final String args[]) {
+        initialFreq = Integer.parseInt(args[0]);
+        endingFreq = Integer.parseInt(args[1]);
+        maxThreads = Integer.parseInt(args[2]);
+    }
+
+    private static Customer getCustomer() {
+        final FutureMarket futureMarket = new FutureMarket();
+        return futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
+                FutureMarket.CUSTOMER_SERVICE, Customer.class);
+    }
+
+    private static void populateProductList() {
+        String product;
+        int quantity;
+
+        for (int i = 0; i < 10; i++) {
+            product = "product" + (i + 1);
+            quantity = i + 1;
+            products.add(new ProductQuantity(product, quantity));
+        }
     }
 
     private static void openLogs() {
@@ -45,37 +85,43 @@ public class LoadGenerator implements Runnable {
         try {
             fstream = new FileWriter(filename);
         } catch (IOException e) {
-            System.err.println("Error while opening " + filename);
+            System.err.println("Error opening " + filename);
             e.printStackTrace();
         }
 
         return new BufferedWriter(fstream);
     }
 
-    public static void main(String[] args) {
-        customer = getCustomer();
-        populateProductList();
-
-        final int totalThreads = Integer.parseInt(args[0]);
-        threadSimulations = Integer.parseInt(args[1]);
-
-        System.out.println(totalThreads + " threads will be created for " + threadSimulations
-                + " simulations each:");
-
-        openLogs();
-        runThreads(totalThreads);
-        closeLogs();
+    private static void closeLogs() {
+        try {
+            lowestPrice.close();
+            purchase.close();
+            shipment.close();
+        } catch (IOException e) {
+            System.err.println("Error closing log file");
+            e.printStackTrace();
+        }
     }
 
-    private static void populateProductList() {
-        String product;
-        int quantity;
+    private static void runSimulations() throws InvalidArgumentException {
+        int frequency, totalThreads;
+        FrequencyHelper freqHelper = new FrequencyHelper(800);
 
-        for (int i = 0; i < 10; i++) {
-            product = "product" + (i + 1);
-            quantity = i + 1;
-            products.add(new ProductQuantity(product, quantity));
+        for (frequency = initialFreq; frequency <= endingFreq; frequency++) {
+            freqHelper.setFrequency(frequency);
+            totalThreads = freqHelper.getTotalThreads();
+            runThreads(totalThreads);
         }
+    }
+
+    private static int setFrequency(final int frequency) {
+        final int totalThreads = Math.min(maxThreads, frequency);
+        period = 60 * 1000.0 / frequency;
+        threadPeriod = (int) (totalThreads * period + 0.5);
+
+        System.out.println("# " + frequency + " reqs/min, gap " + threadPeriod + "ms, period " + period
+                + "ms");
+        return 0;
     }
 
     private static void runThreads(final int totalThreads) {
@@ -93,23 +139,6 @@ public class LoadGenerator implements Runnable {
         } catch (InterruptedException e) {
             executor.shutdownNow();
         }
-    }
-
-    private static void closeLogs() {
-        try {
-            lowestPrice.close();
-            purchase.close();
-            shipment.close();
-        } catch (IOException e) {
-            System.err.println("Error while closing log file");
-            e.printStackTrace();
-        }
-    }
-
-    private static Customer getCustomer() {
-        final FutureMarket futureMarket = new FutureMarket();
-        return futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
-                FutureMarket.CUSTOMER_SERVICE, Customer.class);
     }
 
     private void simulate() {
@@ -206,7 +235,7 @@ public class LoadGenerator implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < threadSimulations; i++) {
+        for (int i = 0; i < 1; i++) {
             simulate();
         }
     }

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class HelloWorldLG implements Runnable {
     private static HelloWorld helloWorld;
     private static final int THREADS_TIMEOUT = 360;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     // Requests per minute
     private static int initialFreq;
@@ -99,7 +99,7 @@ public class HelloWorldLG implements Runnable {
                 e.printStackTrace();
             }
 
-            name = String.valueOf(random.nextInt(60 * 1000 * 5));
+            name = String.valueOf(RANDOM.nextInt(60 * 1000 * 5));
             log = threadNumber + " " + Calendar.getInstance().getTimeInMillis();
             answer = helloWorld.sayHello(name);
             HelloWorldLG.println(log + " " + Calendar.getInstance().getTimeInMillis());
