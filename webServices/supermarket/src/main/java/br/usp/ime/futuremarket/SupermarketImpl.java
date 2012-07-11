@@ -111,12 +111,6 @@ public class SupermarketImpl implements Supermarket {
 
         return productPriceList.toArray(new ProductPrice[1]);
     }
-
-    private void printStock() {
-    	for(String  p: stockItems.keySet()) {
-    		System.out.println(p + " - " + stockItems.get(p));
-    	}
-    }
     
     @WebMethod
     public PurchaseInfo purchase(final Set<ProductQuantity> products, final CustomerInfo customerInfo) {
@@ -129,7 +123,7 @@ public class SupermarketImpl implements Supermarket {
 	        purchaseInfo.setSellerEndpoint(WSDL);
 	        purchaseInfo.setShipperName(shipperName);
 	        
-	        if (sellerName != null)
+	        if (sellerName != null && !sellerName.trim().isEmpty())
 	        	updateStock(products);
 	        bank.requestPayment(purchaseInfo, customerInfo);
 	        shipper.setDelivery(purchaseInfo);
