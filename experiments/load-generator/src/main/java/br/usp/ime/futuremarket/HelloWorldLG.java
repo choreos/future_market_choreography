@@ -21,7 +21,7 @@ public class HelloWorldLG implements Runnable {
     // Milliseconds
     private static int gap;
     private static double period;
-    private int threadNumber;
+    private final int threadNumber;
 
     public static void main(String args[]) throws IOException {
         readArgs(args);

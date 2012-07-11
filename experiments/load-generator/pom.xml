@@ -23,7 +23,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>br.usp.ime.futuremarket.HelloWorldLG</mainClass>
+							<mainClass>br.usp.ime.futuremarket.LoadGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

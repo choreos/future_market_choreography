@@ -21,21 +21,21 @@ public class LoadGenerator implements Runnable {
     private static final String PURCHASE_LOG = "purchase.log";
     private static final String SHIPMENT_LOG = "shipment.log";
 
-    private static BufferedWriter lowestPrice;
-    private static BufferedWriter purchase;
-    private static BufferedWriter shipment;
+    private static BufferedWriter lowestPriceLog;
+    private static BufferedWriter purchaseLog;
+    private static BufferedWriter shipmentLog;
 
     // Requests per minute
     private static int initialFreq;
     private static int endingFreq;
     private static int maxThreads;
 
-    private static int threadPeriod;
-    private static double period;
+    private static FrequencyHelper freqHelper;
 
     private String listId;
+    private final int threadNumber;
 
-    public static void main(String[] args) throws InvalidArgumentException {
+    public static void main(final String[] args) {
         readArgs(args);
 
         customer = getCustomer();
@@ -47,6 +47,7 @@ public class LoadGenerator implements Runnable {
     }
 
     public LoadGenerator(final int threadNumber) {
+        this.threadNumber = threadNumber;
         System.out.println("Thread " + threadNumber + " has started.");
     }
 
@@ -69,14 +70,14 @@ public class LoadGenerator implements Runnable {
         for (int i = 0; i < 10; i++) {
             product = "product" + (i + 1);
             quantity = i + 1;
-            products.add(new ProductQuantity(product, quantity));
+            products.add(new ProductQuantity(product, quantity)); // NOPMD
         }
     }
 
     private static void openLogs() {
-        lowestPrice = openLog(LOWEST_PRICE_LOG);
-        purchase = openLog(PURCHASE_LOG);
-        shipment = openLog(SHIPMENT_LOG);
+        lowestPriceLog = openLog(LOWEST_PRICE_LOG);
+        purchaseLog = openLog(PURCHASE_LOG);
+        shipmentLog = openLog(SHIPMENT_LOG);
     }
 
     private static BufferedWriter openLog(final String filename) {
@@ -94,41 +95,35 @@ public class LoadGenerator implements Runnable {
 
     private static void closeLogs() {
         try {
-            lowestPrice.close();
-            purchase.close();
-            shipment.close();
+            lowestPriceLog.close();
+            purchaseLog.close();
+            shipmentLog.close();
         } catch (IOException e) {
             System.err.println("Error closing log file");
             e.printStackTrace();
         }
     }
 
-    private static void runSimulations() throws InvalidArgumentException {
-        int frequency, totalThreads;
-        FrequencyHelper freqHelper = new FrequencyHelper(800);
+    private static void runSimulations() {
+        int frequency;
+        freqHelper = new FrequencyHelper(maxThreads);
 
         for (frequency = initialFreq; frequency <= endingFreq; frequency++) {
             freqHelper.setFrequency(frequency);
-            totalThreads = freqHelper.getTotalThreads();
-            runThreads(totalThreads);
+            System.out.println("# " + frequency + " reqs/min");
+            runThreads();
         }
     }
 
-    private static int setFrequency(final int frequency) {
-        final int totalThreads = Math.min(maxThreads, frequency);
-        period = 60 * 1000.0 / frequency;
-        threadPeriod = (int) (totalThreads * period + 0.5);
+    private static void runThreads() {
+        final int totalThreads = freqHelper.getTotalThreads();
+        System.out.println("# Using " + totalThreads + " threads");
 
-        System.out.println("# " + frequency + " reqs/min, gap " + threadPeriod + "ms, period " + period
-                + "ms");
-        return 0;
-    }
-
-    private static void runThreads(final int totalThreads) {
-        ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
+        final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
+        freqHelper.setStartTime();
 
         for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
-            Runnable worker = new LoadGenerator(threadNumber);
+            final Runnable worker = new LoadGenerator(threadNumber);
             executor.execute(worker);
         }
 
@@ -141,15 +136,6 @@ public class LoadGenerator implements Runnable {
         }
     }
 
-    private void simulate() {
-        final LowestPrice list = getLowestPriceList();
-        listId = list.getId();
-
-        final PurchaseInfo[] purchaseInfos = purchase(list);
-
-        requestShipmentData(purchaseInfos);
-    }
-
     private PurchaseInfo[] purchase(final LowestPrice list) {
         final long start = Calendar.getInstance().getTimeInMillis();
 
@@ -158,31 +144,31 @@ public class LoadGenerator implements Runnable {
 
         final long end = Calendar.getInstance().getTimeInMillis();
 
-        logTime(purchase, start, end);
+        logTime(purchaseLog, start, end);
 
         verifyPurchase(purchaseInfos);
 
         return purchaseInfos;
     }
 
-    private void verifyPurchase(PurchaseInfo[] purchaseInfos) {
+    private void verifyPurchase(final PurchaseInfo[] purchaseInfos) {
         if (purchaseInfos.length != 5) {
             System.err.println("Purchase test failed! Length is " + purchaseInfos.length);
         }
     }
 
     private static void logTime(final BufferedWriter out, final long start, final long end,
-            String... extraCols) {
+            final String... extraCols) {
         String line = end + " " + (end - start);
 
         for (String column : extraCols) {
-            line = line + " " + column;
+            line += " " + column;
         }
 
         writeln(out, line);
     }
 
-    private static void writeln(final BufferedWriter out, String line) {
+    private static void writeln(final BufferedWriter out, final String line) {
         try {
             synchronized (LoadGenerator.class) {
                 out.write(line + "\n");
@@ -203,7 +189,7 @@ public class LoadGenerator implements Runnable {
             deliveryInfo = customer.getShipmentData(purchaseInfo);
             end = Calendar.getInstance().getTimeInMillis();
 
-            logTime(shipment, start, end, listId);
+            logTime(shipmentLog, start, end, listId);
 
             verifyDelivery(deliveryInfo);
         }
@@ -220,14 +206,14 @@ public class LoadGenerator implements Runnable {
         final LowestPrice list = customer.getLowestPriceForList(products);
         final long end = Calendar.getInstance().getTimeInMillis();
 
-        logTime(lowestPrice, start, end);
+        logTime(lowestPriceLog, start, end);
 
         verifyList(list);
 
         return list;
     }
 
-    private void verifyList(LowestPrice list) {
+    private void verifyList(final LowestPrice list) {
         if (!list.getPrice().equals(1215.0)) {
             System.err.println("Price list test failed! Price is " + list.getPrice());
         }
@@ -235,8 +221,24 @@ public class LoadGenerator implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < freqHelper.getTotalRequests(threadNumber); i++) {
+            try {
+                final long sleepTime = freqHelper.getSleepTime(threadNumber, i);
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                System.out.println("# ERROR on sleeping.");
+                e.printStackTrace();
+            }
             simulate();
         }
+    }
+
+    private void simulate() {
+        final LowestPrice list = getLowestPriceList();
+        listId = list.getId();
+
+        final PurchaseInfo[] purchaseInfos = purchase(list);
+
+        requestShipmentData(purchaseInfos);
     }
 }
