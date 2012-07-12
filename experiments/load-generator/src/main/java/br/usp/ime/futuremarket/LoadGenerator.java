@@ -21,9 +21,9 @@ public class LoadGenerator implements Runnable {
     private static final String PURCHASE_LOG = "purchase.log";
     private static final String SHIPMENT_LOG = "shipment.log";
 
-    private static BufferedWriter lowestPrice;
-    private static BufferedWriter purchase;
-    private static BufferedWriter shipment;
+    private static BufferedWriter lowestPriceLog;
+    private static BufferedWriter purchaseLog;
+    private static BufferedWriter shipmentLog;
 
     private static int threadSimulations;
 
@@ -35,9 +35,9 @@ public class LoadGenerator implements Runnable {
     }
 
     private static void openLogs() {
-        lowestPrice = openLog(LOWEST_PRICE_LOG);
-        purchase = openLog(PURCHASE_LOG);
-        shipment = openLog(SHIPMENT_LOG);
+        lowestPriceLog = openLog(LOWEST_PRICE_LOG);
+        purchaseLog = openLog(PURCHASE_LOG);
+        shipmentLog = openLog(SHIPMENT_LOG);
     }
 
     private static BufferedWriter openLog(final String filename) {
@@ -97,9 +97,9 @@ public class LoadGenerator implements Runnable {
 
     private static void closeLogs() {
         try {
-            lowestPrice.close();
-            purchase.close();
-            shipment.close();
+            lowestPriceLog.close();
+            purchaseLog.close();
+            shipmentLog.close();
         } catch (IOException e) {
             System.err.println("Error while closing log file");
             e.printStackTrace();
@@ -129,7 +129,7 @@ public class LoadGenerator implements Runnable {
 
         final long end = Calendar.getInstance().getTimeInMillis();
 
-        logTime(purchase, start, end);
+        logTime(purchaseLog, start, end);
 
         verifyPurchase(purchaseInfos);
 
@@ -174,7 +174,7 @@ public class LoadGenerator implements Runnable {
             deliveryInfo = orchestrator.getShipmentData(purchaseInfo);
             end = Calendar.getInstance().getTimeInMillis();
 
-            logTime(shipment, start, end, listId);
+            logTime(shipmentLog, start, end, listId);
 
             verifyDelivery(deliveryInfo);
         }
@@ -191,7 +191,7 @@ public class LoadGenerator implements Runnable {
         final LowestPrice list = orchestrator.getLowestPriceForList(products);
         final long end = Calendar.getInstance().getTimeInMillis();
 
-        logTime(lowestPrice, start, end);
+        logTime(lowestPriceLog, start, end);
 
         verifyList(list);
 

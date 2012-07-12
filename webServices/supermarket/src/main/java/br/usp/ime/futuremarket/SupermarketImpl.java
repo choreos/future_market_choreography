@@ -49,7 +49,7 @@ public class SupermarketImpl implements Supermarket {
 
     }
     
-    @WebMethod
+    @Override
     public void reset() {
     	Properties properties = new Properties();
     	try {
@@ -108,12 +108,6 @@ public class SupermarketImpl implements Supermarket {
         }
 
         return productPriceList.toArray(new ProductPrice[1]);
-    }
-
-    private void printStock() {
-    	for(String  p: stockItems.keySet()) {
-    		System.out.println(p + " - " + stockItems.get(p));
-    	}
     }
     
     @WebMethod

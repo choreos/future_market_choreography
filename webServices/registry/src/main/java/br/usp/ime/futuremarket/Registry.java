@@ -18,15 +18,14 @@ public interface Registry {
     public String getFirst(String role);
 
     @WebMethod
+    public String getByIndex(final String role, final int index);
+
+    @WebMethod
     public String add(String role, String name, String endpoint);
 
     @WebMethod
     public String remove(String role, String name);
-    
+
     @WebMethod
     public String getServiceEndpoint(String name);
-    
-    @WebMethod
-    public void resetAll();
-
 }

@@ -35,11 +35,7 @@ public class FutureMarket {
     public static final String BANK_ROLE = "Bank";
     public static final String BANK_SERVICE = "BankImplService";
     
-    public FutureMarket() {
-
-    }
-    
-    private static Registry getRegistry() {
+    public static Registry getRegistry() {
     	if (registry == null) {
             registry = getRegistryClient();
         }
@@ -84,7 +80,7 @@ public class FutureMarket {
         return clients;
     }
 
-    private static <T> T getClient(final Class<T> resultClass, final String wsdl, final String serviceName) {
+    public static <T> T getClient(final Class<T> resultClass, final String wsdl, final String serviceName) {
         final QName qname = new QName(NAMESPACE, serviceName);
         URL url = null;
 
@@ -129,12 +125,5 @@ public class FutureMarket {
         }
 
         return addr.getCanonicalHostName();
-    }
-    
-    public void reset(String role) {
-    	for(String endpoint: getRegistry().getList(role)) {
-			Supermarket supermarket = getClient(Supermarket.class, endpoint, FutureMarket.SUPERMARKET_SERVICE);
-			supermarket.reset();
-		}
     }
 }
