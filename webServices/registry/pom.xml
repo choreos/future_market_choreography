@@ -14,7 +14,7 @@
 				<version>2.12</version>
 				<configuration>
 					<excludes>
-						<exclude>br/usp/ime/futuremarket/choreography/tests/functional/*.java</exclude>
+						<exclude>br/usp/ime/futuremarket/*/tests/functional/*.java</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

@@ -10,6 +10,7 @@
 *.properties
 *.swp
 *.war
+*~
 .DS_Store
 .classpath
 .metadata/

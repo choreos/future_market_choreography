@@ -1,0 +1,4 @@
+In this branch: orchestration with replicated orchestrators
+
+In the test case 4 we have three orchestrators
+Registry.getFirst returns orchestrators according to a round robin policy

@@ -9,7 +9,7 @@ If the project requires rehearsal, add it as a provided dependency, otherwise ja
 How to run use cases:
 
 - go to test/scripts/
-- run: 
+- run:
   $ sh deploy_test.sh <Y/N> <number of use_case>
   Y if you would like make backup of supermarkets and shippers and futureMarket properties
 - go to webServices folder

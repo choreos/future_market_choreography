@@ -1,23 +1,19 @@
-all: customer
+all: orchestrator
 	@echo "==============================================="
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
 
-futuremarket: registry
+futuremarket: registry pojo
 	cd futureMarket && \
 	mvn clean install
 
-customer: supermarket 
-	cd customer && \
-	mvn clean install
-
-shipper: pojo futuremarket
+shipper: futuremarket
 	cd shipper && \
 	mvn clean install && \
 	cd ../shippers && \
 	./generateShippers.sh
 
-bank: pojo futuremarket
+bank: futuremarket
 	cd bank && \
 	mvn clean install
 
@@ -30,6 +26,12 @@ supermarket: shipper bank
 	cd ../supermarkets && \
 	./generateSupermarkets.sh
 
+orchestrator: supermarket
+	cd orchestrator && \
+	mvn clean install && \
+	cd ../orchestrators && \
+	./generateOrchestrators.sh
+
 pojo:
 	cd pojos && \
 	mvn clean install
@@ -41,17 +43,19 @@ undeploy:
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upermarket* \
 	rm -rf $(CATALINA_HOME)/webapps/{m,M}anufacturer* \
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upplier* \
-	rm -rf $(CATALINA_HOME)/webapps/{c,C}ustomer*
+	rm -rf $(CATALINA_HOME)/webapps/{O,o}rchestrator*
 
 FORCE:
 
 deploy:
 	make -C registry deploy
 	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
-	@echo "Sleeping for 7 sec while shipper is deployed"
+	@echo "Sleeping for 7 sec while shippers are deployed"
 	sleep 7
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
 	@echo "Sleeping for 7 sec while bank is deployed"
 	sleep 7
+	cp -f orchestrators/*/*.war $(CATALINA_HOME)/webapps/
+	@echo "Sleeping for 7 sec while orchestrators are deployed"
+	sleep 7
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
-	cp -f customer/target/customer.war $(CATALINA_HOME)/webapps/
