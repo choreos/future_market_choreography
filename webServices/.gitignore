@@ -1,5 +1,0 @@
-bin/
-.settings/
-*~
-*.war
-test/scripts/backup/*
