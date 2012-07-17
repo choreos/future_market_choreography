@@ -22,7 +22,7 @@ import br.usp.ime.futuremarket.choreography.models.LowestPrice;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
 endpointInterface = "br.usp.ime.futuremarket.Customer")
-public class CustomerImpl implements Customer {
+public class BrokerImpl implements Broker {
 
 	private static final String REL_PATH = "customer/customer";
 
@@ -32,7 +32,7 @@ public class CustomerImpl implements Customer {
 	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
 	private long currentList;
 
-	public CustomerImpl() {
+	public BrokerImpl() {
 		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
 		currentList = 0L;
 		futureMarket = new FutureMarket();

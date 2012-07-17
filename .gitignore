@@ -17,4 +17,5 @@
 .pmd
 .project
 .settings
+bin/
 target/

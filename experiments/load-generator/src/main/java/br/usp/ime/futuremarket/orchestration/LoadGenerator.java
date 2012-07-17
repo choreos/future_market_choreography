@@ -10,13 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import br.usp.ime.futuremarket.CustomerInfo;
-import br.usp.ime.futuremarket.DeliveryInfo;
-import br.usp.ime.futuremarket.FutureMarket;
-import br.usp.ime.futuremarket.Orchestrator;
-import br.usp.ime.futuremarket.ProductQuantity;
-import br.usp.ime.futuremarket.PurchaseInfo;
-import br.usp.ime.futuremarket.models.LowestPrice;
+import br.usp.ime.futuremarket.orchestration.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
     private Orchestrator orchestrator = null;

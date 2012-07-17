@@ -15,12 +15,24 @@
     <module>shipper</module>
     <module>supermarket</module>
     <module>orchestrator</module>
+    <module>broker</module>
+    <module>helloWorld</module>
+    <module>../experiments/load-generator</module>
+    <module>test/tests</module>
   </modules>  
 
   <properties>
     <eclipse.dependency>true</eclipse.dependency>
+    <wtpversion>2.0</wtpversion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+    </dependency>
+  </dependencies>
   
 </project>

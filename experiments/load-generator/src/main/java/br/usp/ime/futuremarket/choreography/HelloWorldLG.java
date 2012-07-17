@@ -58,7 +58,7 @@ public class HelloWorldLG implements Runnable {
     }
 
     private static void runThreads(final int totalThreads) {
-        ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
+        final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
 
         for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
             Runnable worker = new HelloWorldLG(threadNumber);

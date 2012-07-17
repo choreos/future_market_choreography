@@ -5,36 +5,40 @@ all: orchestrator
 
 futuremarket: registry pojo
 	cd futureMarket && \
-	mvn clean install
+	mvn install
 
 shipper: futuremarket
 	cd shipper && \
-	mvn clean install && \
+	mvn install && \
 	cd ../shippers && \
 	./generateShippers.sh
 
 bank: futuremarket
 	cd bank && \
-	mvn clean install
+	mvn install
 
 registry: FORCE
 	make -C registry
 
 supermarket: shipper bank
 	cd supermarket && \
-	mvn clean install && \
+	mvn install && \
 	cd ../supermarkets && \
 	./generateSupermarkets.sh
 
 orchestrator: supermarket
 	cd orchestrator && \
-	mvn clean install && \
+	mvn install && \
 	cd ../orchestrators && \
 	./generateOrchestrators.sh
 
+broker: pojo registry supermarket shipper futuremarket
+	cd broker && \
+	mvn install
+
 pojo:
 	cd pojos && \
-	mvn clean install
+	mvn install
 
 undeploy:
 	make -C registry undeploy

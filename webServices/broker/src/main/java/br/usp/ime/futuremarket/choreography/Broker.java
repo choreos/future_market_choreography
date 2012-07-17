@@ -17,7 +17,7 @@ import br.usp.ime.futuremarket.choreography.models.LowestPrice;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED)
-public interface Customer {
+public interface Broker {
 
     @WebMethod
     public LowestPrice getLowestPriceForList(Set<ProductQuantity> products);

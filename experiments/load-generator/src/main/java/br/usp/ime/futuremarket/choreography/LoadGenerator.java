@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import br.usp.ime.futuremarket.choreography.models.LowestPrice;
 
 public class LoadGenerator implements Runnable {
-    private static Customer customer = null;
+    private static Broker broker = null;
     private static Set<ProductQuantity> products = new HashSet<ProductQuantity>();
     private static final int THREADS_TIMEOUT = 360;
 
@@ -38,7 +38,7 @@ public class LoadGenerator implements Runnable {
     public static void main(final String[] args) {
         readArgs(args);
 
-        customer = getCustomer();
+        broker = getBroker();
         populateProductList();
 
         openLogs();
@@ -57,10 +57,10 @@ public class LoadGenerator implements Runnable {
         maxThreads = Integer.parseInt(args[2]);
     }
 
-    private static Customer getCustomer() {
+    private static Broker getBroker() {
         final FutureMarket futureMarket = new FutureMarket();
         return futureMarket.getFirstClient(FutureMarket.CUSTOMER_ROLE,
-                FutureMarket.CUSTOMER_SERVICE, Customer.class);
+                FutureMarket.CUSTOMER_SERVICE, Broker.class);
     }
 
     private static void populateProductList() {
@@ -139,7 +139,7 @@ public class LoadGenerator implements Runnable {
     private PurchaseInfo[] purchase(final LowestPrice list) {
         final long start = Calendar.getInstance().getTimeInMillis();
 
-        final PurchaseInfo[] purchaseInfos = customer
+        final PurchaseInfo[] purchaseInfos = broker
                 .makePurchase(list.getId(), new CustomerInfo());
 
         final long end = Calendar.getInstance().getTimeInMillis();
@@ -186,7 +186,7 @@ public class LoadGenerator implements Runnable {
         long end;
         for (PurchaseInfo purchaseInfo : purchaseInfos) {
             start = Calendar.getInstance().getTimeInMillis();
-            deliveryInfo = customer.getShipmentData(purchaseInfo);
+            deliveryInfo = broker.getShipmentData(purchaseInfo);
             end = Calendar.getInstance().getTimeInMillis();
 
             logTime(shipmentLog, start, end, listId);
@@ -203,7 +203,7 @@ public class LoadGenerator implements Runnable {
 
     private LowestPrice getLowestPriceList() {
         final long start = Calendar.getInstance().getTimeInMillis();
-        final LowestPrice list = customer.getLowestPriceForList(products);
+        final LowestPrice list = broker.getLowestPriceForList(products);
         final long end = Calendar.getInstance().getTimeInMillis();
 
         logTime(lowestPriceLog, start, end);

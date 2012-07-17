@@ -5,6 +5,13 @@
 	<artifactId>tests</artifactId>
 	<version>1.0</version>
 	<description>Integration and acceptance tests</description>
+
+  <parent>
+    <groupId>br.usp.ime.futuremarket</groupId>
+    <artifactId>webServices</artifactId>
+    <version>1.0</version>
+  </parent>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -20,6 +27,11 @@
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>future-market</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>broker</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

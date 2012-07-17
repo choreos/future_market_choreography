@@ -3,6 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd"
 	version="2.0">
-	<endpoint name="helloWorld" implementation="br.usp.ime.futuremarket.HelloWorldImpl"
-		url-pattern="/helloWorld" />
+	<endpoint name="Customer" implementation="br.usp.ime.futuremarket.BrokerImpl"
+		url-pattern="/broker" />
 </endpoints>

@@ -5,6 +5,12 @@
 	<artifactId>future-market</artifactId>
 	<version>1.0</version>
 
+  <parent>
+    <groupId>br.usp.ime.futuremarket</groupId>
+    <artifactId>webServices</artifactId>
+    <version>1.0</version>
+  </parent>
+
 	<build>
 		<plugins>
 			<plugin>

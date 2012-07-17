@@ -6,6 +6,17 @@
 	<version>1.0</version>
 	<description>Simulates clients</description>
 
+  <parent>
+    <groupId>br.usp.ime.futuremarket</groupId>
+    <artifactId>webServices</artifactId>
+    <version>1.0</version>
+  </parent>
+	
+	<properties>
+   	<eclipse.dependency>true</eclipse.dependency>
+   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ 	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -43,7 +54,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>orchestrator</artifactId>
+			<artifactId>broker</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
@@ -52,15 +63,20 @@
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>helloWorld</artifactId>
-			<version>1.0</version>
+            <groupId>br.usp.ime.futuremarket</groupId>
+		    <artifactId>orchestrator</artifactId>
+            <version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-		</dependency>
+        <dependency>
+            <groupId>br.usp.ime.futuremarket</groupId>
+            <artifactId>broker</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>br.usp.ime.futuremarket</groupId>
+            <artifactId>helloWorld</artifactId>
+            <version>1.0</version>
+        </dependency>
 	</dependencies>
 
 </project>
