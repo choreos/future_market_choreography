@@ -1,0 +1,89 @@
+package br.usp.ime.futuremarket.tests.functional;
+
+import static org.junit.Assert.assertEquals;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+import java.util.Properties;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import br.usp.ime.futuremarket.Registry;
+
+public class RegistryTest {
+    private static final String ROLE = "Supermarket";
+    private static final String NAME = "WALMART";
+    private static final String ENDPOINT = "http://www.walmart.com";
+    private static final String PROPERTIES_FILE = "registry.properties";
+
+    /*
+     * The constants below are available in FutureMarket project that depends on
+     * this (Registry) project. Since we don't want circular dependencies, we
+     * won't use them and we'll declare our own.
+     */
+    private static final String NAMESPACE = "http://futuremarket.ime.usp.br";
+    private static final String LPART = "RegistryImplService";
+
+    private static Registry registry;
+    private List<String> wsdls;
+
+    @BeforeClass
+    public static void initRegistryClient() throws IOException {
+        final String registryWsdl = getRegistryWsdl();
+        setRegistryClient(registryWsdl);
+    }
+
+    private static void setRegistryClient(final String registryWsdl) throws MalformedURLException {
+        final URL url = new URL(registryWsdl);
+        final QName qname = new QName(NAMESPACE, LPART);
+        final Service service = Service.create(url, qname);
+
+        registry = service.getPort(Registry.class);
+    }
+
+    private static String getRegistryWsdl() throws IOException {
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        final InputStream file = loader.getResourceAsStream(PROPERTIES_FILE);
+        final Properties properties = new Properties();
+
+        properties.load(file);
+
+        return properties.getProperty("registryWsdl");
+    }
+
+    @Test
+    public void shouldBeginEmpty() {
+        wsdls = registry.getServicesForRole(ROLE);
+        assertEquals(0, wsdls.size());
+    }
+
+    @Test
+    public void shouldAddASupermarket() {
+        registry.addService(ROLE, NAME, ENDPOINT);
+
+        wsdls = registry.getServicesForRole(ROLE);
+
+        assertEquals(1, wsdls.size());
+        assertEquals(ENDPOINT, wsdls.get(0));
+
+        final String wsdl = registry.getServiceForName(NAME);
+        assertEquals(ENDPOINT, wsdl);
+    }
+
+    @Test
+    public void shouldRemoveSupermarket() {
+        registry.removeService(ROLE, NAME);
+        wsdls = registry.getServicesForRole(ROLE);
+        assertEquals(0, wsdls.size());
+
+        final String wsdl = registry.getServiceForName(NAME);
+        assertEquals("", wsdl);
+    }
+}

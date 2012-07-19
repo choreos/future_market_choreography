@@ -3,6 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd"
 	version="2.0">
-	<endpoint name="Registry" implementation="br.usp.ime.futuremarket.RegistryImpl"
-		url-pattern="/registry" />
+	<endpoint name="RegistryOrch" implementation="br.usp.ime.futuremarket.RegistryImpl"
+		url-pattern="/orchestration" />
+	<endpoint name="RegistryChor" implementation="br.usp.ime.futuremarket.RegistryImpl"
+		url-pattern="/choreography" />
 </endpoints>
