@@ -12,16 +12,16 @@ import javax.jws.soap.SOAPBinding.Style;
 public interface Registry {
 
     @WebMethod
-    List<String> getServicesForRole(String role);
+    List<String> getServices(String role);
 
     @WebMethod
-    String getServiceForRole(String role);
+    String getServiceByRole(String role);
     
     @WebMethod
-    String getServiceForName(String name);
+    String getServiceByName(String name);
     
     @WebMethod
-    String getServiceByIndex(final String role, final int index);
+    String getServiceRoundRobin(String role);
 
     @WebMethod
     String addService(String role, String name, String endpoint);

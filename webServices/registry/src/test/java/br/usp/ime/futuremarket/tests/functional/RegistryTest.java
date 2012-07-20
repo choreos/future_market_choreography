@@ -21,7 +21,8 @@ public class RegistryTest {
     private static final String ROLE = "Supermarket";
     private static final String NAME = "WALMART";
     private static final String ENDPOINT = "http://www.walmart.com";
-    private static final String PROPERTIES_FILE = "registry.properties";
+    private static final String PROP_FILE = "registry.properties";
+    private static final String PROP_KEY = "registry.wsdl";
 
     /*
      * The constants below are available in FutureMarket project that depends on
@@ -50,17 +51,17 @@ public class RegistryTest {
 
     private static String getRegistryWsdl() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        final InputStream file = loader.getResourceAsStream(PROPERTIES_FILE);
+        final InputStream file = loader.getResourceAsStream(PROP_FILE);
         final Properties properties = new Properties();
 
         properties.load(file);
 
-        return properties.getProperty("registryWsdl");
+        return properties.getProperty(PROP_KEY);
     }
 
     @Test
     public void shouldBeginEmpty() {
-        wsdls = registry.getServicesForRole(ROLE);
+        wsdls = registry.getServices(ROLE);
         assertEquals(0, wsdls.size());
     }
 
@@ -68,22 +69,22 @@ public class RegistryTest {
     public void shouldAddASupermarket() {
         registry.addService(ROLE, NAME, ENDPOINT);
 
-        wsdls = registry.getServicesForRole(ROLE);
+        wsdls = registry.getServices(ROLE);
 
         assertEquals(1, wsdls.size());
         assertEquals(ENDPOINT, wsdls.get(0));
 
-        final String wsdl = registry.getServiceForName(NAME);
+        final String wsdl = registry.getServiceByName(NAME);
         assertEquals(ENDPOINT, wsdl);
     }
 
     @Test
     public void shouldRemoveSupermarket() {
         registry.removeService(ROLE, NAME);
-        wsdls = registry.getServicesForRole(ROLE);
+        wsdls = registry.getServices(ROLE);
         assertEquals(0, wsdls.size());
 
-        final String wsdl = registry.getServiceForName(NAME);
+        final String wsdl = registry.getServiceByName(NAME);
         assertEquals("", wsdl);
     }
 }

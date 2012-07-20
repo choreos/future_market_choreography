@@ -10,18 +10,21 @@ import javax.jws.WebService;
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
         endpointInterface = "br.usp.ime.futuremarket.Registry")
 public class RegistryImpl implements Registry {
+
     // HashMap<role, ArrayList<endpoint>>
     private final Map<String, List<String>> services;
     // HashMap<name, endpoint>
     private final Map<String, String> names;
+    private final Map<String, Integer> index;
 
     public RegistryImpl() {
         services = new HashMap<String, List<String>>();
         names = new HashMap<String, String>();
+        index = new HashMap<String, Integer>();
     }
 
     @Override
-    public List<String> getServicesForRole(final String role) {
+    public List<String> getServices(final String role) {
         List<String> roleServices;
 
         if (services.containsKey(role)) {
@@ -34,7 +37,7 @@ public class RegistryImpl implements Registry {
     }
 
     @Override
-    public String getServiceForRole(final String role) {
+    public String getServiceByRole(final String role) {
         String service;
 
         if (services.containsKey(role)) {
@@ -47,31 +50,50 @@ public class RegistryImpl implements Registry {
     }
 
     @Override
-    public String getServiceForName(final String name) {
-        String sservice;
+    public String getServiceByName(final String name) {
+        String service;
 
         if (names.containsKey(name)) {
-            sservice = names.get(name);
+            service = names.get(name);
         } else {
-            sservice = "";
+            service = "";
         }
 
-        return sservice;
+        return service;
     }
 
     @Override
-    public String getServiceByIndex(final String role, final int index) {
+    public String getServiceRoundRobin(final String role) {
         String service;
 
         if (!services.containsKey(role) || services.get(role).isEmpty()) {
             service = "";
         } else {
-            final List<String> roleServices = services.get(role);
-            final int arrayIndex = index % roleServices.size();
-            service = roleServices.get(arrayIndex);
+            service = getNextService(role);
         }
 
         return service;
+    }
+
+    private String getNextService(String role) {
+        final List<String> roleServices = services.get(role);
+        int index;
+
+        synchronized (services) {
+            index = getRoleIndex(role);
+            increaseRoleIndex(role, index, roleServices.size());
+        }
+
+        return roleServices.get(index);
+    }
+
+    private void increaseRoleIndex(final String role, final int value, final int size) {
+        final int safeValue = (value + 1) % size;
+        index.put(role, safeValue);
+    }
+
+    private int getRoleIndex(final String role) {
+        return index.containsKey(role) ? index.get(role) : 0;
     }
 
     @Override

@@ -29,12 +29,12 @@ public class RegistryTest {
     }
 
     @Test
-    public void shouldReturnCorrectIndex() {
+    public void shouldRoundRobin() {
         addEndpoint(ROLE, "TestName1", "TestEndpoint1");
         addEndpoint(ROLE, "TestName2", "TestEndpoint2");
 
-        assertEquals(endpoints.get(0), registry.getServiceByIndex(ROLE, 0));
-        assertEquals(endpoints.get(1), registry.getServiceByIndex(ROLE, 1));
+        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
+        assertEquals(endpoints.get(1), registry.getServiceRoundRobin(ROLE));
     }
 
     private void addEndpoint(final String role, final String name, final String endpoint) {
@@ -43,11 +43,12 @@ public class RegistryTest {
     }
 
     @Test
-    public void shouldNotGetArrayOutOfBounds() {
+    public void shouldCicleServicesOnRoundRobin() {
         addEndpoint(ROLE, "Foo1", "Bar1");
         addEndpoint(ROLE, "Foo2", "Bar2");
 
-        assertEquals(endpoints.get(0), registry.getServiceByIndex(ROLE, 2));
-        assertEquals(endpoints.get(1), registry.getServiceByIndex(ROLE, 3));
+        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
+        assertEquals(endpoints.get(1), registry.getServiceRoundRobin(ROLE));
+        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
     }
 }
