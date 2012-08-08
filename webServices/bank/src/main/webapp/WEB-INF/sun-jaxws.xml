@@ -3,6 +3,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd"
 	version="2.0">
-	<endpoint name="Bank" implementation="br.usp.ime.futuremarket.BankImpl"
-		url-pattern="/bank" />
+	<endpoint name="BankOrch" implementation="br.usp.ime.futuremarket.BankImpl"
+		url-pattern="/orchestration" />
+	<endpoint name="BankChor" implementation="br.usp.ime.futuremarket.BankImpl"
+		url-pattern="/choreography" />
 </endpoints>
