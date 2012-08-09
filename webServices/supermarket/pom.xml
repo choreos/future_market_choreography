@@ -35,7 +35,7 @@
 		</dependency>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>orchestrator</artifactId>
+			<artifactId>portal</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>

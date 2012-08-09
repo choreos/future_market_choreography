@@ -1,4 +1,4 @@
-all: orchestrator
+all: portal orchestrators
 	@echo "==============================================="
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
@@ -26,19 +26,13 @@ supermarket: shipper bank
 	cd ../supermarkets && \
 	./generateSupermarkets.sh
 
-orchestrator: supermarket
-	cd orchestrator && \
-	mvn install && \
+portal:
+	cd portal && \
+	mvn install
+
+orchestrators: portal
 	cd ../orchestrators && \
 	./generateOrchestrators.sh
-
-broker: pojo registry supermarket shipper futuremarket
-	cd broker && \
-	mvn install
-
-pojo:
-	cd pojos && \
-	mvn install
 
 undeploy:
 	make -C registry undeploy
@@ -47,7 +41,6 @@ undeploy:
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upermarket* \
 	rm -rf $(CATALINA_HOME)/webapps/{m,M}anufacturer* \
 	rm -rf $(CATALINA_HOME)/webapps/{s,S}upplier* \
-	rm -rf $(CATALINA_HOME)/webapps/{O,o}rchestrator*
 
 FORCE:
 

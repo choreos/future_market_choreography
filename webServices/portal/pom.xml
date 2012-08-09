@@ -2,18 +2,28 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.usp.ime.futuremarket</groupId>
-	<artifactId>broker</artifactId>
+	<artifactId>portal</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
 
-  <parent>
-    <groupId>br.usp.ime.futuremarket</groupId>
-    <artifactId>webServices</artifactId>
-    <version>1.0</version>
-  </parent>
+	<parent>
+		<groupId>br.usp.ime.futuremarket</groupId>
+		<artifactId>webServices</artifactId>
+		<version>1.0</version>
+	</parent>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12</version>
+				<configuration>
+					<excludes>
+						<exclude>**/tests/functional/*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -25,7 +35,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warName>broker</warName>
+					<warName>portal</warName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -62,42 +72,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12</version>
-				<configuration>
-					<excludes>
-						<exclude>br/usp/ime/futuremarket/choreography/tests/functional/*.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>pojos</artifactId>
-			<version>1.0</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>registry</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>supermarket</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>shipper</artifactId>
-			<version>1.0</version>
-		</dependency>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>future-market</artifactId>
@@ -108,6 +86,26 @@
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>pojos</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>registry</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>shipper</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>supermarket</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 

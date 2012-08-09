@@ -14,8 +14,7 @@
     <module>bank</module>
     <module>shipper</module>
     <module>supermarket</module>
-    <module>orchestrator</module>
-    <module>broker</module>
+    <module>portal</module>
     <module>helloWorld</module>
     <module>../experiments/load-generator</module>
     <module>tests</module>
