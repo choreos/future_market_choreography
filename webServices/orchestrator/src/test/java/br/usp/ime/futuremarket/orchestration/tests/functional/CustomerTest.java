@@ -7,12 +7,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.models.LowestPrice;
 import br.usp.ime.futuremarket.orchestration.CustomerInfo;
 import br.usp.ime.futuremarket.orchestration.FutureMarket;
 import br.usp.ime.futuremarket.orchestration.Orchestrator;
 import br.usp.ime.futuremarket.orchestration.ProductQuantity;
 import br.usp.ime.futuremarket.orchestration.PurchaseInfo;
-import br.usp.ime.futuremarket.orchestration.models.LowestPrice;
 
 public class CustomerTest {
 

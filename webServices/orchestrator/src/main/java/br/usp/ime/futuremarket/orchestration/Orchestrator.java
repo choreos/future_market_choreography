@@ -1,37 +1,34 @@
 package br.usp.ime.futuremarket.orchestration;
 
-import java.util.Set;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
 
-import br.usp.ime.futuremarket.orchestration.CustomerInfo;
-import br.usp.ime.futuremarket.orchestration.DeliveryInfo;
-import br.usp.ime.futuremarket.orchestration.ProductQuantity;
-import br.usp.ime.futuremarket.orchestration.PurchaseInfo;
-import br.usp.ime.futuremarket.orchestration.models.LowestPrice;
+import br.usp.ime.futuremarket.CustomerInfo;
+import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.ShopList;
 
 @WebService
-@SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED)
+@SOAPBinding(style = Style.DOCUMENT)
 public interface Orchestrator {
 
     @WebMethod
-    public LowestPrice getLowestPriceForList(Set<ProductQuantity> products);
+    ShopList getLowestPrices(ShopList list) throws IOException;
 
     @WebMethod
-    public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo);
+    Delivery getShipmentData(Purchase purchase) throws MalformedURLException;
 
     @WebMethod
-    public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo);
-    
-    @WebMethod
-    public PurchaseInfo[] makeSMPurchase(String name, Set<ProductQuantity> products, CustomerInfo customerInfo);
+    Purchase purchase(ShopList shopList, CustomerInfo customer);
 
     @WebMethod
-	public String requestPayment(PurchaseInfo purchaseInfo, CustomerInfo customerInfo);
+    Purchase smPurchase(ShopList shopList, CustomerInfo customer, String baseAddr);
 
+    @WebMethod
+    String requestPayment(Purchase purchase, CustomerInfo customerInfo);
 }
