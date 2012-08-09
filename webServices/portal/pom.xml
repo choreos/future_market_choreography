@@ -87,26 +87,6 @@
 			<version>4.10</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>pojos</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>registry</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>shipper</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>supermarket</artifactId>
-			<version>1.0</version>
-		</dependency>
 	</dependencies>
 
 </project>

@@ -78,16 +78,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>pojos</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>registry</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>future-market</artifactId>
 			<version>1.0</version>
 		</dependency>
