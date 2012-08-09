@@ -21,7 +21,7 @@
 		</dependency>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>future-market</artifactId>
+			<artifactId>futureMarket</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
