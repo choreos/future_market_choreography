@@ -18,7 +18,7 @@
     <module>broker</module>
     <module>helloWorld</module>
     <module>../experiments/load-generator</module>
-    <module>test/tests</module>
+    <module>tests</module>
   </modules>  
 
   <properties>
