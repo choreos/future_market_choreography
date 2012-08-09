@@ -3,7 +3,7 @@ all: portal orchestrators
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
 
-futuremarket: registry pojo
+futuremarket: registry
 	cd futureMarket && \
 	mvn install
 

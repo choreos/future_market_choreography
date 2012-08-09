@@ -8,7 +8,6 @@
   <name>CHOReOS FM</name>
 
   <modules>
-    <module>pojos</module>
     <module>registry</module>
     <module>futureMarket</module>
     <module>bank</module>
