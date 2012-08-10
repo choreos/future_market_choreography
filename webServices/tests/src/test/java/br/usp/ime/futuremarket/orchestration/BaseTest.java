@@ -1,8 +1,7 @@
 package br.usp.ime.futuremarket.orchestration;
 
-import br.usp.ime.futuremarket.orchestration.FutureMarket;
-import br.usp.ime.futuremarket.orchestration.Registry;
-import br.usp.ime.futuremarket.orchestration.Supermarket;
+import br.usp.ime.futuremarket.Registry;
+import br.usp.ime.futuremarket.Supermarket;
 
 public class BaseTest {
 
