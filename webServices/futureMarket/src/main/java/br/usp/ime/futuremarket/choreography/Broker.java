@@ -1,5 +1,7 @@
 package br.usp.ime.futuremarket.choreography;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Set;
 
 import javax.jws.WebMethod;
@@ -9,23 +11,22 @@ import javax.jws.soap.SOAPBinding.ParameterStyle;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
-import br.usp.ime.futuremarket.choreography.CustomerInfo;
-import br.usp.ime.futuremarket.choreography.DeliveryInfo;
-import br.usp.ime.futuremarket.choreography.ProductQuantity;
-import br.usp.ime.futuremarket.choreography.PurchaseInfo;
-import br.usp.ime.futuremarket.choreography.models.LowestPrice;
+import br.usp.ime.futuremarket.CustomerInfo;
+import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.ShopList;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED)
+
 public interface Broker {
 
     @WebMethod
-    public LowestPrice getLowestPriceForList(Set<ProductQuantity> products);
+    public ShopList getLowestPrice(ShopList list) throws IOException;
 
     @WebMethod
-    public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo);
+    public Delivery getDelivery(Purchase purchase) throws MalformedURLException;
 
     @WebMethod
-    public PurchaseInfo[] makePurchase(String listId, CustomerInfo customerInfo);
-
+    public Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
 }

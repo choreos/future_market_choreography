@@ -7,12 +7,10 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import br.usp.ime.futuremarket.models.LowestPrice;
-import br.usp.ime.futuremarket.orchestration.CustomerInfo;
+import br.usp.ime.futuremarket.CustomerInfo;
+import br.usp.ime.futuremarket.choreography.models.LowestPrice;
 import br.usp.ime.futuremarket.orchestration.FutureMarket;
 import br.usp.ime.futuremarket.orchestration.Orchestrator;
-import br.usp.ime.futuremarket.orchestration.ProductQuantity;
-import br.usp.ime.futuremarket.orchestration.PurchaseInfo;
 
 public class CustomerTest {
 
@@ -24,13 +22,13 @@ public class CustomerTest {
 
         final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity("product1", 1));
-        
+
         final LowestPrice list = customer.getLowestPriceForList(products);
 
         final CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setName("JUnit test");
 
-        final PurchaseInfo[] purchases = customer.makePurchase(list.getId(), customerInfo);
+        final PurchaseInfo[] purchases = customer.purchase(list.getId(), customerInfo);
 
         assertTrue(purchases.length > 0);
     }
@@ -48,10 +46,10 @@ public class CustomerTest {
         final CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setName("JUnit test");
 
-        PurchaseInfo[] purchases = customer.makePurchase(list.getId(), customerInfo);
+        PurchaseInfo[] purchases = customer.purchase(list.getId(), customerInfo);
         assertTrue(purchases.length > 0);
 
-        purchases = customer.makePurchase(list.getId(), customerInfo);
+        purchases = customer.purchase(list.getId(), customerInfo);
         assertTrue(purchases.length == 0);
     }
 }

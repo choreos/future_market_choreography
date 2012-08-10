@@ -7,11 +7,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.choreography.Broker;
-import br.usp.ime.futuremarket.choreography.CustomerInfo;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
-import br.usp.ime.futuremarket.choreography.ProductQuantity;
-import br.usp.ime.futuremarket.choreography.PurchaseInfo;
 import br.usp.ime.futuremarket.choreography.models.LowestPrice;
 
 public class BrokerTest {
@@ -24,13 +22,13 @@ public class BrokerTest {
 
         final Set<ProductQuantity> products = new HashSet<ProductQuantity>();
         products.add(new ProductQuantity("product1", 1));
-        
+
         final LowestPrice list = broker.getLowestPriceForList(products);
 
         final CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setName("JUnit test");
 
-        final PurchaseInfo[] purchases = broker.makePurchase(list.getId(), customerInfo);
+        final PurchaseInfo[] purchases = broker.purchase(list.getId(), customerInfo);
 
         assertTrue(purchases.length > 0);
     }
@@ -48,10 +46,10 @@ public class BrokerTest {
         final CustomerInfo customerInfo = new CustomerInfo();
         customerInfo.setName("JUnit test");
 
-        PurchaseInfo[] purchases = broker.makePurchase(list.getId(), customerInfo);
+        PurchaseInfo[] purchases = broker.purchase(list.getId(), customerInfo);
         assertTrue(purchases.length > 0);
 
-        purchases = broker.makePurchase(list.getId(), customerInfo);
+        purchases = broker.purchase(list.getId(), customerInfo);
         assertTrue(purchases.length == 0);
     }
 }

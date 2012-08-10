@@ -1,142 +1,110 @@
 package br.usp.ime.futuremarket.choreography;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
+import br.usp.ime.futuremarket.CustomerInfo;
+import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.Product;
+import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.Shipper;
+import br.usp.ime.futuremarket.ShopList;
+import br.usp.ime.futuremarket.ShopListItem;
+import br.usp.ime.futuremarket.Supermarket;
 
-import br.usp.ime.futuremarket.choreography.CustomerInfo;
-import br.usp.ime.futuremarket.choreography.DeliveryInfo;
-import br.usp.ime.futuremarket.choreography.FutureMarket;
-import br.usp.ime.futuremarket.choreography.ProductPrice;
-import br.usp.ime.futuremarket.choreography.ProductQuantity;
-import br.usp.ime.futuremarket.choreography.PurchaseInfo;
-import br.usp.ime.futuremarket.choreography.Shipper;
-import br.usp.ime.futuremarket.choreography.Supermarket;
-import br.usp.ime.futuremarket.choreography.models.LowestPrice;
-
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-endpointInterface = "br.usp.ime.futuremarket.Customer")
 public class BrokerImpl implements Broker {
 
-	private static final String REL_PATH = "customer/customer";
+    private final FutureMarket market = new FutureMarket();
 
-	private FutureMarket futureMarket;
-	private List<Supermarket> supermarkets;
-	// <listID, <supermarket,<productquantity>>>
-	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
-	private long currentList;
+    @Override
+    public ShopList getLowestPrice(final ShopList list) throws IOException {
+        ShopList smList;
 
-	public BrokerImpl() {
-		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
-		currentList = 0L;
-		futureMarket = new FutureMarket();
-		futureMarket.register(FutureMarket.CUSTOMER_ROLE, "Customer", REL_PATH);
-	}
+        for (Supermarket supermarket : getSupermarkets()) {
+            smList = supermarket.getPrices(list);
+            lookForCheaperProducts(list, smList);
+        }
+        return list;
+    }
 
-	private List<Supermarket> getSupermarkets() {
-		return futureMarket.getClients(FutureMarket.SUPERMARKET_ROLE,
-				FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
-	}
+    private void lookForCheaperProducts(final ShopList list, final ShopList candidateList) {
+        Product candidateProduct;
+        ShopListItem item;
 
-	@WebMethod
-	public LowestPrice getLowestPriceForList(Set<ProductQuantity> products) {
-		HashMap<HashMap<String, Double>, Supermarket> supermarketsProductList = new HashMap<HashMap<String, Double>, Supermarket>();
-		// gets prices from supermarkets
-		supermarkets = getSupermarkets();
+        for (ShopListItem candidateItem : candidateList.getItems()) {
+            candidateProduct = candidateItem.getProduct();
+            item = list.getItem(candidateProduct);
 
-		for (Supermarket supermarket : supermarkets) {
-			ProductPrice[] productPrices = supermarket.getPrices(products);
-			HashMap<String, Double> productsMap = new HashMap<String, Double>();
-			for (ProductPrice productPrice : productPrices) {
-				productsMap.put(productPrice.getProduct(), productPrice.getPrice());
-			}
-			supermarketsProductList.put(productsMap, supermarket);
-		}
+            lookForCheaperProduct(item, candidateItem, candidateProduct);
+        }
+    }
 
-		final String listId = Long.toString(getListId());
-		initializeMap(listId);
-		Double listPrice = 0d;
-		// finds lowest prices
-		for (ProductQuantity product : products) {
-			Supermarket supermarket = null;
-			Double lowestPrice = Double.MAX_VALUE;
-			for (HashMap<String, Double> productsHash : supermarketsProductList.keySet()) {
-				Double price = productsHash.get(product.getProduct());
-				if (price < lowestPrice) {
-					lowestPrice = price;
-					supermarket = supermarketsProductList.get(productsHash);
-				}
-			}
-			addProduct(listId, supermarket, product);
-			listPrice += (lowestPrice  * product.getQuantity());
-		}
+    private void lookForCheaperProduct(final ShopListItem item, final ShopListItem candidateItem,
+            final Product candidateProduct) {
+        final Product product = item.getProduct();
 
-		return new LowestPrice(listId, listPrice);
-	}
+        if (candidateProduct.getPrice() < product.getPrice()) {
+            product.setPrice(candidateProduct.getPrice());
+            item.setSellerEndpoint(candidateItem.getSellerEndpoint());
+        }
+    }
 
-	private void initializeMap(String listId) {
-		synchronized (this) {
-			customerProductLists.put(listId, new HashMap<Supermarket, Set<ProductQuantity>>());
-		}
-	}
+    private Collection<Supermarket> getSupermarkets() throws IOException {
+        return market.getClients(Role.SUPERMARKET, ServiceName.SUPERMARKET, Supermarket.class);
+    }
 
-	private void addProduct(String listId, Supermarket supermarket, ProductQuantity product) {
-		synchronized (this) {
-			if (customerProductLists.get(listId).get(supermarket) == null) {
-				customerProductLists.get(listId).put(supermarket, new HashSet<ProductQuantity>());
-			}
-			customerProductLists.get(listId).get(supermarket).add(product);
-		}
-	}
+    @Override
+    public Delivery getDelivery(final Purchase purchase) throws MalformedURLException {
+        final String baseAddress = purchase.getShipper();
+        final Shipper shipper = market.getClient(baseAddress, ServiceName.SHIPPER, Shipper.class);
+        return shipper.getDelivery(purchase);
+    }
 
-	private synchronized long getListId() {
-		return currentList++;
-	}
+    @Override
+    public Set<Purchase> purchase(final ShopList list, final CustomerInfo customer)
+            throws IOException {
+        final Set<Purchase> purchases = new HashSet<Purchase>();
+        // <SM baseAddress, SM ShopList>
+        final Map<String, ShopList> listsPerSm = splitListBySm(list);
 
-	@WebMethod
-	public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo) {
-		Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(),
-				FutureMarket.SHIPPER_SERVICE, Shipper.class);
-		return shipper.getDeliveryStatus(purchaseInfo);
-	}
+        ShopList smShopList;
+        Purchase purchase;
+        for (String smBaseAddr : listsPerSm.keySet()) {
+            smShopList = listsPerSm.get(smBaseAddr);
+            purchase = purchase(smBaseAddr, smShopList, customer);
+            purchases.add(purchase);
+        }
 
-	@WebMethod
-	public PurchaseInfo[] makePurchase(final String listId, final CustomerInfo customerInfo) {
-		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
-		Map<Supermarket, Set<ProductQuantity>> purchaseLists = null;
+        return purchases;
+    }
 
-		synchronized (this) {
-			purchaseLists = customerProductLists.remove(listId);
-		}
+    private Purchase purchase(final String baseAddr, final ShopList list,
+            final CustomerInfo customer) throws IOException {
+        final Supermarket supermarket = market.getClient(baseAddr, ServiceName.SUPERMARKET,
+                Supermarket.class);
+        return supermarket.purchase(list, customer);
+    }
 
-		if (purchaseLists != null) {
-			buy(customerInfo, result, purchaseLists);
-			purchaseLists.clear();
-		}
+    private Map<String, ShopList> splitListBySm(final ShopList list) {
+        final Map<String, ShopList> result = new HashMap<String, ShopList>();
 
-		return result.toArray(new PurchaseInfo[0]);
-	}
+        ShopList smList;
+        for (ShopListItem item : list.getItems()) {
+            smList = getSupermarketList(result, item.getSellerEndpoint());
+            smList.put(item);
+        }
+        return result;
+    }
 
-	private void buy(final CustomerInfo customerInfo, final List<PurchaseInfo> result,
-			final Map<Supermarket, Set<ProductQuantity>> purchaseLists) {
-		PurchaseInfo purchaseInfo;
-
-		for (Supermarket supermarket : purchaseLists.keySet()) {
-			/* HashMap<String, Integer> productQuantities = new HashMap<String, Integer>();            
-            System.out.println("customer ======================================");
-            for (String p: purchaseLists.get(supermarket)) {
-            	System.out.println("customer adding " + p);
-            	productQuantities.put(p, 1);
-            }
-            System.out.println("productQuantities: " + productQuantities);*/
-			purchaseInfo = supermarket.purchase(purchaseLists.get(supermarket), customerInfo);
-			result.add(purchaseInfo);
-		}
-	}
+    private ShopList getSupermarketList(final Map<String, ShopList> lists, final String supermarket) {
+        if (!lists.containsKey(supermarket)) {
+            lists.put(supermarket, new ShopList());
+        }
+        return lists.get(supermarket);
+    }
 }
