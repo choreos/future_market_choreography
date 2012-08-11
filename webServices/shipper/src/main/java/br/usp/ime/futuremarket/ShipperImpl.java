@@ -31,7 +31,7 @@ public class ShipperImpl implements Shipper {
 
     @WebMethod
     public boolean deliver(final Purchase purchase) {
-        final String key = purchaseIdentifier(purchase);
+        final String key = purchase.getUniqueId();
         final Delivery delivery = new Delivery(new Date(), "done", purchase);
 
         synchronized (this) {
@@ -43,7 +43,7 @@ public class ShipperImpl implements Shipper {
 
     @WebMethod
     public Delivery getDelivery(final Purchase purchase) {
-        final String key = purchaseIdentifier(purchase);
+        final String key = purchase.getUniqueId();
 
         Delivery delivery;
         synchronized (this) {
@@ -51,10 +51,6 @@ public class ShipperImpl implements Shipper {
         }
 
         return delivery;
-    }
-
-    private String purchaseIdentifier(final Purchase purchase) {
-        return purchase.getSeller() + purchase.getNumber();
     }
 
     private void register() throws IOException {

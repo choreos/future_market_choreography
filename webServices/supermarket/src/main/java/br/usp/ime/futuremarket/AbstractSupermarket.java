@@ -68,8 +68,7 @@ public abstract class AbstractSupermarket implements Supermarket {
             supplyStock();
         }
 
-        final Purchase purchase = new Purchase(getPurchaseId(), myBaseAddr, shipperBaseAddr, list,
-                customer);
+        final Purchase purchase = new Purchase(getPurchaseId(), shipperBaseAddr, list, customer);
 
         return purchase;
     }

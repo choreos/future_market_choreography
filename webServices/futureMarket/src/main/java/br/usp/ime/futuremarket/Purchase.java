@@ -2,7 +2,6 @@ package br.usp.ime.futuremarket;
 
 public class Purchase {
     private long number;
-    private String seller;
     private String shipper;
     private ShopList shopList;
     private CustomerInfo customerInfo;
@@ -12,13 +11,20 @@ public class Purchase {
         // Avoiding IllegalAnnotationExceptions
     }
 
-    public Purchase(final long number, final String seller, final String shipper,
-            final ShopList list, final CustomerInfo customer) {
+    public Purchase(final long number, final String shipper, final ShopList list,
+            final CustomerInfo customer) {
         this.number = number;
-        this.seller = seller;
         this.shipper = shipper;
         this.shopList = list;
         this.customerInfo = customer;
+    }
+
+    public String getUniqueId() {
+        return getSeller() + "/" + getNumber();
+    }
+
+    public String getSeller() {
+        return shopList.getSeller();
     }
 
     public boolean isPaid() {
@@ -31,14 +37,6 @@ public class Purchase {
 
     public void setNumber(final long number) {
         this.number = number;
-    }
-
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(final String sellerEndpoint) {
-        this.seller = sellerEndpoint;
     }
 
     public String getShipper() {
