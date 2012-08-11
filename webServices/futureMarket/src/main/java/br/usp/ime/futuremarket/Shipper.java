@@ -10,7 +10,7 @@ import javax.jws.soap.SOAPBinding.Style;
 public interface Shipper {
 
     @WebMethod
-    String deliver(final Purchase purchase);
+    boolean deliver(final Purchase purchase);
 
     @WebMethod
     Delivery getDelivery(final Purchase purchase);

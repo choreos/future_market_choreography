@@ -27,7 +27,7 @@ public class BankImpl implements Bank {
     }
 
     @Override
-    public String requestPayment(final Purchase purchaseInfo, final CustomerInfo customer) {
-        return "authorized";
+    public boolean requestPayment(final double amount, final CustomerInfo customer) {
+        return true;
     }
 }

@@ -30,7 +30,7 @@ public class ShipperImpl implements Shipper {
     }
 
     @WebMethod
-    public String deliver(final Purchase purchase) {
+    public boolean deliver(final Purchase purchase) {
         final String key = purchaseIdentifier(purchase);
         final Delivery delivery = new Delivery(new Date(), "done", purchase);
 
@@ -38,7 +38,7 @@ public class ShipperImpl implements Shipper {
             deliveries.put(key, delivery);
         }
 
-        return "OK";
+        return true;
     }
 
     @WebMethod

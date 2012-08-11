@@ -41,6 +41,10 @@ public abstract class AbstractSupermarket implements Supermarket {
         stock.loadProducts(properties, PRODUCTS);
     }
 
+    abstract protected void buy() throws IOException;
+
+    abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
+
     @Override
     public ShopList getPrices(final ShopList shopList) {
         double price;
@@ -56,8 +60,8 @@ public abstract class AbstractSupermarket implements Supermarket {
         return shopList;
     }
 
-    @Override
-    public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
+    protected Purchase getFromStock(final ShopList list, final CustomerInfo customer)
+            throws IOException {
         // Manufacturers have infinite resources
         if (!role.equals(Role.MANUFACTURER)) {
             removeFromStock(list);
@@ -75,8 +79,6 @@ public abstract class AbstractSupermarket implements Supermarket {
         stock.reset();
         stock.loadProducts(properties, PRODUCTS);
     }
-
-    abstract protected void buy() throws IOException;
 
     protected CustomerInfo getCostumerInfo() throws UnknownHostException {
         final CustomerInfo customer = new CustomerInfo();
@@ -138,7 +140,11 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     private void addToShopList(final Product product) {
         final ShopListItem item = new ShopListItem(product);
+
+        item.setProduct(product);
         item.setQuantity(purchaseQuantity);
+        item.setSellerEndpoint(sellerBaseAddr);
+
         shopList.put(item);
     }
 

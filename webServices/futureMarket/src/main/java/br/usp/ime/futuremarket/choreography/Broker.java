@@ -18,15 +18,14 @@ import br.usp.ime.futuremarket.ShopList;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL, parameterStyle = ParameterStyle.WRAPPED)
-
 public interface Broker {
 
     @WebMethod
-    public ShopList getLowestPrice(ShopList list) throws IOException;
+    ShopList getLowestPrice(ShopList list) throws IOException;
 
     @WebMethod
-    public Delivery getDelivery(Purchase purchase) throws MalformedURLException;
+    Delivery getDelivery(Purchase purchase) throws MalformedURLException;
 
     @WebMethod
-    public Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
+    Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
 }

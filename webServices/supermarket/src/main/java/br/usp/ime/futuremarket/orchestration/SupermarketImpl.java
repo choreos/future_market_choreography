@@ -5,7 +5,9 @@ import java.io.IOException;
 import javax.jws.WebService;
 
 import br.usp.ime.futuremarket.AbstractSupermarket;
+import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.ShopList;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
@@ -18,18 +20,29 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
+    public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
+        final Orchestrator orch = getOrchestrator();
+
+        final boolean isPaid = orch.requestPayment(list.getPrice(), customer);
+        final Purchase purchase = getFromStock(list, customer);
+        purchase.setIsPaid(isPaid);
+        orch.deliver(purchase);
+
+        return purchase;
+    }
+
+    @Override
     protected void buy() throws IOException {
-        final Purchase purchase = getOrchestrator().smPurchase(shopList, getCostumerInfo(),
-                sellerBaseAddr);
-        getOrchestrator().getShipmentData(purchase);
+        final Purchase purchase = getOrchestrator().smPurchase(shopList, getCostumerInfo());
+        getOrchestrator().getDelivery(purchase);
     }
 
     private Orchestrator getOrchestrator() throws IOException {
         if (orchestrator == null) {
-            final String role = Role.ORCHESTRATOR;
-            final String service = ServiceName.ORCHESTRATOR;
-            orchestrator = market.getClientRoundRobin(role, service, Orchestrator.class);
+            orchestrator = market.getClientRoundRobin(Role.ORCHESTRATOR, ServiceName.ORCHESTRATOR,
+                    Orchestrator.class);
         }
         return orchestrator;
     }
+
 }

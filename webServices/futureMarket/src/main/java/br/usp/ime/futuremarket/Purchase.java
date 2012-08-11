@@ -57,7 +57,7 @@ public class Purchase {
         this.shopList = shopList;
     }
 
-    public double getValue() {
+    public double getPrice() {
         return shopList.getPrice();
     }
 

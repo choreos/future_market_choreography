@@ -10,6 +10,6 @@ import javax.jws.soap.SOAPBinding.Style;
 public interface Bank {
 
     @WebMethod
-    String requestPayment(Purchase purchase, CustomerInfo customer);
+    boolean requestPayment(double amount, CustomerInfo customer);
 
 }

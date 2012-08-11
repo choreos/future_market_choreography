@@ -1,203 +1,44 @@
 package br.usp.ime.futuremarket.orchestration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.net.MalformedURLException;
 
-import javax.jws.WebMethod;
-import javax.jws.WebService;
+import br.usp.ime.futuremarket.Bank;
+import br.usp.ime.futuremarket.CustomerInfo;
+import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.ServiceName;
+import br.usp.ime.futuremarket.Shipper;
+import br.usp.ime.futuremarket.ShopList;
+import br.usp.ime.futuremarket.choreography.BrokerImpl;
 
-import br.usp.ime.futuremarket.orchestration.Bank;
-import br.usp.ime.futuremarket.orchestration.CustomerInfo;
-import br.usp.ime.futuremarket.orchestration.DeliveryInfo;
-import br.usp.ime.futuremarket.orchestration.FutureMarket;
-import br.usp.ime.futuremarket.orchestration.Orchestrator;
-import br.usp.ime.futuremarket.orchestration.ProductPrice;
-import br.usp.ime.futuremarket.orchestration.ProductQuantity;
-import br.usp.ime.futuremarket.orchestration.PurchaseInfo;
-import br.usp.ime.futuremarket.orchestration.Shipper;
-import br.usp.ime.futuremarket.orchestration.Supermarket;
-import br.usp.ime.futuremarket.orchestration.models.LowestPrice;
+public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-endpointInterface = "br.usp.ime.futuremarket.Orchestrator")
-public class OrchestratorImpl implements Orchestrator {
+    private Bank bank = null;
 
-    static final ClassLoader loader = OrchestratorImpl.class.getClassLoader();
-
-    private String serviceName;
-	private FutureMarket futureMarket;
-	private Bank bank;
-	private List<Supermarket> supermarkets;
-	// <listID, <supermarket,<productquantity>>>
-	private Map<String, Map<Supermarket, Set<ProductQuantity>>> customerProductLists;
-	private long currentList;
-	
-	private Properties getProperties() throws IOException {
-        Properties properties = new Properties();
-        properties.load(loader.getResourceAsStream("orchestrator.properties"));
-        return properties;
-	}
-	
-    private String getRelativePath() {
- 
-    	String path = serviceName + "/orchestrator";
-        return path;
+    @Override
+    public boolean deliver(final Purchase purchase) throws MalformedURLException {
+        final Shipper shipper = market.getClient(purchase.getShipper(), ServiceName.SHIPPER,
+                Shipper.class);
+        return shipper.deliver(purchase);
     }
 
-	public OrchestratorImpl() {
-		customerProductLists = new HashMap<String, Map<Supermarket, Set<ProductQuantity>>>();
-		currentList = 0L;
-		futureMarket = new FutureMarket();
-		
-		
-		serviceName = "Orchestrator"; // default name
-		try {
-			serviceName = getProperties().getProperty("this.name");
-		} catch (IOException e) {
-			System.out.println("Could not open orchestrator properties");
-		}
-		
-		String relPath = getRelativePath();
-		futureMarket.register(FutureMarket.ORCHESTRATOR_ROLE, serviceName, relPath);
-		bank = futureMarket.getFirstClient(FutureMarket.BANK_ROLE,
-				FutureMarket.BANK_SERVICE, Bank.class);
-	}
+    @Override
+    public Purchase smPurchase(final ShopList list, final CustomerInfo customer) throws IOException {
+        return super.purchaseFromOneStore(list, customer);
+    }
 
-	private List<Supermarket> getSupermarkets() {
-		return futureMarket.getClients(FutureMarket.SUPERMARKET_ROLE,
-				FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
-	}
+    @Override
+    public boolean requestPayment(final double amount, final CustomerInfo customer)
+            throws IOException {
+        return getBank().requestPayment(amount, customer);
+    }
 
-	@WebMethod
-	public LowestPrice getLowestPriceForList(Set<ProductQuantity> products) {
-		HashMap<HashMap<String, Double>, Supermarket> supermarketsProductList = new HashMap<HashMap<String, Double>, Supermarket>();
-		// gets prices from supermarkets
-		supermarkets = getSupermarkets();
-
-		for (Supermarket supermarket : supermarkets) {
-			ProductPrice[] productPrices = supermarket.getPrices(products);
-			HashMap<String, Double> productsMap = new HashMap<String, Double>();
-			for (ProductPrice productPrice : productPrices) {
-				productsMap.put(productPrice.getProduct(), productPrice.getPrice());
-			}
-			supermarketsProductList.put(productsMap, supermarket);
-		}
-
-		final String listId = Long.toString(getListId());
-		initializeMap(listId);
-		Double listPrice = 0d;
-		// finds lowest prices
-		for (ProductQuantity product : products) {
-			Supermarket supermarket = null;
-			Double lowestPrice = Double.MAX_VALUE;
-			for (HashMap<String, Double> productsHash : supermarketsProductList.keySet()) {
-				Double price = productsHash.get(product.getProduct());
-				if (price < lowestPrice) {
-					lowestPrice = price;
-					supermarket = supermarketsProductList.get(productsHash);
-				}
-			}
-			addProduct(listId, supermarket, product);
-			listPrice += (lowestPrice  * product.getQuantity());
-		}
-
-		return new LowestPrice(listId, listPrice);
-	}
-
-	private void initializeMap(String listId) {
-		synchronized (this) {
-			customerProductLists.put(listId, new HashMap<Supermarket, Set<ProductQuantity>>());
-		}
-	}
-
-	private void addProduct(String listId, Supermarket supermarket, ProductQuantity product) {
-		synchronized (this) {
-			if (customerProductLists.get(listId).get(supermarket) == null) {
-				customerProductLists.get(listId).put(supermarket, new HashSet<ProductQuantity>());
-			}
-			customerProductLists.get(listId).get(supermarket).add(product);
-		}
-	}
-
-	private synchronized long getListId() {
-		return currentList++;
-	}
-
-	@WebMethod
-	public DeliveryInfo getShipmentData(PurchaseInfo purchaseInfo) {
-		Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(),
-		FutureMarket.SHIPPER_SERVICE, Shipper.class);
-		return shipper.getDeliveryStatus(purchaseInfo);
-	}
-
-	@WebMethod
-	public PurchaseInfo[] makePurchase(final String listId, final CustomerInfo customerInfo) {
-		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
-		Map<Supermarket, Set<ProductQuantity>> purchaseLists = null;
-
-		System.out.println("Purchase at " + serviceName);
-		
-		synchronized (this) {
-			purchaseLists = customerProductLists.remove(listId);
-		}
-
-		if (purchaseLists != null) {
-			buy(customerInfo, result, purchaseLists);
-			purchaseLists.clear();
-		}
-
-		return result.toArray(new PurchaseInfo[0]);
-	}
-
-	private void buy(final CustomerInfo customerInfo, final List<PurchaseInfo> result,
-			final Map<Supermarket, Set<ProductQuantity>> purchaseLists) {
-		PurchaseInfo purchaseInfo;
-
-		for (Supermarket supermarket : purchaseLists.keySet()) {
-			/* HashMap<String, Integer> productQuantities = new HashMap<String, Integer>();            
-            System.out.println("customer ======================================");
-            for (String p: purchaseLists.get(supermarket)) {
-            	System.out.println("customer adding " + p);
-            	productQuantities.put(p, 1);
-            }
-            System.out.println("productQuantities: " + productQuantities);*/
-			purchaseInfo = supermarket.purchase(purchaseLists.get(supermarket), customerInfo);
-			Shipper shipper  = futureMarket.getClientByName(purchaseInfo.getShipperName(), FutureMarket.SHIPPER_SERVICE, Shipper.class);
-			shipper.setDelivery(purchaseInfo);
-			bank.requestPayment(purchaseInfo, customerInfo);
-			result.add(purchaseInfo);
-		}
-	}
-
-	@Override
-	public PurchaseInfo[] makeSMPurchase(String name,
-			Set<ProductQuantity> products, CustomerInfo customerInfo) {
-		
-		System.out.println("Purchase at " + serviceName);
-
-		List<PurchaseInfo> result = new ArrayList<PurchaseInfo>();
-		Map<Supermarket, Set<ProductQuantity>> purchaseLists = new HashMap<Supermarket, Set<ProductQuantity>>();
-		
-		Supermarket sm = futureMarket.getClientByName(name, FutureMarket.SUPERMARKET_SERVICE, Supermarket.class);
-		purchaseLists.put(sm, products);
-
-		if (purchaseLists != null) {
-			buy(customerInfo, result, purchaseLists);
-			purchaseLists.clear();
-		}
-
-		return result.toArray(new PurchaseInfo[0]);
-	}
-
-	@Override
-	public String requestPayment(PurchaseInfo purchaseInfo,
-			CustomerInfo customerInfo) {
-		return bank.requestPayment(purchaseInfo, customerInfo);
-	}
+    private Bank getBank() throws IOException {
+        if (bank == null) {
+            final String role = Role.BANK;
+            final String name = ServiceName.BANK;
+            bank = market.getClientByRole(role, name, Bank.class);
+        }
+        return bank;
+    }
 }

@@ -2,6 +2,7 @@ package br.usp.ime.futuremarket.orchestration;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Set;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -18,17 +19,20 @@ import br.usp.ime.futuremarket.ShopList;
 public interface Orchestrator {
 
     @WebMethod
-    ShopList getLowestPrices(ShopList list) throws IOException;
+    ShopList getLowestPrice(ShopList list) throws IOException;
 
     @WebMethod
-    Delivery getShipmentData(Purchase purchase) throws MalformedURLException;
+    boolean requestPayment(final double amount, CustomerInfo customer) throws IOException;
 
     @WebMethod
-    Purchase purchase(ShopList shopList, CustomerInfo customer);
+    Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
 
     @WebMethod
-    Purchase smPurchase(ShopList shopList, CustomerInfo customer, String baseAddr);
+    Purchase smPurchase(ShopList list, CustomerInfo customer) throws IOException;
 
     @WebMethod
-    String requestPayment(Purchase purchase, CustomerInfo customerInfo);
+    boolean deliver(Purchase purchase) throws MalformedURLException;
+
+    @WebMethod
+    Delivery getDelivery(Purchase purchase) throws MalformedURLException;
 }
