@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebService;
+
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
@@ -17,6 +19,8 @@ import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
 import br.usp.ime.futuremarket.Supermarket;
 
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+        endpointInterface = "br.usp.ime.futuremarket.choreography.Broker")
 public class BrokerImpl implements Broker {
     protected final FutureMarket market = new FutureMarket();
 

@@ -3,6 +3,8 @@ package br.usp.ime.futuremarket.orchestration;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.jws.WebService;
+
 import br.usp.ime.futuremarket.Bank;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
@@ -11,6 +13,8 @@ import br.usp.ime.futuremarket.Shipper;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.choreography.BrokerImpl;
 
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+        endpointInterface = "br.usp.ime.futuremarket.orchestration.Orchestrator")
 public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
 
     private Bank bank = null;
