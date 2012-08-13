@@ -10,6 +10,7 @@
     <groupId>br.usp.ime.futuremarket</groupId>
     <artifactId>webServices</artifactId>
     <version>1.0</version>
+    <relativePath>../../webServices/pom.xml</relativePath>
   </parent>
 	
 	<properties>
@@ -54,24 +55,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>broker</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>future-market</artifactId>
+			<artifactId>futureMarket</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
             <groupId>br.usp.ime.futuremarket</groupId>
-		    <artifactId>orchestrator</artifactId>
+		    <artifactId>portal</artifactId>
             <version>1.0</version>
 		</dependency>
-        <dependency>
-            <groupId>br.usp.ime.futuremarket</groupId>
-            <artifactId>broker</artifactId>
-            <version>1.0</version>
-        </dependency>
         <dependency>
             <groupId>br.usp.ime.futuremarket</groupId>
             <artifactId>helloWorld</artifactId>

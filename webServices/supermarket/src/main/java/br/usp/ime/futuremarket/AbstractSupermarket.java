@@ -25,11 +25,11 @@ public abstract class AbstractSupermarket implements Supermarket {
     final private String myBaseAddr;
     private String shipperBaseAddr;
     private String sellerName;
-    private String role;
+    private final String role;
 
     public AbstractSupermarket() throws IOException {
         readProperties();
-        setRole(sellerName);
+        role = properties.getProperty("role");
         market.register(role, name);
 
         myBaseAddr = market.getMyBaseAddress(name);
@@ -99,10 +99,6 @@ public abstract class AbstractSupermarket implements Supermarket {
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
         sellerName = properties.getProperty("seller.name", "");
         shipperName = properties.getProperty("shipper.name");
-    }
-
-    private void setRole(final String sellerName) {
-        role = sellerName.isEmpty() ? Role.MANUFACTURER : Role.SUPERMARKET;
     }
 
     private double getPrice(final Product product) {

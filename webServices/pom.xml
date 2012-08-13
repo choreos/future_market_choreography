@@ -15,7 +15,6 @@
     <module>supermarket</module>
     <module>portal</module>
     <module>helloWorld</module>
-    <module>../experiments/load-generator</module>
     <module>tests</module>
   </modules>  
 
@@ -30,6 +29,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   

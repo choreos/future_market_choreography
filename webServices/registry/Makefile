@@ -1,3 +1,6 @@
+package:
+	mvn package
+
 deploy:
 	cp -f target/registry.war $(CATALINA_HOME)/webapps/
 

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm -rf */*.war
+find . -type d | grep -v '^\.$' | xargs rm -rf

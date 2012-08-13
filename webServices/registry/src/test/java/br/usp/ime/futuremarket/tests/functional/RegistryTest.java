@@ -38,15 +38,16 @@ public class RegistryTest {
     @BeforeClass
     public static void initRegistryClient() throws IOException {
         final String registryWsdl = getRegistryWsdl();
-        setRegistryClient(registryWsdl);
+        registry = getRegistryClient(registryWsdl);
     }
 
-    private static void setRegistryClient(final String registryWsdl) throws MalformedURLException {
+    private static Registry getRegistryClient(final String registryWsdl)
+            throws MalformedURLException {
         final URL url = new URL(registryWsdl);
         final QName qname = new QName(NAMESPACE, LPART);
         final Service service = Service.create(url, qname);
 
-        registry = service.getPort(Registry.class);
+        return service.getPort(Registry.class);
     }
 
     private static String getRegistryWsdl() throws IOException {
@@ -79,8 +80,23 @@ public class RegistryTest {
     }
 
     @Test
-    public void shouldRemoveSupermarket() {
+    public void shouldAddASecondSupermarket() {
+        registry.addService(ROLE, NAME + "2", ENDPOINT + "2");
+
+        wsdls = registry.getServices(ROLE);
+
+        assertEquals(2, wsdls.size());
+        assertEquals(ENDPOINT + "2", wsdls.get(1));
+
+        final String wsdl = registry.getServiceByName(NAME + "2");
+        assertEquals(ENDPOINT + 2, wsdl);
+    }
+
+    @Test
+    public void shouldRemoveAllSupermarkets() {
         registry.removeService(ROLE, NAME);
+        registry.removeService(ROLE, NAME + "2");
+
         wsdls = registry.getServices(ROLE);
         assertEquals(0, wsdls.size());
 
