@@ -1,5 +1,8 @@
 package br.usp.ime.futuremarket;
 
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(namespace = "http://futuremarket.ime.usp.br/msg")
 public class Purchase {
     private long number;
     private String shipper;
