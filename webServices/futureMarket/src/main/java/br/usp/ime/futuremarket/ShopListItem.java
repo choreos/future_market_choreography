@@ -3,7 +3,7 @@ package br.usp.ime.futuremarket;
 public class ShopListItem {
     private Product product;
     private int quantity = -1;
-    private String sellerEndpoint;
+    private String seller;
 
     public ShopListItem() {
         // Avoiding IllegalAnnotationExceptions
@@ -42,11 +42,11 @@ public class ShopListItem {
         this.quantity = quantity;
     }
 
-    public String getSellerEndpoint() {
-        return sellerEndpoint;
+    public String getSeller() {
+        return seller;
     }
 
-    public void setSellerEndpoint(final String sellerEndpoint) {
-        this.sellerEndpoint = sellerEndpoint;
+    public void setSeller(final String seller) {
+        this.seller = seller;
     }
 }

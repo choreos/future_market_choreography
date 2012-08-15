@@ -3,11 +3,14 @@ all: registry bank portals supermarkets shippers
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
 
-futuremarket: registry
-	mvn -pl futureMarket install
-
 registry: FORCE
 	mvn -pl registry install
+
+parent:
+	mvn -N install
+
+futuremarket: registry parent
+	mvn -pl futureMarket install
 
 shippers: futuremarket
 	cd shippers && \
@@ -38,7 +41,7 @@ deploy-others:
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f portals/*/*.war $(CATALINA_HOME)/webapps/
 
-clean-all: clean-mvn clean-testCase clean-repo
+clean-all: clean-mvn clean-testCase clean-m2
 
 clean-mvn:
 	mvn -pl futureMarket,registry,bank,shipper,supermarket,portal clean
@@ -48,7 +51,7 @@ clean-testCase:
 	cd supermarkets && ./clean.sh
 	cd portals && ./clean.sh
 
-clean-repo:
+clean-m2:
 	rm -rf ~/.m2/repository/br/usp/ime/futuremarket/
 
 FORCE:

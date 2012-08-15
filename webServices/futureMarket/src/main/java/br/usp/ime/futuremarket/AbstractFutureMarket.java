@@ -119,8 +119,6 @@ public abstract class AbstractFutureMarket {
 
     private String getMyHostName() throws UnknownHostException {
         final InetAddress addr = InetAddress.getLocalHost();
-        final String hostname = addr.getCanonicalHostName();
-
-        return hostname;
+        return addr.getCanonicalHostName();
     }
 }

@@ -75,7 +75,7 @@ public class RegistryImpl implements Registry {
         return service;
     }
 
-    private String getNextService(String role) {
+    private String getNextService(final String role) {
         final List<String> roleServices = services.get(role);
         int index;
 

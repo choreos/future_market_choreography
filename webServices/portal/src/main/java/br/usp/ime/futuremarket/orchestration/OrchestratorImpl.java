@@ -16,8 +16,11 @@ import br.usp.ime.futuremarket.choreography.BrokerImpl;
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br",
         endpointInterface = "br.usp.ime.futuremarket.orchestration.Orchestrator")
 public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
-
     private Bank bank = null;
+
+    public OrchestratorImpl() throws IOException {
+        super(Role.ORCHESTRATOR);
+    }
 
     @Override
     public boolean deliver(final Purchase purchase) throws MalformedURLException {

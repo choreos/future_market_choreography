@@ -50,13 +50,14 @@ public abstract class AbstractSupermarket implements Supermarket {
         double price;
         Product product;
 
-        for (ShopListItem item : shopList.getItems()) {
+        for (ShopListItem item : shopList.getShopListItems()) {
             product = item.getProduct();
             price = getPrice(product);
             product.setPrice(price);
 
-            item.setSellerEndpoint(myBaseAddr);
+            item.setSeller(myBaseAddr);
         }
+
         return shopList;
     }
 
@@ -138,13 +139,13 @@ public abstract class AbstractSupermarket implements Supermarket {
 
         item.setProduct(product);
         item.setQuantity(purchaseQuantity);
-        item.setSellerEndpoint(sellerBaseAddr);
+        item.setSeller(sellerBaseAddr);
 
         shopList.put(item);
     }
 
     private void removeFromStock(final ShopList shopList) {
-        for (ShopListItem item : shopList.getItems()) {
+        for (ShopListItem item : shopList.getShopListItems()) {
             stock.remove(item.getProduct(), item.getQuantity());
         }
     }

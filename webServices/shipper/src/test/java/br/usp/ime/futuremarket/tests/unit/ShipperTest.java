@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Purchase;
@@ -45,20 +46,13 @@ public class ShipperTest {
     }
 
     private Purchase getPurchase(final int number) {
-        final Product product = new Product();
-        product.setName("ShipperTestProduct");
+        final Product product = new Product("ShipperTestProduct");
 
-        final ShopListItem item = new ShopListItem();
-        item.setProduct(product);
-        item.setSellerEndpoint("ShipperTestSeller");
+        final ShopListItem item = new ShopListItem(product);
+        item.setSeller("ShipperTestSeller");
 
-        final ShopList list = new ShopList();
-        list.put(item);
+        final ShopList list = new ShopList(item);
 
-        final Purchase purchase = new Purchase();
-        purchase.setShopList(list);
-        purchase.setNumber(number);
-
-        return purchase;
+        return new Purchase(number, "shipper", list, new CustomerInfo());
     }
 }

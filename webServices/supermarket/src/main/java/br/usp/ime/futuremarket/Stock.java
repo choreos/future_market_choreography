@@ -49,7 +49,8 @@ public class Stock {
     }
 
     public void add(final Product product, final int bought) {
-        final int quantity = products.get(product) + bought;
+        final int current = products.containsKey(product) ? products.get(product) : 0;
+        final int quantity = current + bought;
         products.put(product, quantity);
     }
 
@@ -71,7 +72,8 @@ public class Stock {
     }
 
     private void addProduct(final String name, final double price, final int quantity) {
-        final Product product = new Product(name, price);
+        final Product product = new Product(name);
+        product.setPrice(price);
         products.put(product, quantity);
     }
 }

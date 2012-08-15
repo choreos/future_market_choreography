@@ -9,12 +9,6 @@ public class CustomerInfo {
         // Avoiding IllegalAnnotationExceptions
     }
 
-    public CustomerInfo(final String name, final String creditCard, final String address) {
-        this.name = name;
-        this.creditCard = creditCard;
-        this.address = address;
-    }
-
     public String getName() {
         return name;
     }

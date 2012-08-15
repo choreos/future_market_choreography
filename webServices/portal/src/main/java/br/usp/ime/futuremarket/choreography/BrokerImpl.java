@@ -1,11 +1,13 @@
 package br.usp.ime.futuremarket.choreography;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.jws.WebService;
@@ -23,6 +25,15 @@ import br.usp.ime.futuremarket.Supermarket;
         endpointInterface = "br.usp.ime.futuremarket.choreography.Broker")
 public class BrokerImpl implements Broker {
     protected final FutureMarket market = new FutureMarket();
+
+    public BrokerImpl() throws IOException {
+        this(Role.BROKER);
+    }
+
+    public BrokerImpl(final String role) throws IOException {
+        final String name = getName();
+        market.register(role, name);
+    }
 
     @Override
     public ShopList getLowestPrice(final ShopList list) throws IOException {
@@ -65,13 +76,22 @@ public class BrokerImpl implements Broker {
         return supermarket.purchase(list, customer);
     }
 
+    private String getName() throws IOException {
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        final InputStream propFile = loader.getResourceAsStream("portal.properties");
+        final Properties properties = new Properties();
+        properties.load(propFile);
+
+        return properties.getProperty("name");
+    }
+
     private Collection<ShopList> splitListBySm(final ShopList list) {
         // <SM baseAddr, ShopList>
         final Map<String, ShopList> result = new HashMap<String, ShopList>();
 
         ShopList smList;
-        for (ShopListItem item : list.getItems()) {
-            smList = getSupermarketList(result, item.getSellerEndpoint());
+        for (ShopListItem item : list.getShopListItems()) {
+            smList = getSupermarketList(result, item.getSeller());
             smList.put(item);
         }
         return result.values();
@@ -88,7 +108,7 @@ public class BrokerImpl implements Broker {
         Product candidateProduct;
         ShopListItem item;
 
-        for (ShopListItem candidateItem : candidateList.getItems()) {
+        for (ShopListItem candidateItem : candidateList.getShopListItems()) {
             candidateProduct = candidateItem.getProduct();
             item = list.getItem(candidateProduct);
             lookForCheaperProduct(item, candidateItem, candidateProduct);
@@ -101,7 +121,7 @@ public class BrokerImpl implements Broker {
 
         if (candidateProduct.getPrice() < product.getPrice()) {
             product.setPrice(candidateProduct.getPrice());
-            item.setSellerEndpoint(candidateItem.getSellerEndpoint());
+            item.setSeller(candidateItem.getSeller());
         }
     }
 

@@ -1,21 +1,26 @@
 package br.usp.ime.futuremarket;
 
-public class Product implements Comparable<Product> {
+public class Product {
     private String name;
-    private double price = -1;
-    
-    @Override
-    public int compareTo(final Product anotherProduct) {
-        return name.compareTo(anotherProduct.getName());
-    }
+    private double price = Double.MAX_VALUE;
 
     public Product() {
         // Avoiding IllegalAnnotationExceptions
     }
 
-    public Product(final String name, final double price) {
+    @Override
+    public boolean equals(final Object obj) {
+        final Product anotherProduct = (Product) obj;
+        return name.equals(anotherProduct.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    public Product(final String name) {
         this.name = name;
-        this.price = price;
     }
 
     public String getName() {

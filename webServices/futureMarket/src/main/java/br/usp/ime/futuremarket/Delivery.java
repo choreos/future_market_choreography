@@ -10,12 +10,6 @@ public class Delivery {
     public Delivery() {
         // Avoiding IllegalAnnotationExceptions
     }
-    
-    public Delivery(final Date date, final String status, final Purchase purchase) {
-        this.date = date;
-        this.status = status;
-        this.purchase = purchase;
-    }
 
     public Date getDate() {
         return date;

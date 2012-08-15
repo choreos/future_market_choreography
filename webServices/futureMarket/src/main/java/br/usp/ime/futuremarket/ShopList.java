@@ -8,13 +8,17 @@ import java.util.List;
 import java.util.Map;
 
 public class ShopList {
-    private Map<String, ShopListItem> items;
+    private Map<String, ShopListItem> items = new HashMap<String, ShopListItem>();;
 
     public ShopList() {
-        items = new HashMap<String, ShopListItem>();
+        // Avoiding IllegalAnnotationExceptions
     }
 
-    public void put(final ShopListItem item) {
+    public ShopList(final ShopListItem item) {
+        this.put(item);
+    }
+
+    final public void put(final ShopListItem item) {
         final String productName = item.getProduct().getName();
         items.put(productName, item);
     }
@@ -43,7 +47,7 @@ public class ShopList {
 
         if (items.hasNext()) {
             final ShopListItem item = items.next();
-            seller = item.getSellerEndpoint();
+            seller = item.getSeller();
         } else {
             seller = "";
         }
@@ -76,8 +80,12 @@ public class ShopList {
         return price;
     }
 
-    public Collection<ShopListItem> getItems() {
+    public Collection<ShopListItem> getShopListItems() {
         return items.values();
+    }
+
+    public Map<String, ShopListItem> getItems() {
+        return items;
     }
 
     public void setItems(final Map<String, ShopListItem> items) {

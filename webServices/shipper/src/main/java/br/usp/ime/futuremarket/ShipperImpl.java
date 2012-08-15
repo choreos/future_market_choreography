@@ -1,7 +1,6 @@
 package br.usp.ime.futuremarket;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -32,7 +31,8 @@ public class ShipperImpl implements Shipper {
     @WebMethod
     public boolean deliver(final Purchase purchase) {
         final String key = purchase.getUniqueId();
-        final Delivery delivery = new Delivery(new Date(), "done", purchase);
+        final Delivery delivery = new Delivery();
+        delivery.setPurchase(purchase);
 
         synchronized (this) {
             deliveries.put(key, delivery);

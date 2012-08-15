@@ -8,11 +8,15 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ServiceName;
 import br.usp.ime.futuremarket.Shipper;
+import br.usp.ime.futuremarket.ShopList;
+import br.usp.ime.futuremarket.ShopListItem;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 
 public class ShipperTest {
@@ -30,9 +34,9 @@ public class ShipperTest {
     }
 
     @Test
-    public void shouldReturnOkOnSetDelivery() {
+    public void shouldReturnTrueOnSetDelivery() {
         final Purchase purchase = getPurchase(1);
-        assertEquals("OK", shipper.deliver(purchase));
+        assertEquals(true, shipper.deliver(purchase));
     }
 
     @Test
@@ -47,9 +51,13 @@ public class ShipperTest {
     }
 
     private Purchase getPurchase(final long number) {
-        final Purchase purchase = new Purchase();
-        purchase.setNumber(number);
+        final Product product = new Product("ShipperTestProduct");
 
-        return purchase;
+        final ShopListItem item = new ShopListItem(product);
+        item.setSeller("ShipperTestSeller");
+
+        final ShopList list = new ShopList(item);
+
+        return new Purchase(number, "shipper", list, new CustomerInfo());
     }
 }
