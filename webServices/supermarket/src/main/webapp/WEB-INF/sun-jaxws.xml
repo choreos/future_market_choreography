@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd"
 	version="2.0">
 	<endpoint name="SupermarketOrch" implementation="br.usp.ime.futuremarket.orchestration.SupermarketImpl"
-		url-pattern="/endpoint" />
+		url-pattern="/orchestration" />
 	<endpoint name="SupermarketChor" implementation="br.usp.ime.futuremarket.choreography.SupermarketImpl"
-		url-pattern="/endpoint" />
+		url-pattern="/choreography" />
 </endpoints>
