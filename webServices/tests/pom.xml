@@ -1,17 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>br.usp.ime.futuremarket</groupId>
-	<artifactId>tests</artifactId>
-	<version>1.0</version>
-	<description>Integration and acceptance tests</description>
 
-  <parent>
-    <groupId>br.usp.ime.futuremarket</groupId>
-    <artifactId>webServices</artifactId>
-    <version>1.0</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>br.usp.ime.futuremarket</groupId>
+		<artifactId>webServices</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>tests</artifactId>
+	<description>Integration and acceptance tests</description>
 
 	<dependencies>
 		<dependency>
@@ -22,20 +20,24 @@
 		</dependency>
 		<dependency>
 			<groupId>br.usp.ime.futuremarket</groupId>
-			<artifactId>futureMarket</artifactId>
+			<artifactId>bank</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>portal</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>shipper</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>br.usp.ime.futuremarket</groupId>
+			<artifactId>supermarket</artifactId>
 			<version>1.0</version>
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>
