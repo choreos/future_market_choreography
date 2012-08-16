@@ -9,3 +9,10 @@ README.html: README.txt
 
 README.pdf: README.txt
 	a2x --verbose -f pdf --dblatex-opts='-T db2latex -I images/icons' README.txt
+
+# Need inotify-tools
+auto:
+	while [ true ]; do \
+		inotifywait -e modify README.txt; \
+		make README.html; \
+	done
