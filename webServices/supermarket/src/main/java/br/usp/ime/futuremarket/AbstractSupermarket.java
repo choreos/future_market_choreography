@@ -17,14 +17,12 @@ public abstract class AbstractSupermarket implements Supermarket {
     private long purchaseId = 0l;
     private final Stock stock = new Stock();
 
-    protected Properties properties;
-    protected String shipperName;
-    protected String sellerBaseAddr;
+    private Properties properties;
+    private String shipperBaseAddr;
+    private String sellerBaseAddr;
     private String name;
     private int purchaseTrigger, purchaseQuantity;
     final private String myBaseAddr;
-    private String shipperBaseAddr;
-    private String sellerName;
     private final String role;
 
     public AbstractSupermarket() throws IOException {
@@ -33,10 +31,6 @@ public abstract class AbstractSupermarket implements Supermarket {
         market.register(role, name);
 
         myBaseAddr = market.getMyBaseAddress(name);
-        sellerBaseAddr = market.getBaseAddress(sellerName);
-        if (!role.equals(Role.MANUFACTURER)) {
-            shipperBaseAddr = market.getBaseAddress(shipperName);
-        }
 
         stock.loadProducts(properties, PRODUCTS);
     }
@@ -71,9 +65,7 @@ public abstract class AbstractSupermarket implements Supermarket {
             }
         }
 
-        final Purchase purchase = new Purchase(getPurchaseId(), shipperBaseAddr, list, customer);
-
-        return purchase;
+        return new Purchase(getPurchaseId(), getShipperBaseAddr(), list, customer);
     }
 
     @Override
@@ -93,6 +85,26 @@ public abstract class AbstractSupermarket implements Supermarket {
         return customer;
     }
 
+    protected String getShipperBaseAddr() throws IOException {
+        synchronized (this) {
+            if (shipperBaseAddr == null) {
+                final String shipperName = properties.getProperty("shipper.name");
+                shipperBaseAddr = market.getBaseAddress(shipperName);
+            }
+        }
+        return shipperBaseAddr;
+    }
+
+    protected String getSellerBaseAddr() throws IOException {
+        synchronized (this) {
+            if (sellerBaseAddr == null) {
+                final String sellerName = properties.getProperty("seller.name", "");
+                sellerBaseAddr = market.getBaseAddress(sellerName);
+            }
+        }
+        return sellerBaseAddr;
+    }
+
     private void readProperties() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("supermarket.properties");
@@ -102,8 +114,6 @@ public abstract class AbstractSupermarket implements Supermarket {
         name = properties.getProperty("name");
         purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
-        sellerName = properties.getProperty("seller.name", "");
-        shipperName = properties.getProperty("shipper.name");
     }
 
     private double getPrice(final Product product) {
@@ -138,12 +148,12 @@ public abstract class AbstractSupermarket implements Supermarket {
         }
     }
 
-    private void addToShopList(final Product product) {
+    private void addToShopList(final Product product) throws IOException {
         final ShopListItem item = new ShopListItem(product);
 
         item.setProduct(product);
         item.setQuantity(purchaseQuantity);
-        item.setSeller(sellerBaseAddr);
+        item.setSeller(getSellerBaseAddr());
 
         shopList.put(item);
     }

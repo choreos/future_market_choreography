@@ -1,7 +1,6 @@
 package br.usp.ime.futuremarket.choreography;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.jws.WebService;
 
@@ -53,17 +52,17 @@ public class SupermarketImpl extends AbstractSupermarket {
     private Shipper getShipper() throws IOException {
         synchronized (this) {
             if (shipper == null) {
-                final String baseAddress = market.getBaseAddress(shipperName);
-                shipper = market.getClient(baseAddress, ServiceName.SHIPPER, Shipper.class);
+                shipper = market
+                        .getClient(getShipperBaseAddr(), ServiceName.SHIPPER, Shipper.class);
             }
         }
         return shipper;
     }
 
-    private Supermarket getSeller() throws MalformedURLException {
+    private Supermarket getSeller() throws IOException {
         synchronized (this) {
             if (seller == null) {
-                seller = market.getClient(sellerBaseAddr, ServiceName.SUPERMARKET,
+                seller = market.getClient(getSellerBaseAddr(), ServiceName.SUPERMARKET,
                         Supermarket.class);
             }
         }
