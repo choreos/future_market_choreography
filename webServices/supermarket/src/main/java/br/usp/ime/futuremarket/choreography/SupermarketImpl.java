@@ -42,23 +42,30 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     private Bank getBank() throws IOException {
-        if (bank == null) {
-            bank = market.getClientByRole(Role.BANK, ServiceName.BANK, Bank.class);
+        synchronized (this) {
+            if (bank == null) {
+                bank = market.getClientByRole(Role.BANK, ServiceName.BANK, Bank.class);
+            }
         }
         return bank;
     }
 
     private Shipper getShipper() throws IOException {
-        if (shipper == null) {
-            final String baseAddress = market.getBaseAddress(shipperName);
-            shipper = market.getClient(baseAddress, ServiceName.SHIPPER, Shipper.class);
+        synchronized (this) {
+            if (shipper == null) {
+                final String baseAddress = market.getBaseAddress(shipperName);
+                shipper = market.getClient(baseAddress, ServiceName.SHIPPER, Shipper.class);
+            }
         }
         return shipper;
     }
 
     private Supermarket getSeller() throws MalformedURLException {
-        if (seller == null) {
-            seller = market.getClient(sellerBaseAddr, ServiceName.SUPERMARKET, Supermarket.class);
+        synchronized (this) {
+            if (seller == null) {
+                seller = market.getClient(sellerBaseAddr, ServiceName.SUPERMARKET,
+                        Supermarket.class);
+            }
         }
         return seller;
     }

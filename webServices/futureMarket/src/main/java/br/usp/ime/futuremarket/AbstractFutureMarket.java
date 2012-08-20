@@ -97,8 +97,10 @@ public abstract class AbstractFutureMarket {
     }
 
     private Registry getRegistry() throws IOException {
-        if (registry == null) {
-            registry = getRegistryClient();
+        synchronized (this) {
+            if (registry == null) {
+                registry = getRegistryClient();
+            }
         }
 
         return registry;

@@ -41,10 +41,12 @@ public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
     }
 
     private Bank getBank() throws IOException {
-        if (bank == null) {
-            final String role = Role.BANK;
-            final String name = ServiceName.BANK;
-            bank = market.getClientByRole(role, name, Bank.class);
+        synchronized (this) {
+            if (bank == null) {
+                final String role = Role.BANK;
+                final String name = ServiceName.BANK;
+                bank = market.getClientByRole(role, name, Bank.class);
+            }
         }
         return bank;
     }

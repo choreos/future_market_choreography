@@ -38,9 +38,11 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     private Orchestrator getOrchestrator() throws IOException {
-        if (orchestrator == null) {
-            orchestrator = market.getClientRoundRobin(Role.ORCHESTRATOR, ServiceName.ORCHESTRATOR,
-                    Orchestrator.class);
+        synchronized (this) {
+            if (orchestrator == null) {
+                orchestrator = market.getClientRoundRobin(Role.ORCHESTRATOR,
+                        ServiceName.ORCHESTRATOR, Orchestrator.class);
+            }
         }
         return orchestrator;
     }

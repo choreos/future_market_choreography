@@ -27,10 +27,12 @@ public class RegistryImpl implements Registry {
     public List<String> getServices(final String role) {
         List<String> roleServices;
 
-        if (services.containsKey(role)) {
-            roleServices = services.get(role);
-        } else {
-            roleServices = new ArrayList<String>();
+        synchronized (this) {
+            if (services.containsKey(role)) {
+                roleServices = services.get(role);
+            } else {
+                roleServices = new ArrayList<String>();
+            }
         }
 
         return roleServices;
@@ -40,10 +42,12 @@ public class RegistryImpl implements Registry {
     public String getServiceByRole(final String role) {
         String service;
 
-        if (services.containsKey(role)) {
-            service = services.get(role).get(0);
-        } else {
-            service = "";
+        synchronized (this) {
+            if (services.containsKey(role)) {
+                service = services.get(role).get(0);
+            } else {
+                service = "";
+            }
         }
 
         return service;
@@ -51,25 +55,20 @@ public class RegistryImpl implements Registry {
 
     @Override
     public String getServiceByName(final String name) {
-        String service;
-
-        if (names.containsKey(name)) {
-            service = names.get(name);
-        } else {
-            service = "";
-        }
-
-        return service;
+        final String service = names.get(name);
+        return (service == null) ? "" : service;
     }
 
     @Override
     public String getServiceRoundRobin(final String role) {
         String service;
 
-        if (!services.containsKey(role) || services.get(role).isEmpty()) {
-            service = "";
-        } else {
-            service = getNextService(role);
+        synchronized (this) {
+            if (!services.containsKey(role) || services.get(role).isEmpty()) {
+                service = "";
+            } else {
+                service = getNextService(role);
+            }
         }
 
         return service;
@@ -77,12 +76,9 @@ public class RegistryImpl implements Registry {
 
     private String getNextService(final String role) {
         final List<String> roleServices = services.get(role);
-        int index;
+        final int index = getRoleIndex(role);
 
-        synchronized (services) {
-            index = getRoleIndex(role);
-            increaseRoleIndex(role, index, roleServices.size());
-        }
+        increaseRoleIndex(role, index, roleServices.size());
 
         return roleServices.get(index);
     }
@@ -93,19 +89,22 @@ public class RegistryImpl implements Registry {
     }
 
     private int getRoleIndex(final String role) {
-        return index.containsKey(role) ? index.get(role) : 0;
+        final Integer roleIndex = index.get(role);
+        return (roleIndex == null) ? 0 : roleIndex;
     }
 
     @Override
     public String addService(final String role, final String name, final String endpoint) {
-        if (!services.containsKey(role)) {
-            services.put(role, new ArrayList<String>());
-        }
+        synchronized (this) {
+            if (!services.containsKey(role)) {
+                services.put(role, new ArrayList<String>());
+            }
 
-        final List<String> roleServices = services.get(role);
-        if (!roleServices.contains(endpoint)) {
-            roleServices.add(endpoint);
-            names.put(name, endpoint);
+            final List<String> roleServices = services.get(role);
+            if (!roleServices.contains(endpoint)) {
+                roleServices.add(endpoint);
+                names.put(name, endpoint);
+            }
         }
 
         return "OK";
@@ -115,11 +114,13 @@ public class RegistryImpl implements Registry {
     public String removeService(final String role, final String name) {
         String answer;
 
-        if (names.containsKey(name)) {
-            removeNameAndRole(name, role);
-            answer = "OK";
-        } else {
-            answer = "Name not found";
+        synchronized (this) {
+            if (names.containsKey(name)) {
+                removeNameAndRole(name, role);
+                answer = "OK";
+            } else {
+                answer = "Name not found";
+            }
         }
 
         return answer;

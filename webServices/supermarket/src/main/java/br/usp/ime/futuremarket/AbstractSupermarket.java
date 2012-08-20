@@ -65,8 +65,10 @@ public abstract class AbstractSupermarket implements Supermarket {
             throws IOException {
         // Manufacturers have infinite resources
         if (!role.equals(Role.MANUFACTURER)) {
-            removeFromStock(list);
-            supplyStock();
+            synchronized (this) {
+                removeFromStock(list);
+                supplyStock();
+            }
         }
 
         final Purchase purchase = new Purchase(getPurchaseId(), shipperBaseAddr, list, customer);
@@ -76,8 +78,10 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     @Override
     public void reset() {
-        stock.reset();
-        stock.loadProducts(properties, PRODUCTS);
+        synchronized (this) {
+            stock.reset();
+            stock.loadProducts(properties, PRODUCTS);
+        }
     }
 
     protected CustomerInfo getCostumerInfo() throws UnknownHostException {

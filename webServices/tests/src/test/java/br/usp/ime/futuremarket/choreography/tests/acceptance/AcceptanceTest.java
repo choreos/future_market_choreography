@@ -1,8 +1,10 @@
 package br.usp.ime.futuremarket.choreography.tests.acceptance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -26,18 +28,18 @@ import br.usp.ime.futuremarket.choreography.ServiceName;
  */
 
 public class AcceptanceTest {
-	
-	private static final FutureMarket market = new FutureMarket();
-	private Broker broker;
-	
-	@Before
-	public void setup() throws Exception {
-		broker = market.getClientByRole(Role.BROKER, ServiceName.BROKER, Broker.class);
-	}
-	
+
+    private static final FutureMarket market = new FutureMarket();
+    private Broker broker;
+
+    @Before
+    public void setup() throws Exception {
+        broker = market.getClientByRole(Role.BROKER, ServiceName.BROKER, Broker.class);
+    }
+
     @Test
     public void testLowestPriceList() throws IOException {
-    	final ShopList list = getShopList(false);
+        final ShopList list = getShopList(false);
         final ShopList cheapList = broker.getLowestPrice(list);
 
         assertEquals(5, cheapList.getShopListItems().size());
@@ -54,34 +56,40 @@ public class AcceptanceTest {
 
     @Test
     public void testPurchase() throws Exception {
-    	final CustomerInfo customer = getCustomerInfo();
-    	final ShopList list = getShopList(true);
-    	final Set<Purchase> purchases = broker.purchase(list, customer);
-    	assertEquals(5, purchases.size());
-    	
-    	int numberOfProducts;
-    	for(Purchase purchase : purchases) {    		
-    		numberOfProducts = purchase.getShopList().getProducts().size();
-    		assertEquals(1, numberOfProducts);
-    	}
+        final CustomerInfo customer = getCustomerInfo();
+        final ShopList list = getShopList(true);
+        final Set<String> supermarkets = new HashSet<String>();
+
+        final Set<Purchase> purchases = broker.purchase(list, customer);
+        assertEquals(5, purchases.size());
+
+        // Each purchase should have a different seller by definition
+        int numberOfProducts;
+        for (Purchase purchase : purchases) {
+            assertFalse(supermarkets.contains(purchase.getSeller()));
+            supermarkets.add(purchase.getSeller());
+
+            numberOfProducts = purchase.getShopList().getProducts().size();
+            assertEquals(1, numberOfProducts);
+        }
     }
 
     private CustomerInfo getCustomerInfo() {
-		CustomerInfo customer = new CustomerInfo();
-		customer.setName("name");
-		customer.setAddress("adderss");
-		customer.setCreditCard("1111111111111111");
-		return customer;
-	}
+        CustomerInfo customer = new CustomerInfo();
+        customer.setName("name");
+        customer.setAddress("adderss");
+        customer.setCreditCard("1111111111111111");
+        return customer;
+    }
 
-	// TODO Test other two operations
+    // TODO Test other two operations
 
     private String getCheapestSm(final Product product) {
         final String prodName = product.getName();
         return prodName.replaceFirst("product", "supermarket");
     }
 
-    private ShopList getShopList(boolean setSupermerket) throws IOException {
+    private ShopList getShopList(boolean setLowestPriceSm) throws IOException {
         final ShopList list = new ShopList();
         Product product;
         ShopListItem item;
@@ -89,8 +97,8 @@ public class AcceptanceTest {
         for (int i = 1; i < 6; i++) {
             product = getProduct(i);
             item = getItem(product);
-            if (setSupermerket)
-            	item.setSeller(market.getBaseAddress(getCheapestSm(product)));
+            if (setLowestPriceSm)
+                item.setSeller(market.getBaseAddress(getCheapestSm(product)));
             list.put(item);
         }
 
