@@ -18,8 +18,8 @@ import org.junit.Test;
 import br.usp.ime.futuremarket.Registry;
 
 public class RegistryTest {
-    private static final String ROLE = "Supermarket";
-    private static final String NAME = "WALMART";
+    private static final String ROLE = "TestRole";
+    private static final String NAME = "Walmart";
     private static final String ENDPOINT = "http://www.walmart.com";
     private static final String PROP_FILE = "registry.properties";
     private static final String PROP_KEY = "registry.wsdl";
@@ -44,7 +44,7 @@ public class RegistryTest {
     private static Registry getRegistryClient(final String registryWsdl)
             throws MalformedURLException {
         final URL url = new URL(registryWsdl);
-        final QName qname = new QName(NAMESPACE, LPART);
+        final QName qname = new QName(NAMESPACE + "/registry", LPART);
         final Service service = Service.create(url, qname);
 
         return service.getPort(Registry.class);

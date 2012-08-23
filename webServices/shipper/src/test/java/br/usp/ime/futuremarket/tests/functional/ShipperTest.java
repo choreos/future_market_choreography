@@ -13,7 +13,6 @@ import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.Role;
-import br.usp.ime.futuremarket.ServiceName;
 import br.usp.ime.futuremarket.Shipper;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
@@ -25,7 +24,7 @@ public class ShipperTest {
     @BeforeClass
     public static void getShipper() throws IOException {
         final FutureMarket futureMarket = new FutureMarket();
-        shipper = futureMarket.getClientByRole(Role.SHIPPER, ServiceName.SHIPPER, Shipper.class);
+        shipper = futureMarket.getClientByRole(Role.SHIPPER, Shipper.class);
     }
 
     @Test

@@ -1,21 +1,21 @@
 package br.usp.ime.futuremarket;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public class Delivery {
-    private Date date;
+    private Calendar date;
     private String status;
     private Purchase purchase;
-    
+
     public Delivery() {
         // Avoiding IllegalAnnotationExceptions
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
-    
-    public void setDate(final Date date) {
+
+    public void setDate(final Calendar date) {
         this.date = date;
     }
 
@@ -30,7 +30,7 @@ public class Delivery {
     public Purchase getPurchase() {
         return purchase;
     }
-    
+
     public void setPurchase(final Purchase purchase) {
         this.purchase = purchase;
     }

@@ -1,12 +1,24 @@
 package br.usp.ime.futuremarket;
 
-public class Role {
-    public static final String BANK = "bank";
-    public static final String MANUFACTURER = "manufacturer";
-    public static final String SHIPPER = "shipper";
-    public static final String SUPERMARKET = "supermarket";
+import java.util.EnumSet;
 
-    protected Role() {
-        // A hack for an extendable enum
+public enum Role {
+    BANK, MANUFACTURER, PORTAL, REGISTRY, SHIPPER, SUPERMARKET, SUPPLIER;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
+
+    public static Role getByValue(final String value) {
+        Role role = null;
+
+        for (final Role element : EnumSet.allOf(Role.class)) {
+            if (value.equals(element.toString())) {
+                role = element;
+            }
+        }
+
+        return role;
     }
 }

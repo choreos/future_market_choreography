@@ -6,38 +6,45 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Properties;
 
-import br.usp.ime.futuremarket.choreography.FutureMarket;
-
 public abstract class AbstractSupermarket implements Supermarket {
 
     private static final int PRODUCTS = 10;
 
     protected final ShopList shopList = new ShopList();
-    protected final FutureMarket market = new FutureMarket();
+    protected final AbstractFutureMarket market;
     private long purchaseId = 0l;
     private final Stock stock = new Stock();
 
     private Properties properties;
-    private String shipperBaseAddr;
-    private String sellerBaseAddr;
     private String name;
+    private String shipperBaseAddr, sellerBaseAddr, myBaseAddr;
     private int purchaseTrigger, purchaseQuantity;
-    final private String myBaseAddr;
-    private final String role;
+    private final Role role;
 
     public AbstractSupermarket() throws IOException {
         readProperties();
-        role = properties.getProperty("role");
-        market.register(role, name);
+        stock.loadProducts(properties, PRODUCTS);
 
+        market = getFutureMarket();
+        market.register(name);
         myBaseAddr = market.getMyBaseAddress(name);
 
-        stock.loadProducts(properties, PRODUCTS);
+        role = getRole(name);
     }
 
     abstract protected void buy() throws IOException;
 
     abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
+
+    abstract protected AbstractWSInfo getWSInfo();
+
+    abstract protected AbstractFutureMarket getFutureMarket();
+
+    private Role getRole(String name) {
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
+        return info.getRole();
+    }
 
     @Override
     public ShopList getPrices(final ShopList shopList) {
@@ -58,7 +65,7 @@ public abstract class AbstractSupermarket implements Supermarket {
     protected Purchase getFromStock(final ShopList list, final CustomerInfo customer)
             throws IOException {
         // Manufacturers have infinite resources
-        if (!role.equals(Role.MANUFACTURER)) {
+        if (!Role.MANUFACTURER.equals(role)) {
             synchronized (this) {
                 removeFromStock(list);
                 supplyStock();

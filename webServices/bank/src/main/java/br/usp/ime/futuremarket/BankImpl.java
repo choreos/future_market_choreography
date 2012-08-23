@@ -6,11 +6,9 @@ import javax.jws.WebService;
 
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/bank",
         endpointInterface = "br.usp.ime.futuremarket.Bank")
 public class BankImpl implements Bank {
-    private static final String NAME = "bank";
-
     public BankImpl() throws IOException {
         this(true);
     }
@@ -23,7 +21,7 @@ public class BankImpl implements Bank {
 
     private void register() throws IOException {
         final FutureMarket futureMarket = new FutureMarket();
-        futureMarket.register(Role.BANK, NAME);
+        futureMarket.register(Role.BANK.toString());
     }
 
     @Override

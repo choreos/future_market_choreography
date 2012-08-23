@@ -16,23 +16,22 @@ import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.Shipper;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
 import br.usp.ime.futuremarket.Supermarket;
+import br.usp.ime.futuremarket.choreography.FutureMarket;
+import br.usp.ime.futuremarket.choreography.Portal;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-        endpointInterface = "br.usp.ime.futuremarket.choreography.Broker")
-public class BrokerImpl implements Broker {
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/choreography/portal",
+        endpointInterface = "br.usp.ime.futuremarket.choreography.Portal")
+public class PortalImpl implements Portal {
     protected final FutureMarket market = new FutureMarket();
 
-    public BrokerImpl() throws IOException {
-        this(Role.BROKER);
-    }
-
-    public BrokerImpl(final String role) throws IOException {
+    public PortalImpl() throws IOException {
         final String name = getName();
-        market.register(role, name);
+        market.register(name);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class BrokerImpl implements Broker {
     @Override
     public Delivery getDelivery(final Purchase purchase) throws MalformedURLException {
         final String baseAddress = purchase.getShipper();
-        final Shipper shipper = market.getClient(baseAddress, ServiceName.SHIPPER, Shipper.class);
+        final Shipper shipper = market.getClient(baseAddress, Shipper.class);
         return shipper.getDelivery(purchase);
     }
 
@@ -68,11 +67,10 @@ public class BrokerImpl implements Broker {
         return purchases;
     }
 
-    public Purchase purchaseFromOneStore(final ShopList list, final CustomerInfo customer)
+    protected Purchase purchaseFromOneStore(final ShopList list, final CustomerInfo customer)
             throws IOException {
         final String baseAddr = list.getSeller();
-        final Supermarket supermarket = market.getClient(baseAddr, ServiceName.SUPERMARKET,
-                Supermarket.class);
+        final Supermarket supermarket = market.getClient(baseAddr, Supermarket.class);
         return supermarket.purchase(list, customer);
     }
 
@@ -126,6 +124,6 @@ public class BrokerImpl implements Broker {
     }
 
     private Collection<Supermarket> getSupermarkets() throws IOException {
-        return market.getClients(Role.SUPERMARKET, ServiceName.SUPERMARKET, Supermarket.class);
+        return market.getClients(Role.SUPERMARKET, Supermarket.class);
     }
 }

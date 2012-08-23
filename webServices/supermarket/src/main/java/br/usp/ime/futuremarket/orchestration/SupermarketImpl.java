@@ -4,16 +4,20 @@ import java.io.IOException;
 
 import javax.jws.WebService;
 
+import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.AbstractSupermarket;
+import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
+import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
+import br.usp.ime.futuremarket.choreography.FutureMarket;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/orchestration/supermarket",
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
 public class SupermarketImpl extends AbstractSupermarket {
 
-    private Orchestrator orchestrator = null;
+    private Portal orchestrator = null;
 
     public SupermarketImpl() throws IOException {
         super();
@@ -21,7 +25,7 @@ public class SupermarketImpl extends AbstractSupermarket {
 
     @Override
     public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
-        final Orchestrator orch = getOrchestrator();
+        final Portal orch = getOrchestrator();
 
         final boolean isPaid = orch.requestPayment(list.getPrice(), customer);
         final Purchase purchase = getFromStock(list, customer);
@@ -37,14 +41,22 @@ public class SupermarketImpl extends AbstractSupermarket {
         getOrchestrator().getDelivery(purchase);
     }
 
-    private Orchestrator getOrchestrator() throws IOException {
+    @Override
+    protected AbstractWSInfo getWSInfo() {
+        return new WSInfo();
+    }
+    
+    @Override
+    protected AbstractFutureMarket getFutureMarket() {
+        return new FutureMarket();
+    }
+
+    private Portal getOrchestrator() throws IOException {
         synchronized (this) {
             if (orchestrator == null) {
-                orchestrator = market.getClientRoundRobin(Role.ORCHESTRATOR,
-                        ServiceName.ORCHESTRATOR, Orchestrator.class);
+                orchestrator = market.getClientRoundRobin(Role.PORTAL, Portal.class);
             }
         }
         return orchestrator;
     }
-
 }

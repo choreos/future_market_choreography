@@ -1,18 +1,19 @@
-package br.usp.ime.futuremarket.choreography.tests.functional;
+package br.usp.ime.futuremarket.orchestration.tests.functional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.usp.ime.futuremarket.Product;
+import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
-import br.usp.ime.futuremarket.choreography.Broker;
-import br.usp.ime.futuremarket.choreography.FutureMarket;
-import br.usp.ime.futuremarket.choreography.Role;
-import br.usp.ime.futuremarket.choreography.ServiceName;
+import br.usp.ime.futuremarket.orchestration.FutureMarket;
+import br.usp.ime.futuremarket.orchestration.Portal;
 
 /**
  * Use case 3
@@ -20,7 +21,21 @@ import br.usp.ime.futuremarket.choreography.ServiceName;
  * @author cadu
  * 
  */
-public class BrokerTest {
+public class PortalTest {
+    private static FutureMarket market;
+    private static Portal portal;
+
+    @BeforeClass
+    public static void setPortal() throws IOException {
+        market = new FutureMarket();
+        portal = market.getClientByRole(Role.PORTAL, Portal.class);
+    }
+
+    @Test
+    public void testProxyCreation() {
+        assertNotNull(portal);
+    }
+
     @Test
     public void testProduct1LowestPrice() throws IOException {
         final String productName = "product1";
@@ -34,9 +49,7 @@ public class BrokerTest {
         list.put(item);
 
         // Searching for lowest price
-        final FutureMarket market = new FutureMarket();
-        final Broker broker = market.getClientByRole(Role.BROKER, ServiceName.BROKER, Broker.class);
-        final ShopList cheapList = broker.getLowestPrice(list);
+        final ShopList cheapList = portal.getLowestPrice(list);
         final ShopListItem cheapItem = cheapList.getShopListItems().iterator().next();
         final Product cheapProd = cheapItem.getProduct();
 

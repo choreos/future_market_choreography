@@ -11,14 +11,14 @@ Inc.//DTD Web Application 2.3//EN"
 	</listener>
 
 	<servlet>
-		<servlet-name>Broker</servlet-name>
+		<servlet-name>PortalChor</servlet-name>
 		<servlet-class>
 			com.sun.xml.ws.transport.http.servlet.WSServlet
 		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>Orchestrator</servlet-name>
+		<servlet-name>PortalOrch</servlet-name>
 		<servlet-class>
 			com.sun.xml.ws.transport.http.servlet.WSServlet
 		</servlet-class>
@@ -26,11 +26,11 @@ Inc.//DTD Web Application 2.3//EN"
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>Broker</servlet-name>
+		<servlet-name>PortalChor</servlet-name>
 		<url-pattern>/choreography</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>Orchestrator</servlet-name>
+		<servlet-name>PortalOrch</servlet-name>
 		<url-pattern>/orchestration</url-pattern>
 	</servlet-mapping>
 

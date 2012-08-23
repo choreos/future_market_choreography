@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.jws.WebService;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/registry",
         endpointInterface = "br.usp.ime.futuremarket.Registry")
 public class RegistryImpl implements Registry {
 
@@ -21,6 +21,7 @@ public class RegistryImpl implements Registry {
         services = new HashMap<String, List<String>>();
         names = new HashMap<String, String>();
         index = new HashMap<String, Integer>();
+        System.out.println(getClass().getName());
     }
 
     @Override

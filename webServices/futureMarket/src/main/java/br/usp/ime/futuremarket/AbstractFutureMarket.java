@@ -13,62 +13,65 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 public abstract class AbstractFutureMarket {
-    private static final String NAMESPACE = "http://futuremarket.ime.usp.br";
     private static final String PORT = "8080";
     private static Registry registry;
 
     abstract protected String baseAddressToWsdl(final String baseAddress);
 
+    abstract protected AbstractWSInfo getWSInfo();
+
     // Name is the name of the service == war file basename
-    public void register(final String role, final String name) throws IOException {
-        final String baseAddress = getMyBaseAddress(name);
-        getRegistry().addService(role, name, baseAddress);
+    public void register(final String name) throws IOException {
+        final String baseAddr = getMyBaseAddress(name);
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
+
+        getRegistry().addService(info.getRole().toString(), name, baseAddr);
     }
 
-    public <T> List<T> getClients(final String role, final String serviceName,
-            final Class<T> resultClass) throws IOException {
-        final List<String> baseAddresses = getRegistry().getServices(role);
+    public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
+        final List<String> baseAddresses = getRegistry().getServices(role.toString());
 
         T client;
-        String wsdl;
+        final AbstractWSInfo info = getWSInfo();
         final List<T> clients = new ArrayList<T>();
         for (String baseAddress : baseAddresses) {
-            wsdl = baseAddressToWsdl(baseAddress);
-            client = getClient(resultClass, wsdl, serviceName);
+            info.setRole(role);
+            client = getClient(resultClass, baseAddress, info);
             clients.add(client);
         }
 
         return clients;
     }
 
-    public <T> T getClientByRole(final String role, final String serviceName,
-            final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistry().getServiceByRole(role);
-        final String wsdl = baseAddressToWsdl(baseAddress);
+    public <T> T getClientByRole(final Role role, final Class<T> resultClass) throws IOException {
+        final String baseAddress = getRegistry().getServiceByRole(role.toString());
+        final AbstractWSInfo info = getWSInfo();
+        info.setBaseAddress(baseAddress);
 
-        return getClient(resultClass, wsdl, serviceName);
+        return getClient(resultClass, baseAddress, info);
     }
 
-    public <T> T getClientByName(final String name, final String serviceName,
-            final Class<T> resultClass) throws IOException {
+    public <T> T getClientByName(final String name, final Class<T> resultClass) throws IOException {
         final String baseAddress = getRegistry().getServiceByName(name);
-        final String wsdl = baseAddressToWsdl(baseAddress);
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
 
-        return getClient(resultClass, wsdl, serviceName);
+        return getClient(resultClass, baseAddress, info);
     }
 
-    public <T> T getClientRoundRobin(final String role, final String serviceName,
-            final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistry().getServiceRoundRobin(role);
-        final String wsdl = baseAddressToWsdl(baseAddress);
+    public <T> T getClientRoundRobin(final Role role, final Class<T> resultClass)
+            throws IOException {
+        final String baseAddress = getRegistry().getServiceRoundRobin(role.toString());
+        final AbstractWSInfo info = getWSInfo();
+        info.setRole(role);
 
-        return getClient(resultClass, wsdl, serviceName);
+        return getClient(resultClass, baseAddress, info);
     }
 
-    // Need to be suffixed by orchestration/choreography (+ ?wsdl)
+    // Need to be suffixed by orchestration/choreography + ?wsdl
     public String getMyBaseAddress(final String name) throws UnknownHostException {
         final String hostName = getMyHostName();
-
         return "http://" + hostName + ":" + PORT + "/" + name;
     }
 
@@ -76,21 +79,27 @@ public abstract class AbstractFutureMarket {
         return getRegistry().getServiceByName(name);
     }
 
-    public List<String> getBaseAddresses(final String role) throws IOException {
-        return getRegistry().getServices(role);
+    public <T> T getClient(final String baseAddress, final Class<T> resultClass)
+            throws MalformedURLException {
+        final AbstractWSInfo info = getWSInfo();
+        info.setBaseAddress(baseAddress);
+
+        return getClient(resultClass, baseAddress, info);
     }
 
-    public <T> T getClient(final String baseAddress, final String serviceName,
-            final Class<T> resultClass) throws MalformedURLException {
+    private <T> T getClient(final Class<T> resultClass, final String baseAddress,
+            final AbstractWSInfo info) throws MalformedURLException {
+        final String namespace = info.getNamespace();
+        final String serviceName = info.getServiceName();
         final String wsdl = baseAddressToWsdl(baseAddress);
-        return getClient(resultClass, wsdl, serviceName);
+
+        return getClient(resultClass, namespace, serviceName, wsdl);
     }
 
-    private static <T> T getClient(final Class<T> resultClass, final String wsdl,
-            final String serviceName) throws MalformedURLException {
-        final QName qname = new QName(NAMESPACE, serviceName);
+    private <T> T getClient(final Class<T> resultClass, final String namespace,
+            final String serviceName, final String wsdl) throws MalformedURLException {
+        final QName qname = new QName(namespace, serviceName);
         final URL url = new URL(wsdl);
-
         final Service service = Service.create(url, qname);
 
         return service.getPort(resultClass);
@@ -102,13 +111,18 @@ public abstract class AbstractFutureMarket {
                 registry = getRegistryClient();
             }
         }
-
         return registry;
     }
 
     private Registry getRegistryClient() throws IOException {
+        final AbstractWSInfo info = getWSInfo();
+        info.setName("registry");
+
+        final String namespace = info.getNamespace();
+        final String serviceName = info.getServiceName();
         final String wsdl = getRegistryWsdl();
-        return getClient(Registry.class, wsdl, ServiceName.REGISTRY);
+
+        return getClient(Registry.class, namespace, serviceName, wsdl);
     }
 
     private String getRegistryWsdl() throws IOException {

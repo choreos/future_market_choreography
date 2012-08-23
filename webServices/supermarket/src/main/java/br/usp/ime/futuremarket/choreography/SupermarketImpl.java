@@ -4,16 +4,18 @@ import java.io.IOException;
 
 import javax.jws.WebService;
 
+import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.AbstractSupermarket;
+import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.Bank;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
-import br.usp.ime.futuremarket.ServiceName;
+import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.Shipper;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.Supermarket;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/choreography/supermarket",
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
 public class SupermarketImpl extends AbstractSupermarket {
 
@@ -40,10 +42,20 @@ public class SupermarketImpl extends AbstractSupermarket {
         getSeller().purchase(shopList, getCostumerInfo());
     }
 
+    @Override
+    protected AbstractWSInfo getWSInfo() {
+        return new WSInfo();
+    }
+    
+    @Override
+    protected AbstractFutureMarket getFutureMarket() {
+        return new FutureMarket();
+    }
+
     private Bank getBank() throws IOException {
         synchronized (this) {
             if (bank == null) {
-                bank = market.getClientByRole(Role.BANK, ServiceName.BANK, Bank.class);
+                bank = market.getClientByRole(Role.BANK, Bank.class);
             }
         }
         return bank;
@@ -52,8 +64,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private Shipper getShipper() throws IOException {
         synchronized (this) {
             if (shipper == null) {
-                shipper = market
-                        .getClient(getShipperBaseAddr(), ServiceName.SHIPPER, Shipper.class);
+                shipper = market.getClient(getShipperBaseAddr(), Shipper.class);
             }
         }
         return shipper;
@@ -62,8 +73,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private Supermarket getSeller() throws IOException {
         synchronized (this) {
             if (seller == null) {
-                seller = market.getClient(getSellerBaseAddr(), ServiceName.SUPERMARKET,
-                        Supermarket.class);
+                seller = market.getClient(getSellerBaseAddr(), Supermarket.class);
             }
         }
         return seller;

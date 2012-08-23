@@ -3,10 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd"
 	version="2.0">
-	<endpoint name="Broker"
-		implementation="br.usp.ime.futuremarket.choreography.BrokerImpl"
+	<endpoint name="PortalChor"
+		implementation="br.usp.ime.futuremarket.choreography.PortalImpl"
 		url-pattern="/choreography" />
-	<endpoint name="Orchestrator"
-		implementation="br.usp.ime.futuremarket.orchestration.OrchestratorImpl"
+	<endpoint name="PortalOrch"
+		implementation="br.usp.ime.futuremarket.orchestration.PortalImpl"
 		url-pattern="/orchestration" />
 </endpoints>

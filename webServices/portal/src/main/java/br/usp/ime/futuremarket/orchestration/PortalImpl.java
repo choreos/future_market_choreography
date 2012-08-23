@@ -8,24 +8,22 @@ import javax.jws.WebService;
 import br.usp.ime.futuremarket.Bank;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
-import br.usp.ime.futuremarket.ServiceName;
+import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.Shipper;
 import br.usp.ime.futuremarket.ShopList;
-import br.usp.ime.futuremarket.choreography.BrokerImpl;
 
-@WebService(targetNamespace = "http://futuremarket.ime.usp.br",
-        endpointInterface = "br.usp.ime.futuremarket.orchestration.Orchestrator")
-public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
+@WebService(targetNamespace = "http://futuremarket.ime.usp.br/orchestration/portal",
+        endpointInterface = "br.usp.ime.futuremarket.orchestration.Portal")
+public class PortalImpl extends br.usp.ime.futuremarket.choreography.PortalImpl implements Portal {
     private Bank bank = null;
 
-    public OrchestratorImpl() throws IOException {
-        super(Role.ORCHESTRATOR);
+    public PortalImpl() throws IOException {
+        super();
     }
 
     @Override
     public boolean deliver(final Purchase purchase) throws MalformedURLException {
-        final Shipper shipper = market.getClient(purchase.getShipper(), ServiceName.SHIPPER,
-                Shipper.class);
+        final Shipper shipper = market.getClient(purchase.getShipper(), Shipper.class);
         return shipper.deliver(purchase);
     }
 
@@ -43,9 +41,7 @@ public class OrchestratorImpl extends BrokerImpl implements Orchestrator {
     private Bank getBank() throws IOException {
         synchronized (this) {
             if (bank == null) {
-                final String role = Role.BANK;
-                final String name = ServiceName.BANK;
-                bank = market.getClientByRole(role, name, Bank.class);
+                bank = market.getClientByRole(Role.BANK, Bank.class);
             }
         }
         return bank;
