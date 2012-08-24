@@ -1,4 +1,4 @@
-package br.usp.ime.futuremarket.choreography.tests.functional;
+package br.usp.ime.futuremarket.tests.functional.choreography;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

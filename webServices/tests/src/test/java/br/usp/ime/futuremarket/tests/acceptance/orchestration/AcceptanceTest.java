@@ -1,4 +1,4 @@
-package br.usp.ime.futuremarket.orchestration.tests.acceptance;
+package br.usp.ime.futuremarket.tests.acceptance.orchestration;
 
 import java.io.IOException;
 

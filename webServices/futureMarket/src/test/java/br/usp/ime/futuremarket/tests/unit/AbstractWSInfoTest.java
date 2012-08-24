@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.Role;
-import br.usp.ime.futuremarket.choreography.WSInfo;
 
-public class WSInfoTest {
-    private final WSInfo info = new WSInfo();
+public abstract class AbstractWSInfoTest {
+    protected final AbstractWSInfo info = getWSInfo();
     private static final String SMSERVICENAME = "SupermarketImplService";
+    
+    protected abstract AbstractWSInfo getWSInfo();
 
     @Test
     public void testRoles() {
@@ -34,9 +36,6 @@ public class WSInfoTest {
     public void testNamespaces() {
         info.setRole(Role.BANK);
         assertEquals("http://futuremarket.ime.usp.br/bank", info.getNamespace());
-
-        info.setRole(Role.SUPERMARKET);
-        assertEquals("http://futuremarket.ime.usp.br/choreography/supermarket", info.getNamespace());
     }
 
     @Test

@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 // find webServices/*/src/test/java/br/usp/ime/futuremarket/tests/unit/ -name "*.java" | cut -d\/ -f12 | grep -v AllTests.java | sed 's/.java/.class/g' | paste -s -d,
 
 @RunWith(Suite.class)
-@SuiteClasses({ ProductTest.class, RoleTest.class, WSInfoTest.class, RegistryTest.class,
-        ShipperTest.class, StockTest.class })
+@SuiteClasses({ ProductTest.class, RoleTest.class, RegistryTest.class, ShipperTest.class,
+        StockTest.class, br.usp.ime.futuremarket.tests.unit.choreography.WSInfoTest.class,
+        br.usp.ime.futuremarket.tests.unit.orchestration.WSInfoTest.class })
 public class AllTests {
 }

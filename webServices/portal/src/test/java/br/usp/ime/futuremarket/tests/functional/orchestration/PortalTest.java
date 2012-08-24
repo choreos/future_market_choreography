@@ -1,4 +1,4 @@
-package br.usp.ime.futuremarket.orchestration.tests.functional;
+package br.usp.ime.futuremarket.tests.functional.orchestration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

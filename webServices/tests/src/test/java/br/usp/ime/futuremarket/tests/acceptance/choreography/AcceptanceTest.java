@@ -1,4 +1,4 @@
-package br.usp.ime.futuremarket.choreography.tests.acceptance;
+package br.usp.ime.futuremarket.tests.acceptance.choreography;
 
 import java.io.IOException;
 
