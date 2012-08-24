@@ -1,4 +1,0 @@
-TODO
-
-If orchetsrator pass some kind of correlation ID, avoid multiple orchestrator to use the same ID
-    I think it is OK
