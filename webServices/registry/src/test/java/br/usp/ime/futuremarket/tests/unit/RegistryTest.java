@@ -16,6 +16,7 @@ public class RegistryTest {
     private Registry registry;
     private static List<String> endpoints;
     private static final String ROLE = "TestRole";
+    private static final String NAME = "foo";
 
     @BeforeClass
     public static void initializeLists() {
@@ -50,5 +51,13 @@ public class RegistryTest {
         assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
         assertEquals(endpoints.get(1), registry.getServiceRoundRobin(ROLE));
         assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
+    }
+
+    @Test
+    public void testUpdateByName() {
+        addEndpoint(ROLE, NAME, "oldValue");
+        addEndpoint(ROLE, NAME, "newValue");
+
+        assertEquals(endpoints.get(1), registry.getServiceByName(NAME));
     }
 }

@@ -11,7 +11,7 @@ import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
-import br.usp.ime.futuremarket.choreography.FutureMarket;
+import br.usp.ime.futuremarket.orchestration.FutureMarket;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/orchestration/supermarket",
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")

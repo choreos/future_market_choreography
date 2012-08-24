@@ -97,9 +97,9 @@ public class RegistryImpl implements Registry {
     @Override
     public String addService(final String role, final String name, final String endpoint) {
         synchronized (this) {
-            if (!services.containsKey(role)) {
-                services.put(role, new ArrayList<String>());
-            }
+            // Avoid service without name if name is overridden
+            removeFromRoleByName(role, name);
+            initializeRole(role);
 
             final List<String> roleServices = services.get(role);
             if (!roleServices.contains(endpoint)) {
@@ -111,13 +111,26 @@ public class RegistryImpl implements Registry {
         return "OK";
     }
 
+    private void initializeRole(final String role) {
+        if (!services.containsKey(role)) {
+            services.put(role, new ArrayList<String>());
+        }
+    }
+
+    private void removeFromRoleByName(final String role, final String name) {
+        if (names.containsKey(name) && services.containsKey(role)) {
+            final String service = names.get(name);
+            services.get(role).remove(service);
+        }
+    }
+
     @Override
     public String removeService(final String role, final String name) {
         String answer;
 
         synchronized (this) {
             if (names.containsKey(name)) {
-                removeNameAndRole(name, role);
+                removeNameAndEndpoint(name, role);
                 answer = "OK";
             } else {
                 answer = "Name not found";
@@ -130,19 +143,27 @@ public class RegistryImpl implements Registry {
     /*
      * "names" must contain the key "name"
      */
-    private void removeNameAndRole(final String name, final String role) {
-        final String service = names.get(name);
+    private void removeNameAndEndpoint(final String name, final String role) {
+        final String endpoint = names.get(name);
 
         names.remove(name);
-        removeFromRole(role, service);
+        removeEndpointFromRole(role, endpoint);
     }
 
     /*
      * Ignores silently if there's no role or endpoint for the role
      */
-    private void removeFromRole(final String role, final String endpoint) {
+    private void removeEndpointFromRole(final String role, final String endpoint) {
         if (services.containsKey(role)) {
             services.get(role).remove(endpoint);
+            removeRoleIfEmpty(role);
+        }
+    }
+
+    private void removeRoleIfEmpty(final String role) {
+        if (services.get(role).isEmpty()) {
+            services.remove(role);
+            index.remove(role);
         }
     }
 }

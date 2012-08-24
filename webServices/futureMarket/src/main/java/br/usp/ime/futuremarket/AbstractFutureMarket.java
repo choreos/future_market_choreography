@@ -87,6 +87,12 @@ public abstract class AbstractFutureMarket {
         return getClient(resultClass, baseAddress, info);
     }
 
+    public void unregister(final String name) throws IOException {
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
+        getRegistry().removeService(info.getRole().toString(), name);
+    }
+
     private <T> T getClient(final Class<T> resultClass, final String baseAddress,
             final AbstractWSInfo info) throws MalformedURLException {
         final String namespace = info.getNamespace();
@@ -105,7 +111,13 @@ public abstract class AbstractFutureMarket {
         return service.getPort(resultClass);
     }
 
-    private Registry getRegistry() throws IOException {
+    /**
+     * Only for testing purposes.
+     * 
+     * @return Registry
+     * @throws IOException
+     */
+    public Registry getRegistry() throws IOException {
         synchronized (this) {
             if (registry == null) {
                 registry = getRegistryClient();

@@ -11,6 +11,14 @@
 	<artifactId>tests</artifactId>
 	<description>Integration and acceptance tests</description>
 
+	<repositories>
+		<repository>
+			<id>ccslrepository</id>
+			<name>ccsl</name>
+			<url>http://valinhos.ime.usp.br:54080/maven/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -37,6 +45,12 @@
 			<groupId>br.usp.ime.futuremarket</groupId>
 			<artifactId>supermarket</artifactId>
 			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.choreos</groupId>
+			<artifactId>rehearsal</artifactId>
+			<version>0.13</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
