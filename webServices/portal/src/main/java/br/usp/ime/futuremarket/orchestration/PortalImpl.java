@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 
 import javax.jws.WebService;
 
+import br.usp.ime.futuremarket.AbstractPortalImpl;
 import br.usp.ime.futuremarket.Bank;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Purchase;
@@ -14,11 +15,11 @@ import br.usp.ime.futuremarket.ShopList;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/orchestration/portal",
         endpointInterface = "br.usp.ime.futuremarket.orchestration.Portal")
-public class PortalImpl extends br.usp.ime.futuremarket.choreography.PortalImpl implements Portal {
+public class PortalImpl extends AbstractPortalImpl implements Portal {
     private Bank bank = null;
 
     public PortalImpl() throws IOException {
-        super();
+        super(new FutureMarket());
     }
 
     @Override

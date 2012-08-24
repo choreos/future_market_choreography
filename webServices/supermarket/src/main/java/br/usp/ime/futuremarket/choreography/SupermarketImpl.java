@@ -46,10 +46,18 @@ public class SupermarketImpl extends AbstractSupermarket {
     protected AbstractWSInfo getWSInfo() {
         return new WSInfo();
     }
-    
+
     @Override
     protected AbstractFutureMarket getFutureMarket() {
         return new FutureMarket();
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        bank = null;
+        seller = null;
+        shipper = null;
     }
 
     private Bank getBank() throws IOException {

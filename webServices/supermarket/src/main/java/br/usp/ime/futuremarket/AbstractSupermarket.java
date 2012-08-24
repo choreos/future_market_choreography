@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractSupermarket implements Supermarket {
-
     private static final int PRODUCTS = 10;
 
     protected final ShopList shopList = new ShopList();
@@ -15,21 +14,21 @@ public abstract class AbstractSupermarket implements Supermarket {
     private long purchaseId = 0l;
     private final Stock stock = new Stock();
 
-    private Properties properties;
-    private String name;
-    private String shipperBaseAddr, sellerBaseAddr, myBaseAddr;
+    private final Properties properties;
+    private String myName;
+    private String myBaseAddr, shipperBaseAddr, sellerBaseAddr;
     private int purchaseTrigger, purchaseQuantity;
     private final Role role;
 
     public AbstractSupermarket() throws IOException {
-        readProperties();
+        properties = readProperties();
         stock.loadProducts(properties, PRODUCTS);
 
         market = getFutureMarket();
-        market.register(name);
-        myBaseAddr = market.getMyBaseAddress(name);
+        market.register(myName);
+        myBaseAddr = market.getMyBaseAddress(myName);
 
-        role = getRole(name);
+        role = getRole(myName);
     }
 
     abstract protected void buy() throws IOException;
@@ -66,7 +65,7 @@ public abstract class AbstractSupermarket implements Supermarket {
             throws IOException {
         // Manufacturers have infinite resources
         if (!Role.MANUFACTURER.equals(role)) {
-            synchronized (this) {
+            synchronized (stock) {
                 removeFromStock(list);
                 supplyStock();
             }
@@ -77,15 +76,19 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     @Override
     public void reset() {
-        synchronized (this) {
+        synchronized (stock) {
             stock.reset();
             stock.loadProducts(properties, PRODUCTS);
+        }
+        synchronized (this) {
+            sellerBaseAddr = null;
+            shipperBaseAddr = null;
         }
     }
 
     protected CustomerInfo getCostumerInfo() throws UnknownHostException {
         final CustomerInfo customer = new CustomerInfo();
-        customer.setName(name);
+        customer.setName(myName);
         customer.setCreditCard("Visa 123 456");
         customer.setAddress("ZIP 12345-678");
 
@@ -105,22 +108,25 @@ public abstract class AbstractSupermarket implements Supermarket {
     protected String getSellerBaseAddr() throws IOException {
         synchronized (this) {
             if (sellerBaseAddr == null) {
-                final String sellerName = properties.getProperty("seller.name", "");
+                final String sellerName = properties.getProperty("seller.name");
                 sellerBaseAddr = market.getBaseAddress(sellerName);
             }
         }
         return sellerBaseAddr;
     }
 
-    private void readProperties() throws IOException {
+    private Properties readProperties() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("supermarket.properties");
-        properties = new Properties();
+        final Properties properties = new Properties();
         properties.load(propFile);
+        propFile.close();
 
-        name = properties.getProperty("name");
+        myName = properties.getProperty("name");
         purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
+
+        return properties;
     }
 
     private double getPrice(final Product product) {

@@ -35,7 +35,6 @@ Inc.//DTD Web Application 2.3//EN"
 	</servlet-mapping>
 
 	<session-config>
-
 		<session-timeout>120</session-timeout>
 	</session-config>
 </web-app>

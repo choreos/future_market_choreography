@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,18 +25,28 @@ import br.usp.ime.futuremarket.choreography.Portal;
 public abstract class AbstractAcceptanceTest {
 
     private static final String ADDRESS = "42 St";
-    private Portal portal;
-    protected AbstractFutureMarket market;
+    private static Portal portal;
+    protected static AbstractFutureMarket market;
     protected final static String ROLE = "portal";
 
     @Before
     public void setPortal() throws IOException {
-        market = getFutureMarket();
-        portal = getPortal();
+        if (market == null) {
+            market = getFutureMarket();
+            portal = getPortal();
+        }
+    }
+
+    @AfterClass
+    // static vars are shared between children
+    public static void reset() {
+        market = null;
+        portal = null;
     }
 
     abstract protected AbstractFutureMarket getFutureMarket() throws IOException;
 
+    // There is no polimorfism in WS because of different package names
     abstract protected Portal getPortal() throws IOException;
 
     @Test

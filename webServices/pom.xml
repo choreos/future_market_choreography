@@ -42,8 +42,9 @@
         <version>2.12.2</version>
         <configuration>
           <excludes>
-            <exclude>**/tests/functional/*.java</exclude>
-            <exclude>**/tests/acceptance/*.java</exclude>
+            <exclude>**/tests/acceptance/**/*.java</exclude>
+            <exclude>**/tests/integration/**/*.java</exclude>
+            <exclude>**/tests/functional/**/*.java</exclude>
           </excludes>
         </configuration>
       </plugin>

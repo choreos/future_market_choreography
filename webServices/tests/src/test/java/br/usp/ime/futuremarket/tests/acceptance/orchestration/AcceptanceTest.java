@@ -2,7 +2,6 @@ package br.usp.ime.futuremarket.tests.acceptance.orchestration;
 
 import java.io.IOException;
 
-import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.orchestration.FutureMarket;
 import br.usp.ime.futuremarket.orchestration.Portal;
@@ -18,12 +17,12 @@ import br.usp.ime.futuremarket.tests.acceptance.AbstractAcceptanceTest;
 public class AcceptanceTest extends AbstractAcceptanceTest {
 
     @Override
-    public AbstractFutureMarket getFutureMarket() {
+    public FutureMarket getFutureMarket() {
         return new FutureMarket();
     }
 
     @Override
-    protected br.usp.ime.futuremarket.choreography.Portal getPortal() throws IOException {
+    protected Portal getPortal() throws IOException {
         return market.getClientByRole(Role.PORTAL, Portal.class);
     }
 }

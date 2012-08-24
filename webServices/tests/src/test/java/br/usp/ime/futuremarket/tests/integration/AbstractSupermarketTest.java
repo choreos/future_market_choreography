@@ -9,18 +9,16 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.usp.ime.futuremarket.AbstractFutureMarket;
+import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Registry;
-import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
 import br.usp.ime.futuremarket.Supermarket;
-import br.usp.ime.futuremarket.choreography.FutureMarket;
 import eu.choreos.vv.clientgenerator.Item;
 import eu.choreos.vv.exceptions.MockDeploymentException;
 import eu.choreos.vv.exceptions.WSDLException;
@@ -28,94 +26,116 @@ import eu.choreos.vv.interceptor.MessageInterceptor;
 
 public abstract class AbstractSupermarketTest {
     protected static AbstractFutureMarket market;
-    private static String sellerBackup;
+    private static Supermarket supermarket;
     private static final String NAME = "supermarket1";
     private static final String SELLER = "supplier1";
-    private static final String INTERCEPTOR = "http://127.0.0.1:8081/supplier1";
-    private static Supermarket supermarket;
-    private MessageInterceptor interceptor;
-    
-    private static final int QT_INITIAL = 10;
-    private static final int QT_TRIGGER = 3;
+    protected MessageInterceptor interceptor;
+    private static String nameBak;
+    private static String baseAddrBak;
+
+    protected static final int QT_INITIAL = 10;
+    protected static final int QT_TRIGGER = 3;
     private static final int QT_PURCHASE = 10;
     private String product;
+
+    abstract protected String getArchType();
+
+    abstract protected AbstractWSInfo getWSInfo();
 
     @Before
     public void setUp() throws IOException {
         if (supermarket == null) {
-            onlyOnce();
+            supermarket = market.getClientByName(NAME, Supermarket.class);
         }
         supermarket.reset();
     }
-    
-    private void onlyOnce() throws IOException {
-        supermarket = market.getClientByName(NAME, Supermarket.class);
-        sellerBackup = market.getBaseAddress(SELLER);
-        registerInterceptor();
-    }
-    
-    private void registerInterceptor() throws IOException {
-        final Registry registry = market.getRegistry();
-        registry.addService(Role.SUPPLIER.toString(), SELLER, INTERCEPTOR);
-    }
-
-    @Before
-    public void loadInterceptor() throws WSDLException, MockDeploymentException, XmlException,
-            IOException {
-        interceptor = new MessageInterceptor("8081");
-        interceptor.interceptTo("http://127.0.0.1:8080/supplier1/choreography?wsdl");
-    }
 
     @After
-    public void stopInterceptor() {
+    public void restoreBackup() throws IOException {
+        register(nameBak, baseAddrBak);
         interceptor.stop();
     }
 
+    /**
+     * static variables are preserved between children!
+     */
     @AfterClass
-    public static void restoreSeller() throws IOException {
+    public static void reset() {
+        // After all tests, reset must be called
+        supermarket.reset();
+        supermarket = null;
+    }
+
+    protected void intercept(final String name) throws WSDLException, MockDeploymentException,
+            XmlException, IOException {
+        nameBak = name;
+        baseAddrBak = market.getBaseAddress(name);
+
+        final String wsdl = baseAddrBak + "/" + getArchType() + "?wsdl";
+        interceptor = new MessageInterceptor("8081");
+        interceptor.interceptTo(wsdl);
+
+        final String newBaseAddr = baseAddrBak.replaceFirst("8080", "8081");
+        register(name, newBaseAddr);
+    }
+
+    private void register(final String name, final String baseAddr) throws IOException {
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
+
         final Registry registry = market.getRegistry();
-        registry.addService(Role.SUPPLIER.toString(), SELLER, sellerBackup);
+        registry.addService(info.getRole().toString(), name, baseAddr);
     }
 
     @Test
-    public void shouldNotBuyWhenQuantityIsHigherThanTrigger() throws IOException {
+    public void shouldNotBuyWhenQuantityIsHigherThanTrigger() throws IOException, WSDLException,
+            MockDeploymentException, XmlException {
+        intercept(SELLER);
+
         buy("product1", QT_INITIAL - QT_TRIGGER - 1);
         final List<Item> messages = interceptor.getMessages();
         assertEquals(0, messages.size());
     }
 
     @Test
-    public void shouldBuyWhenQuantityEqualsTrigger() throws IOException, NoSuchFieldException {
+    public void shouldBuyWhenQuantityEqualsTrigger() throws IOException, NoSuchFieldException,
+            WSDLException, MockDeploymentException, XmlException, InterruptedException {
+        intercept(SELLER);
         product = "product1";
+
         buy(product, QT_INITIAL - QT_TRIGGER);
         final List<Item> messages = interceptor.getMessages();
-        
+
+        assertEquals(QT_PURCHASE, getPurchasedQuantity(messages.get(0)));
+        assertEquals(product, getProductName(messages.get(0)));
+    }
+
+    @Test
+    public void shouldBuyWhenQuantityIsLowerThanTrigger() throws IOException, NoSuchFieldException,
+            WSDLException, MockDeploymentException, XmlException {
+        intercept(SELLER);
+        product = "product2";
+
+        buy(product, QT_INITIAL - QT_TRIGGER + 1);
+        final List<Item> messages = interceptor.getMessages();
+
         assertEquals(1, messages.size());
         assertEquals(QT_PURCHASE, getPurchasedQuantity(messages.get(0)));
         assertEquals(product, getProductName(messages.get(0)));
     }
 
     @Test
-    public void shouldBuyWhenQuantityIsLowerThanTrigger() throws IOException, NoSuchFieldException {
-        product = "product2";
-        buy(product, QT_INITIAL - QT_TRIGGER + 1);
-        final List<Item> messages = interceptor.getMessages();
-        
-        assertEquals(1, messages.size());
-        assertEquals(QT_PURCHASE, getPurchasedQuantity(messages.get(0)));
-        assertEquals(product, getProductName(messages.get(0)));
-    }
-    
-    @Test
-    public void testSupplyQuantity() throws IOException {
+    public void testSupplyQuantity() throws IOException, WSDLException, MockDeploymentException,
+            XmlException {
+        intercept(SELLER);
         product = "product3";
-        
+
         // Before: 10 items = initial quantity
         buy(product, QT_INITIAL - QT_TRIGGER);
         List<Item> messages = interceptor.getMessages();
         assertEquals(1, messages.size());
         // After: 3 items = trigger quantity
-        
+
         // Before: 13 items = 3 + purchase quantity
         buy(product, QT_TRIGGER + QT_PURCHASE - QT_TRIGGER - 1);
         messages = interceptor.getMessages();
@@ -127,17 +147,19 @@ public abstract class AbstractSupermarketTest {
         messages = interceptor.getMessages();
         assertEquals(2, messages.size());
     }
-    
+
     @Test
-    public void testSupplyQuantityAfterHugePurchase() throws IOException {
+    public void testSupplyQuantityAfterHugePurchase() throws IOException, WSDLException,
+            MockDeploymentException, XmlException {
+        intercept(SELLER);
         product = "product4";
-        
+
         // Before: 10 items = initial quantity
         buy(product, QT_INITIAL * 2);
         List<Item> messages = interceptor.getMessages();
         assertEquals(1, messages.size());
         // After: 0 items
-        
+
         // Before: 10 items = 0 + purchase quantity
         buy(product, QT_PURCHASE - QT_TRIGGER - 1);
         messages = interceptor.getMessages();
@@ -149,7 +171,13 @@ public abstract class AbstractSupermarketTest {
         messages = interceptor.getMessages();
         assertEquals(2, messages.size());
     }
-    
+
+    protected void buy(final String product, final int quantity) throws IOException {
+        final ShopList list = getShopList(product, quantity);
+        final CustomerInfo info = new CustomerInfo();
+        supermarket.purchase(list, info);
+    }
+
     private int getPurchasedQuantity(final Item purchaseRequest) throws NoSuchFieldException {
         final Item shopList = purchaseRequest.getChild("arg0");
         final Item items = shopList.getChild("items");
@@ -166,14 +194,8 @@ public abstract class AbstractSupermarketTest {
         final Item entry = items.getChild("entry");
         final Item item = entry.getChild("value");
         final Item product = item.getChild("product");
-        
-        return product.getContent("name");
-    }
 
-    private void buy(final String product, final int quantity) throws IOException {
-        final ShopList list = getShopList(product, quantity);
-        final CustomerInfo info = new CustomerInfo();
-        supermarket.purchase(list, info);
+        return product.getContent("name");
     }
 
     private ShopList getShopList(final String productName, final int quantity) {

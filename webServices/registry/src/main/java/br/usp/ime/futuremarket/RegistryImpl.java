@@ -21,7 +21,6 @@ public class RegistryImpl implements Registry {
         services = new HashMap<String, List<String>>();
         names = new HashMap<String, String>();
         index = new HashMap<String, Integer>();
-        System.out.println(getClass().getName());
     }
 
     @Override
