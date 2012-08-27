@@ -42,9 +42,31 @@ public class SupermarketTest extends AbstractSupermarketTest {
         List<Item> messages = interceptor.getMessages();
         assertEquals(2, messages.size());
 
-        // Twice the number as the stock is being supplied
-        buy("product7", 1);
-        messages = interceptor.getMessages();
+    }
+
+    @Test
+    public void testSupplyStockOneLevel() throws WSDLException, MockDeploymentException,
+            XmlException, IOException {
+        intercept("portal");
+
+        // 4 more messages to orch: smPurchase, reqPay, deliver, getDelivery
+        buy("product7", QT_INITIAL);
+        List<Item> messages = interceptor.getMessages();
         assertEquals(6, messages.size());
+    }
+
+    @Test
+    public void testSupplyStockTwoLevels() throws WSDLException, MockDeploymentException,
+            XmlException, IOException {
+        intercept("portal");
+
+        buy("product7", QT_INITIAL);
+        /*
+         * 2 more (manufactures does not make smPurchase and getDelivery
+         * Supplier stock params are doubled
+         */
+        buy("product7", 2 * (QT_INITIAL - QT_TRIGGER) - QT_INITIAL);
+        List<Item> messages = interceptor.getMessages();
+        assertEquals(8, messages.size());
     }
 }

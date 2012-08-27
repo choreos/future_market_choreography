@@ -37,12 +37,8 @@ public class SupermarketTest extends AbstractSupermarketTest {
             XmlException, IOException {
         intercept("portal");
 
-        buy("product7", 6);
+        buy("product7", QT_INITIAL);
         List<Item> messages = interceptor.getMessages();
-        assertEquals(0, messages.size());
-
-        buy("product7", 1);
-        messages = interceptor.getMessages();
         assertEquals(0, messages.size());
     }
 }

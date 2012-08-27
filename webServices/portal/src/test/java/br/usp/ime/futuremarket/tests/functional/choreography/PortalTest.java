@@ -28,7 +28,6 @@ public class PortalTest {
     private Product product, cheapProd;
     private ShopListItem item, cheapItem;
     private ShopList list, cheapList;
-    private String prodName, cheapestSm;
 
     @BeforeClass
     public static void setPortal() throws IOException {
@@ -44,8 +43,8 @@ public class PortalTest {
     @Test
     public void testProduct1LowestPrice() throws IOException {
         // Building ShopList
-        prodName = "product1";
-        cheapestSm = "supermarket1";
+        final String prodName = "product1";
+        final String cheapestSm = "supermarket1";
         product = new Product();
         product.setName(prodName);
         item = new ShopListItem(product);

@@ -25,7 +25,6 @@ public class SupermarketImpl extends AbstractSupermarket {
     @Override
     public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
         final Portal orch = getOrchestrator();
-
         final boolean isPaid = orch.requestPayment(list.getPrice(), customer);
         final Purchase purchase = getFromStock(list, customer);
         purchase.setIsPaid(isPaid);
@@ -53,7 +52,9 @@ public class SupermarketImpl extends AbstractSupermarket {
     @Override
     public void reset() {
         super.reset();
-        orchestrator = null;
+        synchronized (this) {
+            orchestrator = null;
+        }
     }
 
     private Portal getOrchestrator() throws IOException {

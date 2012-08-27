@@ -26,9 +26,12 @@ import eu.choreos.vv.interceptor.MessageInterceptor;
 
 public abstract class AbstractSupermarketTest {
     protected static AbstractFutureMarket market;
-    private static Supermarket supermarket;
+
+    private static Supermarket supermarket, supplier, manufacturer;
     private static final String NAME = "supermarket1";
-    private static final String SELLER = "supplier1";
+    private static final String SHIPPER = "supplier1";
+    private static final String MANUFAC = "manufacturer";
+
     protected MessageInterceptor interceptor;
     private static String nameBak;
     private static String baseAddrBak;
@@ -46,8 +49,12 @@ public abstract class AbstractSupermarketTest {
     public void setUp() throws IOException {
         if (supermarket == null) {
             supermarket = market.getClientByName(NAME, Supermarket.class);
+            supplier = market.getClientByName(SHIPPER, Supermarket.class);
+            manufacturer = market.getClientByName(MANUFAC, Supermarket.class);
         }
         supermarket.reset();
+        supplier.reset();
+        manufacturer.reset();
     }
 
     @After
@@ -64,6 +71,12 @@ public abstract class AbstractSupermarketTest {
         // After all tests, reset must be called
         supermarket.reset();
         supermarket = null;
+
+        supplier.reset();
+        supplier = null;
+
+        manufacturer.reset();
+        manufacturer = null;
     }
 
     protected void intercept(final String name) throws WSDLException, MockDeploymentException,
@@ -90,7 +103,7 @@ public abstract class AbstractSupermarketTest {
     @Test
     public void shouldNotBuyWhenQuantityIsHigherThanTrigger() throws IOException, WSDLException,
             MockDeploymentException, XmlException {
-        intercept(SELLER);
+        intercept(SHIPPER);
 
         buy("product1", QT_INITIAL - QT_TRIGGER - 1);
         final List<Item> messages = interceptor.getMessages();
@@ -100,7 +113,7 @@ public abstract class AbstractSupermarketTest {
     @Test
     public void shouldBuyWhenQuantityEqualsTrigger() throws IOException, NoSuchFieldException,
             WSDLException, MockDeploymentException, XmlException, InterruptedException {
-        intercept(SELLER);
+        intercept(SHIPPER);
         product = "product1";
 
         buy(product, QT_INITIAL - QT_TRIGGER);
@@ -113,7 +126,7 @@ public abstract class AbstractSupermarketTest {
     @Test
     public void shouldBuyWhenQuantityIsLowerThanTrigger() throws IOException, NoSuchFieldException,
             WSDLException, MockDeploymentException, XmlException {
-        intercept(SELLER);
+        intercept(SHIPPER);
         product = "product2";
 
         buy(product, QT_INITIAL - QT_TRIGGER + 1);
@@ -127,7 +140,7 @@ public abstract class AbstractSupermarketTest {
     @Test
     public void testSupplyQuantity() throws IOException, WSDLException, MockDeploymentException,
             XmlException {
-        intercept(SELLER);
+        intercept(SHIPPER);
         product = "product3";
 
         // Before: 10 items = initial quantity
@@ -151,7 +164,7 @@ public abstract class AbstractSupermarketTest {
     @Test
     public void testSupplyQuantityAfterHugePurchase() throws IOException, WSDLException,
             MockDeploymentException, XmlException {
-        intercept(SELLER);
+        intercept(SHIPPER);
         product = "product4";
 
         // Before: 10 items = initial quantity

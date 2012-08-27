@@ -54,7 +54,6 @@ public abstract class AbstractSupermarket implements Supermarket {
             product = item.getProduct();
             price = getPrice(product);
             product.setPrice(price);
-
             item.setSeller(myBaseAddr);
         }
 
@@ -79,6 +78,7 @@ public abstract class AbstractSupermarket implements Supermarket {
         synchronized (stock) {
             stock.reset();
             stock.loadProducts(properties, PRODUCTS);
+            shopList.clear();
         }
         synchronized (this) {
             sellerBaseAddr = null;

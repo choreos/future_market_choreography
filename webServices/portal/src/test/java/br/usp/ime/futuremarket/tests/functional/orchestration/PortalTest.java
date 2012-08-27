@@ -2,12 +2,14 @@ package br.usp.ime.futuremarket.tests.functional.orchestration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
@@ -56,5 +58,11 @@ public class PortalTest {
         assertEquals(productName, cheapProd.getName());
         assertEquals(1.0, cheapProd.getPrice(), 0.01);
         assertEquals(market.getBaseAddress(cheapestSm), cheapItem.getSeller());
+    }
+
+    @Test
+    public void testRequestPayment() throws IOException {
+        final boolean authorized = portal.requestPayment(1.0, new CustomerInfo());
+        assertTrue(authorized);
     }
 }
