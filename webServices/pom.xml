@@ -16,6 +16,7 @@
     <module>supermarket</module>
     <module>portal</module>
     <module>tests</module>
+    <module>../experiments/loadGenerator</module>
     <module>helloWorld</module>
   </modules>  
 

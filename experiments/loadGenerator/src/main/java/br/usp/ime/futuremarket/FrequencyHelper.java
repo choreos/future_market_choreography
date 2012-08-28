@@ -1,11 +1,11 @@
-package br.usp.ime.futuremarket.choreography;
+package br.usp.ime.futuremarket;
 
 import java.util.Calendar;
 
 /**
- * This class helps to calculate when to trigger events in order to match a given frequency. The
- * required time is one minute and there is support to multiple instances (e.g.: load generator
- * threads).
+ * This class helps to calculate when to trigger events in order to match a
+ * given frequency. The required time is one minute and there is support to
+ * multiple instances (e.g.: load generator threads).
  * 
  * @author Cadu
  * 
@@ -25,17 +25,13 @@ public class FrequencyHelper {
         setStartTime(getCurrentTime());
     }
 
-    public void setStartTime(final long startTime) {
-        this.startTime = startTime;
-    }
-
     private long getCurrentTime() {
         return Calendar.getInstance().getTimeInMillis();
     }
 
     /**
      * @param Frequency
-     *            per minute. A divisor of 60,000
+     *            per minute.
      * @throws InvalidArgumentException
      * @throws TooSmallPeriodException
      */
@@ -61,12 +57,24 @@ public class FrequencyHelper {
         return Math.round(firstThreadEvent + iterationDelay);
     }
 
-    public int getTotalThreads() {
-        return totalThreads;
-    }
-
     public int getTotalRequests(final int threadNumber) {
         final double firstEvent = ((threadNumber + 1) * period);
         return (int) ((60000 - firstEvent) / threadPeriod + 1);
+    }
+
+    public void setStartTime(final long startTime) {
+        this.startTime = startTime;
+    }
+
+    public double getPeriod() {
+        return period;
+    }
+
+    public double getThreadPeriod() {
+        return threadPeriod;
+    }
+
+    public int getTotalThreads() {
+        return totalThreads;
     }
 }

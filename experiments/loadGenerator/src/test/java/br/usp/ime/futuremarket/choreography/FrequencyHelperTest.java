@@ -7,6 +7,8 @@ import java.util.Calendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.FrequencyHelper;
+
 public class FrequencyHelperTest {
     private static Calendar calendar;
     private long startTime;
