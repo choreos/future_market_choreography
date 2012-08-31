@@ -25,10 +25,6 @@ public class FrequencyHelper {
         setStartTime(getCurrentTime());
     }
 
-    private long getCurrentTime() {
-        return Calendar.getInstance().getTimeInMillis();
-    }
-
     /**
      * @param Frequency
      *            per minute.
@@ -38,7 +34,6 @@ public class FrequencyHelper {
     public void setFrequency(final int frequencyPerMin) {
         totalThreads = Math.min(maxThreads, frequencyPerMin);
         period = 60000.0 / frequencyPerMin;
-
         threadPeriod = totalThreads * period;
     }
 
@@ -51,9 +46,13 @@ public class FrequencyHelper {
         return startTime + getEventDelay(threadNumber, iteration);
     }
 
+    private long getCurrentTime() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+
     private long getEventDelay(final int threadNumber, final int iteration) {
-        final double firstThreadEvent = ((threadNumber + 1) * period);
-        final double iterationDelay = (iteration * threadPeriod);
+        final double firstThreadEvent = (threadNumber + 1) * period;
+        final double iterationDelay = iteration * threadPeriod;
         return Math.round(firstThreadEvent + iterationDelay);
     }
 
@@ -61,6 +60,8 @@ public class FrequencyHelper {
         final double firstEvent = ((threadNumber + 1) * period);
         return (int) ((60000 - firstEvent) / threadPeriod + 1);
     }
+
+    // Trivial setters & getters
 
     public void setStartTime(final long startTime) {
         this.startTime = startTime;
