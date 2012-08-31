@@ -55,7 +55,7 @@ public abstract class AbstractWSInfoTest {
 
     @Test
     public void testRoleFromBaseAddress() {
-        info.setBaseAddress("http://127.0.0.1:8080/supermarket42");
+        info.setBaseAddress("http://example.com:8080/supermarket42");
         assertEquals(Role.SUPERMARKET, info.getRole());
     }
 
