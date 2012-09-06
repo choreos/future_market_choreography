@@ -35,7 +35,7 @@ public class SupermarketTest extends AbstractSupermarketTest {
     @Test
     public void shouldContactPortal() throws WSDLException, MockDeploymentException, XmlException,
             IOException {
-        intercept("portal");
+        intercept("portal1");
 
         // One message to requestPayment and another to deliver
         buy("product7", QT_INITIAL - QT_TRIGGER - 1);
@@ -47,7 +47,7 @@ public class SupermarketTest extends AbstractSupermarketTest {
     @Test
     public void testSupplyStockOneLevel() throws WSDLException, MockDeploymentException,
             XmlException, IOException {
-        intercept("portal");
+        intercept("portal1");
 
         // 4 more messages to orch: smPurchase, reqPay, deliver, getDelivery
         buy("product7", QT_INITIAL);
@@ -58,7 +58,7 @@ public class SupermarketTest extends AbstractSupermarketTest {
     @Test
     public void testSupplyStockTwoLevels() throws WSDLException, MockDeploymentException,
             XmlException, IOException {
-        intercept("portal");
+        intercept("portal1");
 
         buy("product7", QT_INITIAL);
         /*

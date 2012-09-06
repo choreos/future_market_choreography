@@ -59,8 +59,6 @@ case $TESTCASE in
 
     find $SHIPPERSDIR -maxdepth 1 -mindepth 1 -not -name \*.sh | xargs rm -rf
     cp -r ${BASEDIR}/$TESTCASE/shippers/* ${SHIPPERSDIR}
-
-    cp ${BASEDIR}/$TESTCASE/config.properties ${FUTUREDIR}/src/main/resources/
 ;;
 *)
     echo "Please insert a valid test case."

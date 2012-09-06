@@ -35,7 +35,7 @@ public class SupermarketTest extends AbstractSupermarketTest {
     @Test
     public void shouldNotContactPortal() throws WSDLException, MockDeploymentException,
             XmlException, IOException {
-        intercept("portal");
+        intercept("portal1");
 
         buy("product7", QT_INITIAL);
         List<Item> messages = interceptor.getMessages();

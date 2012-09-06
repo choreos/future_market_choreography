@@ -1,0 +1,5 @@
+include Makefile
+
+portal:
+	scp $(WS_DIR)/portals/portal1/portal.war choreos@$(PORTAL_HOST):/tmp/
+	ssh $(PORTAL_HOST) "mv /tmp/portal.war $(WEBAPPS_DIR)/"

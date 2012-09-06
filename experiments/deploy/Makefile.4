@@ -1,0 +1,9 @@
+include Makefile
+
+PORTAL2_HOST=$(NODE9)
+
+portals: portal1 portal2
+
+portal2:
+	scp $(WS_DIR)/portals/portal2/portal2.war choreos@$(PORTAL2_HOST):/tmp/
+	ssh $(PORTAL2_HOST) "mv /tmp/portal2.war $(WEBAPPS_DIR)/"
