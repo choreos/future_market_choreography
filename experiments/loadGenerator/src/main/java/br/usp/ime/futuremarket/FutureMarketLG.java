@@ -16,6 +16,9 @@ import br.usp.ime.futuremarket.orchestration.PortalLoaderImplOrch;
 public final class FutureMarketLG {
     private static final int THREADS_TIMEOUT = 360;
 
+    // Milliseconds
+    private static final int TIMEOUT = 5000;
+
     private static String archType;
     // Requests per minute
     private static int fistFreq;
@@ -47,11 +50,11 @@ public final class FutureMarketLG {
     }
 
     private static void setUpClients() throws IOException {
-        setPortals();
-        FutureMarketClient.setFrequencyHelper(freqHelper);
+        final List<Portal> portals = getPortals();
+        FutureMarketClient.setUp(portals, freqHelper, TIMEOUT);
     }
 
-    private static void setPortals() throws IOException {
+    private static List<Portal> getPortals() throws IOException {
         PortalLoader loader;
 
         if ("orch".equals(archType)) {
@@ -60,27 +63,40 @@ public final class FutureMarketLG {
             loader = new PortalLoaderImplChor();
         }
 
-        final List<Portal> portals = loader.getPortals();
-        FutureMarketClient.setPortals(portals);
+        return loader.getPortals();
     }
 
     private static void runSimulations() {
         int frequency;
 
         for (frequency = fistFreq; frequency <= lastFreq; frequency += freqStep) {
-            final String title = String.format("# %s %s reqs/min", archType, frequency); 
+            final String title = String.format("# %s %s reqs/min", archType, frequency);
             CONSOLE.info(title);
             GRAPH.info(title);
-            
+
             freqHelper.setFrequency(frequency);
             GRAPH.info("# period=" + freqHelper.getPeriod() + " ms, thread period="
                     + freqHelper.getThreadPeriod() + " ms");
-            runThreads();
+
+            FutureMarketClient.resetStatistics();
+            runThreads(freqHelper.getTotalThreads());
+            logStatistics();
         }
     }
 
-    private static void runThreads() {
-        final int totalThreads = freqHelper.getTotalThreads();
+    private static void logStatistics() {
+        final int failures = FutureMarketClient.getFailures();
+        final int requests = failures + FutureMarketClient.getSuccesses();
+
+        final double percentage = ((double) failures) / requests;
+        final String message = String.format("# failures: %d/%d (%.2f%%)", failures, requests,
+                percentage * 100);
+
+        CONSOLE.info(message);
+        GRAPH.info(message);
+    }
+
+    private static void runThreads(final int totalThreads) {
         CONSOLE.debug("Using " + totalThreads + " threads");
 
         final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);

@@ -13,6 +13,11 @@ import br.usp.ime.futuremarket.choreography.Portal;
 @SuppressWarnings("PMD.MoreThanOneLogger")
 public class FutureMarketClient implements Runnable {
 
+    // Milliseconds
+    private static long timeout;
+    private static Integer successes = 0;
+    private static Integer failures = 0;
+
     private static final ShopList SHOPLIST = getShopList();
 
     private static FrequencyHelper freqHelper;
@@ -25,12 +30,11 @@ public class FutureMarketClient implements Runnable {
     private final int threadNumber;
     private final CustomerInfo myInfo;
 
-    public static void setPortals(final List<Portal> portals) throws IOException {
+    public static void setUp(final List<Portal> portals, final FrequencyHelper freqHelper,
+            final long milliseconds) {
         FutureMarketClient.portals = portals;
-    }
-
-    public static void setFrequencyHelper(final FrequencyHelper freqHelper) {
         FutureMarketClient.freqHelper = freqHelper;
+        FutureMarketClient.timeout = milliseconds;
     }
 
     public FutureMarketClient(final int threadNumber) {
@@ -38,6 +42,19 @@ public class FutureMarketClient implements Runnable {
         this.threadNumber = threadNumber;
         portal = portals.get(threadNumber % portals.size());
         myInfo = getCustomerInfo();
+    }
+
+    public static void resetStatistics() {
+        successes = 0;
+        failures = 0;
+    }
+
+    public static int getFailures() {
+        return failures;
+    }
+
+    public static int getSuccesses() {
+        return successes;
     }
 
     private static ShopList getShopList() {
@@ -118,17 +135,20 @@ public class FutureMarketClient implements Runnable {
             try {
                 final long sleepTime = freqHelper.getSleepTime(threadNumber, i);
                 if (sleepTime < 0) {
-                    GRAPH.info("-1");
+                    GRAPH.info(Long.MAX_VALUE);
+                    failures++;
                     continue;
                 }
                 Thread.sleep(sleepTime);
             } catch (InterruptedException e) {
                 GRAPH.error("Sleeping", e);
             }
+
             try {
                 simulate();
             } catch (IOException e) {
                 GRAPH.error("simulate()", e);
+                failures++;
             }
         }
     }
@@ -141,6 +161,21 @@ public class FutureMarketClient implements Runnable {
         requestDeliveries(purchases);
 
         final long end = Calendar.getInstance().getTimeInMillis();
-        GRAPH.info(end - start);
+        checkResponseTime(end - start);
+
+    }
+
+    private void checkResponseTime(final long time) {
+        GRAPH.info(time);
+
+        if (time < timeout) {
+            synchronized (successes) {
+                successes++;
+            }
+        } else {
+            synchronized (failures) {
+                failures++;
+            }
+        }
     }
 }

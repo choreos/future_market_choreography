@@ -26,7 +26,7 @@ public class HelloWorldLG implements Runnable {
     private static double period;
     private final int threadNumber;
 
-    public static void main(String args[]) throws IOException {
+    public static void main(final String args[]) throws IOException {
         readArgs(args);
         helloWorld = HelloWorldImpl.getWSClient();
         simulate();
@@ -61,7 +61,7 @@ public class HelloWorldLG implements Runnable {
         final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
 
         for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
-            Runnable worker = new HelloWorldLG(threadNumber);
+            final Runnable worker = new HelloWorldLG(threadNumber);
             executor.execute(worker);
         }
 
@@ -113,11 +113,15 @@ public class HelloWorldLG implements Runnable {
         }
     }
 
-    private synchronized static void println(final String line) {
-        HelloWorldLG.println(System.out, line);
+    private static void println(final String line) {
+        synchronized (HelloWorldLG.class) {
+            HelloWorldLG.println(System.out, line);
+        }
     }
 
-    private synchronized static void println(final PrintStream output, final String line) {
-        output.println(line);
+    private static void println(final PrintStream output, final String line) {
+        synchronized (HelloWorldLG.class) {
+            output.println(line);
+        }
     }
 }
