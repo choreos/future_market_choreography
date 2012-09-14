@@ -124,8 +124,8 @@ public class FutureMarketClient implements Runnable {
     }
 
     private void verifyLowestPriceList(final ShopList list) {
-        if (Math.abs(list.getPrice() - 1215) > 0.01) {
-            GRAPH.error("Price list test failed. Price is not 1215: " + list.getPrice());
+        if (Math.abs(list.getPrice() - 55) > 0.01) {
+            GRAPH.error("Price list test failed. Price is not 55: " + list.getPrice());
         }
     }
 
