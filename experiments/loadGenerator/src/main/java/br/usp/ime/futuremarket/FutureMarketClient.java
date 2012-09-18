@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -15,12 +16,12 @@ public class FutureMarketClient implements Runnable {
 
     // Milliseconds
     private static long timeout;
-    private static Integer successes = 0;
-    private static Integer failures = 0;
+    private static AtomicInteger successes;
+    private static AtomicInteger failures;
 
     private static final ShopList SHOPLIST = getShopList();
 
-    private static FrequencyHelper freqHelper;
+    private static SimultaneousRequestsHelper reqHelper;
     private static List<Portal> portals;
 
     private static final Logger GRAPH = Logger.getLogger("graphsLogger");
@@ -30,10 +31,10 @@ public class FutureMarketClient implements Runnable {
     private final int threadNumber;
     private final CustomerInfo myInfo;
 
-    public static void setUp(final List<Portal> portals, final FrequencyHelper freqHelper,
-            final long milliseconds) {
+    public static void setUp(final List<Portal> portals,
+            final SimultaneousRequestsHelper reqHelper, final long milliseconds) {
         FutureMarketClient.portals = portals;
-        FutureMarketClient.freqHelper = freqHelper;
+        FutureMarketClient.reqHelper = reqHelper;
         FutureMarketClient.timeout = milliseconds;
     }
 
@@ -45,16 +46,16 @@ public class FutureMarketClient implements Runnable {
     }
 
     public static void resetStatistics() {
-        successes = 0;
-        failures = 0;
+        successes = new AtomicInteger(0);
+        failures = new AtomicInteger(0);
     }
 
     public static int getFailures() {
-        return failures;
+        return failures.get();
     }
 
     public static int getSuccesses() {
-        return successes;
+        return successes.get();
     }
 
     private static ShopList getShopList() {
@@ -131,12 +132,12 @@ public class FutureMarketClient implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < freqHelper.getTotalRequests(threadNumber); i++) {
+        for (int i = 0; i < reqHelper.getTotalThreadRequests(); i++) {
             try {
-                final long sleepTime = freqHelper.getSleepTime(threadNumber, i);
+                final long sleepTime = reqHelper.getSleepTime(i);
                 if (sleepTime < 0) {
                     GRAPH.info(Long.MAX_VALUE);
-                    failures++;
+                    failures.addAndGet(1);
                     continue;
                 }
                 Thread.sleep(sleepTime);
@@ -148,7 +149,7 @@ public class FutureMarketClient implements Runnable {
                 simulate();
             } catch (IOException e) {
                 GRAPH.error("simulate()", e);
-                failures++;
+                failures.addAndGet(1);
             }
         }
     }
@@ -169,13 +170,9 @@ public class FutureMarketClient implements Runnable {
         GRAPH.info(time);
 
         if (time < timeout) {
-            synchronized (successes) {
-                successes++;
-            }
+            successes.addAndGet(1);
         } else {
-            synchronized (failures) {
-                failures++;
-            }
+            failures.addAndGet(1);
         }
     }
 }

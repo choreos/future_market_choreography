@@ -28,14 +28,14 @@ public final class FutureMarketLG {
 
     private static final Logger GRAPH = Logger.getLogger("graphsLogger");
     private static final Logger CONSOLE = Logger.getLogger(FutureMarketClient.class);
-    private static FrequencyHelper freqHelper;
+    private static SimultaneousRequestsHelper reqHelper;
 
     private FutureMarketLG() {
     };
 
     public static void main(final String[] args) throws IOException {
         readArgs(args);
-        freqHelper = new FrequencyHelper(maxThreads);
+        reqHelper = new SimultaneousRequestsHelper(maxThreads);
         setUpClients();
         runSimulations();
     }
@@ -51,7 +51,7 @@ public final class FutureMarketLG {
 
     private static void setUpClients() throws IOException {
         final List<Portal> portals = getPortals();
-        FutureMarketClient.setUp(portals, freqHelper, TIMEOUT);
+        FutureMarketClient.setUp(portals, reqHelper, TIMEOUT);
     }
 
     private static List<Portal> getPortals() throws IOException {
@@ -74,12 +74,11 @@ public final class FutureMarketLG {
             CONSOLE.info(title);
             GRAPH.info(title);
 
-            freqHelper.setFrequency(frequency);
-            GRAPH.info("# period=" + freqHelper.getPeriod() + " ms, thread period="
-                    + freqHelper.getThreadPeriod() + " ms");
-
             FutureMarketClient.resetStatistics();
-            runThreads(freqHelper.getTotalThreads());
+            reqHelper.setFrequency(frequency);
+            GRAPH.info("# period=" + reqHelper.getPeriod() + " ms");
+
+            runThreads(reqHelper.getTotalThreads());
             logStatistics();
         }
     }
@@ -100,7 +99,7 @@ public final class FutureMarketLG {
         CONSOLE.debug("Using " + totalThreads + " threads");
 
         final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
-        freqHelper.setStartTime();
+        reqHelper.setStartTime();
 
         Runnable worker;
         for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
