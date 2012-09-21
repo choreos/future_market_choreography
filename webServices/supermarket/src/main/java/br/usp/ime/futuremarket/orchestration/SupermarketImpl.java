@@ -1,6 +1,8 @@
 package br.usp.ime.futuremarket.orchestration;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.jws.WebService;
 
@@ -16,10 +18,13 @@ import br.usp.ime.futuremarket.ShopList;
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
 public class SupermarketImpl extends AbstractSupermarket {
 
-    private Portal orchestrator = null;
+    private final List<Portal> orchestrators;
+    private Integer orchIndex;
 
     public SupermarketImpl() throws IOException {
         super();
+        orchestrators = new ArrayList<Portal>();
+        orchIndex = 0;
     }
 
     @Override
@@ -52,17 +57,37 @@ public class SupermarketImpl extends AbstractSupermarket {
     @Override
     public void reset() {
         super.reset();
-        synchronized (this) {
-            orchestrator = null;
+        synchronized (orchestrators) {
+            orchestrators.clear();
         }
     }
 
     private Portal getOrchestrator() throws IOException {
-        synchronized (this) {
-            if (orchestrator == null) {
-                orchestrator = market.getClientRoundRobin(Role.PORTAL, Portal.class);
+        setOrchestratorsFromRegistry();
+        final int index = getNextOrchestratorIndex();
+        return orchestrators.get(index);
+    }
+
+    private void setOrchestratorsFromRegistry() throws IOException {
+        synchronized (orchestrators) {
+            if (orchestrators.isEmpty()) {
+                orchestrators.addAll(market.getClients(Role.PORTAL, Portal.class));
             }
         }
-        return orchestrator;
+    }
+
+    private int getNextOrchestratorIndex() {
+        int index;
+
+        synchronized (orchIndex) {
+            index = orchIndex;
+            if (orchIndex == orchestrators.size() - 1) {
+                orchIndex = 0;
+            } else {
+                orchIndex++;
+            }
+        }
+
+        return index;
     }
 }
