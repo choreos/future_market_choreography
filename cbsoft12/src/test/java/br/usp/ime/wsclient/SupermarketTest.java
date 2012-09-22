@@ -14,7 +14,24 @@ public class SupermarketTest {
 	private static final String SUPERMARKET1_WSDL = "http://batcave:8080/supermarket1/choreography?wsdl";
 
 	@Test
-	public void supermarket1ServiceShouldReturnThePriceOfAProduct() throws Exception {
+	public void shouldReturnProductInformationWhenSearchForAProduct() throws Exception {
+		WSClient client = new WSClient(SUPERMARKET1_WSDL);
+		Item requestRoot = getShopList("beer");
+		Item response = client.request("getPrices", requestRoot)
+										.getChild("return")
+										.getChild("items")
+										.getChild("entry")
+										.getChild("value");
+		
+		Item product = response.getChild("product");
+		
+		assertEquals("beer", product.getContent("name"));
+		assertEquals(30.0, product.getContentAsDouble("price"), 0.0001);
+		assertEquals("http://batcave:8080/supermarket1", response.getContent("seller"));
+	}
+	
+	@Test
+	public void supermarket1ServiceShouldReturnTheCorrectPriceOfAProduct() throws Exception {
 		WSClient client = new WSClient(SUPERMARKET1_WSDL);
 		Item requestRoot = getShopList("milk");
 		Item response = client.request("getPrices", requestRoot);
@@ -28,7 +45,7 @@ public class SupermarketTest {
 		
 		assertEquals(1.0, actualPrice, 0.00001 );
 	}
-
+	
 	private Item getShopList(String productName) {
 		Item shopList = new ItemImpl("getPrices");
 		Item arg0 = shopList.addChild("arg0");
