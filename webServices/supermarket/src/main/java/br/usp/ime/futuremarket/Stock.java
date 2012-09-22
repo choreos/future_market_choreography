@@ -9,6 +9,23 @@ import java.util.Set;
 
 public class Stock {
     private final Map<Product, Integer> products = new HashMap<Product, Integer>();
+    
+    public Map<String, String> getRealProducts(){
+    	Map<String, String> products = new HashMap<String, String>();
+    	
+    	products.put("product1", "milk");
+    	products.put("product2", "bread");
+    	products.put("product3", "butter");
+    	products.put("product4", "juice");
+    	products.put("product5", "wine");
+    	products.put("product6", "beer");
+    	products.put("product7", "jam");
+    	products.put("product8", "ham");
+    	products.put("product9", "sugar");
+    	products.put("product10", "salt");
+    	
+    	return products;
+    }
 
     public void loadProducts(final Properties properties, final int lastProductNumber) {
         String productName;
@@ -16,11 +33,13 @@ public class Stock {
         int quantity;
 
         for (int i = lastProductNumber; i > 0; i--) {
+        	Map<String, String> realProducts = getRealProducts();
+        	
             productName = "product" + i;
-            price = Double.parseDouble(properties.getProperty(productName + ".price"));
-            quantity = Integer.parseInt(properties.getProperty(productName + ".stock"));
+            price = Double.parseDouble(properties.getProperty(realProducts.get(productName) + ".price"));
+            quantity = Integer.parseInt(properties.getProperty(realProducts.get(productName) + ".stock"));
 
-            addProduct(productName, price, quantity);
+            addProduct(realProducts.get(productName), price, quantity);
         }
     }
 
