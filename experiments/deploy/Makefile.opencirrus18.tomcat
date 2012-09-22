@@ -1,0 +1,86 @@
+include Makefile.opencirrus18.header
+
+# in catalina.out:
+READY_MSG1='INFO: WSSERVLET14: JAX-WS servlet initializing'
+READY_MSG2='INFO: Server startup in '
+LOG="$(CATALINA_HOME)/logs/catalina.out"
+
+# Does not include registry host
+COMMON_HOSTS=$(NODE02) $(NODE03) $(NODE04) $(NODE05) $(NODE06) $(NODE07) $(NODE12) $(NODE13) $(NODE14) $(NODE15) $(NODE16) $(NODE17)
+PORTAL_HOSTS=$(NODE08) $(NODE09) $(NODE10) $(NODE11)
+
+TOMCAT_FILE=/tmp/apache-tomcat-7.0.25.baile.tar.bz2
+
+help:
+	@echo 'make -f thisMakefile restart PORTALS=4'
+
+restart: portal_hosts = $(wordlist 1,$(PORTALS),$(PORTAL_HOSTS))
+restart: hosts = $(COMMON_HOSTS) $(portal_hosts)
+restart: restart-registry
+	-$(call restart-hosts, $(hosts))
+
+restart-registry:
+	-ssh $(REGISTRY_HOST) "$(call restart-cleaned, $(REGISTRY_HOST)); \
+	  $(call wait, $(REGISTRY_HOST))"
+
+start = \
+  $(CATALINA_HOME)/bin/startup.sh; \
+  echo "Tomcat at $(1) has started."
+
+wait = \
+  while ! grep -qs $(READY_MSG1) $(LOG); do sleep 1; done; \
+  while ! grep -qs $(READY_MSG2) $(LOG); do sleep 1; done; \
+  echo "Web service is ready at $(1)."
+
+shutdown = \
+  $(CATALINA_HOME)/bin/shutdown.sh && sleep 2 && killall java; \
+	echo "Tomcat shutdown at $(1)."
+
+clean = \
+  rm -f $(CATALINA_HOME)/logs/*; \
+	echo "Tomcat logs deleted at $(1)."
+
+restart-cleaned = \
+  $(call shutdown, $(1)); $(call clean, $(1)); $(call start, $(1))
+
+restart-hosts = \
+  for host in $(1); do \
+	  (ssh $$host "$(call restart-cleaned, $$host)")& \
+	done; \
+	for host in $(1); do \
+		ssh $$host "$(call wait, $$host)"; \
+	done
+
+tomcat-reinstall:
+	-for host in $(WS_HOSTS); do \
+		(ssh $$host "$(CATALINA_HOME)/bin/shutdown.sh && sleep 2 && killall java; \
+			rm -rf $(CATALINA_HOME); \
+			cd && tar xjf $(TOMCAT_FILE); \
+      echo $$host done")& \
+	done
+
+tomcat-shutdown:
+	-for host in $(WS_HOSTS); do \
+		(ssh $$host "$(call shutdown, $$host)")& \
+	done
+
+tomcat-clean:
+	for host in $(WS_HOSTS); do \
+		$(call clean, $$host)& \
+	done
+
+tomcat-copy:
+	scp $(TOMCAT_FILE) $(SCP_HOST):/tmp/
+	ssh $(SCP_HOST) "cd && ./scp_to_all.sh $(TOMCAT_FILE)"; \
+
+tomcat-install:
+	for host in $(WS_HOSTS); do \
+		(ssh $$host "cd && tar xjf $(TOMCAT_FILE)"; \
+    echo "Tomcat unpacked at $$host")& \
+	done
+
+tomcat-remove:
+	for host in $(WS_HOSTS); do \
+		(ssh $$host "rm -rf $(CATALINA_HOME)"; \
+    echo "Tomcat folder deleted at $$host")& \
+	done

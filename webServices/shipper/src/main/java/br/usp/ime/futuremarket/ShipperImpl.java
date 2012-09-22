@@ -36,7 +36,7 @@ public class ShipperImpl implements Shipper {
         delivery.setPurchase(purchase);
         delivery.setDate(getToday());
 
-        synchronized (this) {
+        synchronized (deliveries) {
             deliveries.put(key, delivery);
         }
 
@@ -61,7 +61,7 @@ public class ShipperImpl implements Shipper {
         final String key = purchase.getUniqueId();
 
         Delivery delivery;
-        synchronized (this) {
+        synchronized (deliveries) {
             delivery = deliveries.remove(key);
         }
 

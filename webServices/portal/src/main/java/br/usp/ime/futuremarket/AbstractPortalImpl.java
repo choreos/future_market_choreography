@@ -16,15 +16,14 @@ public abstract class AbstractPortalImpl implements Portal {
     protected final AbstractFutureMarket market;
 
     public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
-        final String name = getName();
         this.market = market;
+        final String name = getName();
         market.register(name);
     }
 
     @Override
     public ShopList getLowestPrice(final ShopList list) throws IOException {
         ShopList smList;
-
         for (Supermarket supermarket : getSupermarkets()) {
             smList = supermarket.getPrices(list);
             lookForCheaperProducts(list, smList);
@@ -57,8 +56,8 @@ public abstract class AbstractPortalImpl implements Portal {
     protected Purchase purchaseFromOneStore(final ShopList list, final CustomerInfo customer)
             throws IOException {
         final String baseAddr = list.getSeller();
-        final Supermarket supermarket = market.getClient(baseAddr, Supermarket.class);
-        return supermarket.purchase(list, customer);
+        final Supermarket seller = market.getClient(baseAddr, Supermarket.class);
+        return seller.purchase(list, customer);
     }
 
     private String getName() throws IOException {

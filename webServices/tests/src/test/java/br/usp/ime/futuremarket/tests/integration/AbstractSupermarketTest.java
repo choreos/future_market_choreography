@@ -46,7 +46,7 @@ public abstract class AbstractSupermarketTest {
     abstract protected AbstractWSInfo getWSInfo();
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, InterruptedException {
         if (supermarket == null) {
             supermarket = market.getClientByName(NAME, Supermarket.class);
             supplier = market.getClientByName(SHIPPER, Supermarket.class);
@@ -65,9 +65,12 @@ public abstract class AbstractSupermarketTest {
 
     /**
      * static variables are preserved between children!
+     * 
+     * @throws IOException
+     * @throws InterruptedException
      */
     @AfterClass
-    public static void reset() {
+    public static void reset() throws IOException, InterruptedException {
         // After all tests, reset must be called
         supermarket.reset();
         supermarket = null;

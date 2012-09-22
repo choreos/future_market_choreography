@@ -3,8 +3,8 @@ package br.usp.ime.futuremarket;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
@@ -21,8 +21,8 @@ public class FutureMarketClient implements Runnable {
 
     private static final ShopList SHOPLIST = getShopList();
 
-    private static SimultaneousRequestsHelper reqHelper;
-    private static List<Portal> portals;
+    private static CountDownLatch latch;
+    private static AbstractPortalProxy portals;
 
     private static final Logger GRAPH = Logger.getLogger("graphsLogger");
     private static final Logger CONSOLE = Logger.getLogger(FutureMarketClient.class);
@@ -31,23 +31,26 @@ public class FutureMarketClient implements Runnable {
     private final int threadNumber;
     private final CustomerInfo myInfo;
 
-    public static void setUp(final List<Portal> portals,
-            final SimultaneousRequestsHelper reqHelper, final long milliseconds) {
-        FutureMarketClient.portals = portals;
-        FutureMarketClient.reqHelper = reqHelper;
+    public static void setUp(final long milliseconds, final AbstractPortalProxy portals)
+            throws IOException {
         FutureMarketClient.timeout = milliseconds;
+        FutureMarketClient.portals = portals;
     }
 
-    public FutureMarketClient(final int threadNumber) {
+    public FutureMarketClient(final int threadNumber) throws MalformedURLException {
         CONSOLE.debug("Thread " + threadNumber + " has started.");
         this.threadNumber = threadNumber;
-        portal = portals.get(threadNumber % portals.size());
+        portal = portals.getPortal(threadNumber);
         myInfo = getCustomerInfo();
     }
 
     public static void resetStatistics() {
         successes = new AtomicInteger(0);
         failures = new AtomicInteger(0);
+    }
+
+    public static void setCountDownLatch(final CountDownLatch latch) {
+        FutureMarketClient.latch = latch;
     }
 
     public static int getFailures() {
@@ -90,7 +93,7 @@ public class FutureMarketClient implements Runnable {
 
     private void verifyPurchase(final Set<Purchase> purchases) {
         if (purchases.size() != 5) {
-            GRAPH.error("Purchase test! Length is not 5: " + purchases.size());
+            logError("Purchase test! Length is not 5: " + purchases.size());
         }
     }
 
@@ -113,8 +116,10 @@ public class FutureMarketClient implements Runnable {
     }
 
     private void verifyDelivery(final Delivery delivery) {
-        if (delivery == null || !delivery.getStatus().equals("delivered")) {
-            GRAPH.error("Shipment test failed!");
+        if (delivery == null) {
+            logError("Shipment test failed! Delivery is null.");
+        } else if (!delivery.getStatus().equals("delivered")) {
+            logError("Shipment test failed! Status is not 'delivered'.");
         }
     }
 
@@ -126,31 +131,24 @@ public class FutureMarketClient implements Runnable {
 
     private void verifyLowestPriceList(final ShopList list) {
         if (Math.abs(list.getPrice() - 55) > 0.01) {
-            GRAPH.error("Price list test failed. Price is not 55: " + list.getPrice());
+            logError("Price list test failed. Price is not 55: " + list.getPrice());
         }
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < reqHelper.getTotalThreadRequests(); i++) {
-            try {
-                final long sleepTime = reqHelper.getSleepTime(i);
-                if (sleepTime < 0) {
-                    GRAPH.info(Long.MAX_VALUE);
-                    failures.addAndGet(1);
-                    continue;
-                }
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                GRAPH.error("Sleeping", e);
-            }
+        latch.countDown();
+        try {
+            latch.await();
+        } catch (InterruptedException e1) {
+            logError("CountDownLatch await error", e1);
+        }
 
-            try {
-                simulate();
-            } catch (IOException e) {
-                GRAPH.error("simulate()", e);
-                failures.addAndGet(1);
-            }
+        try {
+            simulate();
+        } catch (IOException e) {
+            logError("simulate()", e);
+            failures.addAndGet(1);
         }
     }
 
@@ -163,16 +161,23 @@ public class FutureMarketClient implements Runnable {
 
         final long end = Calendar.getInstance().getTimeInMillis();
         checkResponseTime(end - start);
-
     }
 
     private void checkResponseTime(final long time) {
-        GRAPH.info(time);
-
         if (time < timeout) {
             successes.addAndGet(1);
         } else {
             failures.addAndGet(1);
         }
+    }
+
+    private void logError(final String message) {
+        GRAPH.error("ERROR " + message);
+        CONSOLE.error(message);
+    }
+
+    private void logError(final String message, final Exception exception) {
+        GRAPH.error("ERROR " + message, exception);
+        CONSOLE.error(message, exception);
     }
 }

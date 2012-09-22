@@ -5,24 +5,29 @@ import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AbstractSupermarket implements Supermarket {
     private static final int PRODUCTS = 10;
 
     protected final ShopList shopList = new ShopList();
     protected final AbstractFutureMarket market;
-    private long purchaseId = 0l;
+    private AtomicLong purchaseId = new AtomicLong(0);
     private final Stock stock = new Stock();
 
     private final Properties properties;
-    private String myName;
-    private String myBaseAddr, shipperBaseAddr, sellerBaseAddr;
-    private int purchaseTrigger, purchaseQuantity;
+    private final String myName, myBaseAddr;
+    private final int purchaseTrigger, purchaseQuantity;
     private final Role role;
+    private String shipperBaseAddr, sellerBaseAddr;
 
-    public AbstractSupermarket() throws IOException {
+    public AbstractSupermarket() throws IOException, InterruptedException {
         properties = readProperties();
         stock.loadProducts(properties, PRODUCTS);
+
+        myName = properties.getProperty("name");
+        purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
+        purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
 
         market = getFutureMarket();
         market.register(myName);
@@ -39,7 +44,23 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     abstract protected AbstractFutureMarket getFutureMarket();
 
-    private Role getRole(String name) {
+    protected String getShipperBaseAddress() throws IOException {
+        if (shipperBaseAddr == null) {
+            final String name = properties.getProperty("shipper.name");
+            shipperBaseAddr = market.getBaseAddress(name);
+        }
+        return shipperBaseAddr;
+    }
+
+    protected String getSellerBaseAddress() throws IOException {
+        if (sellerBaseAddr == null) {
+            final String name = properties.getProperty("seller.name");
+            sellerBaseAddr = market.getBaseAddress(name);
+        }
+        return sellerBaseAddr;
+    }
+
+    private Role getRole(final String name) {
         final AbstractWSInfo info = getWSInfo();
         info.setName(name);
         return info.getRole();
@@ -70,20 +91,18 @@ public abstract class AbstractSupermarket implements Supermarket {
             }
         }
 
-        return new Purchase(getPurchaseId(), getShipperBaseAddr(), list, customer);
+        return new Purchase(purchaseId.getAndIncrement(), getShipperBaseAddress(), list, customer);
     }
 
     @Override
-    public void reset() {
+    public void reset() throws IOException, InterruptedException {
         synchronized (stock) {
             stock.reset();
             stock.loadProducts(properties, PRODUCTS);
             shopList.clear();
         }
-        synchronized (this) {
-            sellerBaseAddr = null;
-            shipperBaseAddr = null;
-        }
+        shipperBaseAddr = null;
+        sellerBaseAddr = null;
     }
 
     protected CustomerInfo getCostumerInfo() throws UnknownHostException {
@@ -95,26 +114,6 @@ public abstract class AbstractSupermarket implements Supermarket {
         return customer;
     }
 
-    protected String getShipperBaseAddr() throws IOException {
-        synchronized (this) {
-            if (shipperBaseAddr == null) {
-                final String shipperName = properties.getProperty("shipper.name");
-                shipperBaseAddr = market.getBaseAddress(shipperName);
-            }
-        }
-        return shipperBaseAddr;
-    }
-
-    protected String getSellerBaseAddr() throws IOException {
-        synchronized (this) {
-            if (sellerBaseAddr == null) {
-                final String sellerName = properties.getProperty("seller.name");
-                sellerBaseAddr = market.getBaseAddress(sellerName);
-            }
-        }
-        return sellerBaseAddr;
-    }
-
     private Properties readProperties() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("supermarket.properties");
@@ -122,24 +121,12 @@ public abstract class AbstractSupermarket implements Supermarket {
         properties.load(propFile);
         propFile.close();
 
-        myName = properties.getProperty("name");
-        purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
-        purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
-
         return properties;
     }
 
     private double getPrice(final Product product) {
         final Product myProduct = stock.search(product);
         return myProduct.getPrice();
-    }
-
-    private long getPurchaseId() {
-        synchronized (this) {
-            purchaseId++;
-        }
-
-        return purchaseId;
     }
 
     private void supplyStock() throws IOException {
@@ -166,7 +153,7 @@ public abstract class AbstractSupermarket implements Supermarket {
 
         item.setProduct(product);
         item.setQuantity(purchaseQuantity);
-        item.setSeller(getSellerBaseAddr());
+        item.setSeller(getSellerBaseAddress());
 
         shopList.put(item);
     }

@@ -1,4 +1,4 @@
-all: registry bank portals supermarkets shippers
+all: registry bank portals supermarkets shippers loadGenerator
 	@echo "==============================================="
 	@echo "=== If you want to deploy, run make deploy. ==="
 	@echo "==============================================="
@@ -14,23 +14,27 @@ futuremarket: registry parent
 
 shippers: futuremarket
 	cd shippers && \
-	./generate.sh
+		./generate.sh
 
 bank: futuremarket
 	mvn -pl bank package
 
 supermarkets: futuremarket
 	cd supermarkets && \
-	./generate.sh
+		./generate.sh
 
 portals: futuremarket
 	cd portals && \
-	./generate.sh
+		./generate.sh
+
+loadGenerator:
+	mvn -pl helloWorld install
+	mvn -pl ../experiments/loadGenerator package
 
 undeploy:
 	make -C registry undeploy
 	cd $(CATALINA_HOME)/webapps && \
-	rm -rf shipper* bank* supermarket* manufacturer* supplier* portal*
+		rm -rf shipper* bank* supermarket* manufacturer* supplier* portal*
 
 deploy-registry:
 	make -C registry deploy
@@ -39,7 +43,7 @@ deploy-others:
 	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
-	cp -f portals/*/*.war $(CATALINA_HOME)/webapps/
+	cp -f portals/*/portal1.war $(CATALINA_HOME)/webapps/
 
 clean-all: clean-mvn clean-testCase clean-m2
 

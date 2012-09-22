@@ -17,5 +17,5 @@ public interface Supermarket {
     Purchase purchase(ShopList shopList, CustomerInfo customerInfo) throws IOException;
 
     @WebMethod
-    void reset();
+    void reset() throws IOException, InterruptedException;
 }

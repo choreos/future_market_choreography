@@ -6,7 +6,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.namespace.QName;
@@ -14,7 +16,7 @@ import javax.xml.ws.Service;
 
 public abstract class AbstractFutureMarket {
     private static final String PORT = "8080";
-    private static Registry registry;
+    private static final Map<String, Service> serviceCache = new HashMap<String, Service>();
 
     abstract protected String baseAddressToWsdl(final String baseAddress);
 
@@ -79,6 +81,10 @@ public abstract class AbstractFutureMarket {
         return getRegistry().getServiceByName(name);
     }
 
+    public List<String> getBaseAddresses(final Role role) throws IOException {
+        return getRegistry().getServices(role.toString());
+    }
+
     public <T> T getClient(final String baseAddress, final Class<T> resultClass)
             throws MalformedURLException {
         final AbstractWSInfo info = getWSInfo();
@@ -95,46 +101,59 @@ public abstract class AbstractFutureMarket {
 
     private <T> T getClient(final Class<T> resultClass, final String baseAddress,
             final AbstractWSInfo info) throws MalformedURLException {
-        final String namespace = info.getNamespace();
-        final String serviceName = info.getServiceName();
         final String wsdl = baseAddressToWsdl(baseAddress);
-
-        return getClient(resultClass, namespace, serviceName, wsdl);
-    }
-
-    private <T> T getClient(final Class<T> resultClass, final String namespace,
-            final String serviceName, final String wsdl) throws MalformedURLException {
-        final QName qname = new QName(namespace, serviceName);
-        final URL url = new URL(wsdl);
-        final Service service = Service.create(url, qname);
-
+        checkCache(info, wsdl);
+        final Service service = serviceCache.get(wsdl);
         return service.getPort(resultClass);
     }
 
+    private void checkCache(final AbstractWSInfo info, final String wsdl)
+            throws MalformedURLException {
+        if (!serviceCache.containsKey(wsdl)) {
+            final String namespace = info.getNamespace();
+            final String serviceName = info.getServiceName();
+            cacheService(namespace, serviceName, wsdl);
+        }
+    }
+
+    private void cacheService(final String namespace, final String serviceName, final String wsdl)
+            throws MalformedURLException {
+        synchronized (serviceCache) {
+            if (!serviceCache.containsKey(wsdl)) {
+                final Service service = createService(namespace, serviceName, wsdl);
+                serviceCache.put(wsdl, service);
+            }
+        }
+    }
+
+    /* Slow */
+    private Service createService(final String namespace, final String serviceName,
+            final String wsdl) throws MalformedURLException {
+        final QName qname = new QName(namespace, serviceName);
+        final URL url = new URL(wsdl);
+        return Service.create(url, qname);
+    }
+
+    private String getMyHostName() throws UnknownHostException {
+        final InetAddress addr = InetAddress.getLocalHost();
+        return addr.getCanonicalHostName();
+    }
+
     /**
-     * Only for testing purposes.
+     * Public for testing purposes.
      * 
      * @return Registry
      * @throws IOException
      */
     public Registry getRegistry() throws IOException {
-        synchronized (this) {
-            if (registry == null) {
-                registry = getRegistryClient();
-            }
-        }
-        return registry;
-    }
-
-    private Registry getRegistryClient() throws IOException {
+        final String wsdl = getRegistryWsdl();
         final AbstractWSInfo info = getWSInfo();
         info.setName("registry");
 
-        final String namespace = info.getNamespace();
-        final String serviceName = info.getServiceName();
-        final String wsdl = getRegistryWsdl();
+        checkCache(info, wsdl);
 
-        return getClient(Registry.class, namespace, serviceName, wsdl);
+        final Service service = serviceCache.get(wsdl);
+        return service.getPort(Registry.class);
     }
 
     private String getRegistryWsdl() throws IOException {
@@ -143,10 +162,5 @@ public abstract class AbstractFutureMarket {
 
         properties.load(loader.getResourceAsStream("config.properties"));
         return properties.getProperty("registry.wsdl");
-    }
-
-    private String getMyHostName() throws UnknownHostException {
-        final InetAddress addr = InetAddress.getLocalHost();
-        return addr.getCanonicalHostName();
     }
 }

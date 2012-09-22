@@ -21,7 +21,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private final List<Portal> orchestrators;
     private Integer orchIndex;
 
-    public SupermarketImpl() throws IOException {
+    public SupermarketImpl() throws IOException, InterruptedException {
         super();
         orchestrators = new ArrayList<Portal>();
         orchIndex = 0;
@@ -55,7 +55,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
-    public void reset() {
+    public void reset() throws IOException, InterruptedException {
         super.reset();
         synchronized (orchestrators) {
             orchestrators.clear();
@@ -63,12 +63,14 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     private Portal getOrchestrator() throws IOException {
-        setOrchestratorsFromRegistry();
+        if (orchestrators.isEmpty()) {
+            createOrchestrators();
+        }
         final int index = getNextOrchestratorIndex();
         return orchestrators.get(index);
     }
 
-    private void setOrchestratorsFromRegistry() throws IOException {
+    private void createOrchestrators() throws IOException {
         synchronized (orchestrators) {
             if (orchestrators.isEmpty()) {
                 orchestrators.addAll(market.getClients(Role.PORTAL, Portal.class));

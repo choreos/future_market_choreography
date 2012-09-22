@@ -20,26 +20,28 @@ import br.usp.ime.futuremarket.Supermarket;
 public class SupermarketImpl extends AbstractSupermarket {
 
     private Bank bank = null;
-    private Supermarket seller = null;
-    private Shipper shipper = null;
 
-    public SupermarketImpl() throws IOException {
+    public SupermarketImpl() throws IOException, InterruptedException {
         super();
     }
 
     @Override
     public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
-        final boolean isPaid = getBank().requestPayment(list.getPrice(), customer);
         final Purchase purchase = getFromStock(list, customer);
+
+        final boolean isPaid = getBank().requestPayment(list.getPrice(), customer);
         purchase.setIsPaid(isPaid);
-        getShipper().deliver(purchase);
+
+        final Shipper shipper = market.getClient(getShipperBaseAddress(), Shipper.class);
+        shipper.deliver(purchase);
 
         return purchase;
     }
 
     @Override
     protected void buy() throws IOException {
-        getSeller().purchase(shopList, getCostumerInfo());
+        final Supermarket seller = market.getClient(getSellerBaseAddress(), Supermarket.class);
+        seller.purchase(shopList, getCostumerInfo());
     }
 
     @Override
@@ -53,37 +55,23 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
-    public void reset() {
+    public void reset() throws IOException, InterruptedException {
         super.reset();
         bank = null;
-        seller = null;
-        shipper = null;
     }
 
     private Bank getBank() throws IOException {
+        if (bank == null) {
+            createBank();
+        }
+        return bank;
+    }
+
+    private void createBank() throws IOException {
         synchronized (this) {
             if (bank == null) {
                 bank = market.getClientByRole(Role.BANK, Bank.class);
             }
         }
-        return bank;
-    }
-
-    private Shipper getShipper() throws IOException {
-        synchronized (this) {
-            if (shipper == null) {
-                shipper = market.getClient(getShipperBaseAddr(), Shipper.class);
-            }
-        }
-        return shipper;
-    }
-
-    private Supermarket getSeller() throws IOException {
-        synchronized (this) {
-            if (seller == null) {
-                seller = market.getClient(getSellerBaseAddr(), Supermarket.class);
-            }
-        }
-        return seller;
     }
 }

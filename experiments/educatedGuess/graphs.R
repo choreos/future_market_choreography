@@ -68,7 +68,7 @@ for (timeout in timeouts) {
   pdf(file=paste("graph", timeout, ".pdf"), height=4, width=6)
   par(xpd=TRUE, mar=par()$mar + c(0,0,0,3.5))
   plot(percs, lines[1,], type="o", col=colors[1], lty=ltys[1], pch=pchs[1],
-      ylim=c(220,520), xlab="Timeout (%)", ylab="Requests/min",
+      ylim=c(0,750), xlab="Timeout (%)", ylab="Requests/min",
       main="Maximum Request Rate", sub=paste(timeout, " ms"))
   lines(percs, lines[2,], type="o", col=colors[2], lty=ltys[2], pch=pchs[2])
   lines(percs, lines[3,], type="o", col=colors[3], lty=ltys[3], pch=pchs[3])

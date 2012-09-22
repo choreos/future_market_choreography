@@ -24,7 +24,8 @@ public class PortalImpl extends AbstractPortalImpl implements Portal {
 
     @Override
     public boolean deliver(final Purchase purchase) throws MalformedURLException {
-        final Shipper shipper = market.getClient(purchase.getShipper(), Shipper.class);
+        final String baseAddr = purchase.getShipper();
+        final Shipper shipper = market.getClient(baseAddr, Shipper.class);
         return shipper.deliver(purchase);
     }
 
@@ -40,11 +41,17 @@ public class PortalImpl extends AbstractPortalImpl implements Portal {
     }
 
     private Bank getBank() throws IOException {
+        if (bank == null) {
+            createBank();
+        }
+        return bank;
+    }
+
+    private void createBank() throws IOException {
         synchronized (this) {
             if (bank == null) {
                 bank = market.getClientByRole(Role.BANK, Bank.class);
             }
         }
-        return bank;
     }
 }
