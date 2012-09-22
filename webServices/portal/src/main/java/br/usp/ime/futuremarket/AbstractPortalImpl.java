@@ -22,14 +22,15 @@ public abstract class AbstractPortalImpl implements Portal {
     }
 
     @Override
-    public ShopList getLowestPrice(final ShopList list) throws IOException {
+    public ShopList getLowestPrice(final ProductList list) throws IOException {
         ShopList smList;
-
+        System.out.println("vou criar shopList");
+        ShopList shopList = new ShopList(list);
         for (Supermarket supermarket : getSupermarkets()) {
-            smList = supermarket.getPrices(list);
-            lookForCheaperProducts(list, smList);
+            smList = supermarket.getPrices(shopList);
+            lookForCheaperProducts(shopList, smList);
         }
-        return list;
+        return shopList;
     }
 
     @Override
@@ -104,7 +105,7 @@ public abstract class AbstractPortalImpl implements Portal {
             final Product candidateProduct) {
         final Product product = item.getProduct();
 
-        if (candidateProduct.getPrice() < product.getPrice()) {
+        if ((product.getPrice() <=0) ||(candidateProduct.getPrice() < product.getPrice())) {
             product.setPrice(candidateProduct.getPrice());
             item.setSeller(candidateItem.getSeller());
         }

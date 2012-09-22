@@ -18,7 +18,19 @@ public class ShopList {
         this.put(item);
     }
 
-    final public void put(final ShopListItem item) {
+    public ShopList(ProductList list) {
+		this();
+		ShopListItem item;
+		Product product;
+		for(String key: list.getItems().keySet()) {
+			product = new Product(key);
+			item = new ShopListItem(product);
+			item.setQuantity(list.get(key));
+			put(item);
+		}
+	}
+
+	final public void put(final ShopListItem item) {
         final String productName = item.getProduct().getName();
         items.put(productName, item);
     }

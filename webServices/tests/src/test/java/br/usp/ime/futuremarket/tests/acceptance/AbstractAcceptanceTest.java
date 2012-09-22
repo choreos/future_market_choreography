@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -17,6 +19,7 @@ import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
+import br.usp.ime.futuremarket.ProductList;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
@@ -51,7 +54,7 @@ public abstract class AbstractAcceptanceTest {
 
     @Test
     public void testLowestPriceList() throws IOException {
-        final ShopList list = getShopList(false);
+        final ProductList list = getProductList();
         final ShopList cheapList = portal.getLowestPrice(list);
 
         assertEquals(5, cheapList.getShopListItems().size());
@@ -66,7 +69,7 @@ public abstract class AbstractAcceptanceTest {
         }
     }
 
-    @Test
+	@Test
     public void testPurchase() throws IOException {
         final CustomerInfo customer = getCustomerInfo();
         final ShopList list = getShopList(true);
@@ -92,7 +95,7 @@ public abstract class AbstractAcceptanceTest {
 
     @Test
     public void testShipment() throws IOException {
-        final ShopList list = portal.getLowestPrice(getShopList(false));
+        final ShopList list = portal.getLowestPrice(getProductList());
         final CustomerInfo customer = getCustomerInfo();
         final Set<Purchase> purchases = portal.purchase(list, customer);
 
@@ -138,6 +141,15 @@ public abstract class AbstractAcceptanceTest {
         return prodName.replaceFirst("product", "supermarket");
     }
 
+
+    protected ProductList getProductList() {
+		final ProductList list = new ProductList();
+		for (int i = 1; i < 6; i++) {
+			list.put(getProductName(i), 2);
+		}
+		return list;
+	}
+    
     protected ShopList getShopList(final boolean setLowestPriceSm) throws IOException {
         final ShopList list = new ShopList();
         Product product;
@@ -163,7 +175,11 @@ public abstract class AbstractAcceptanceTest {
     }
 
     protected Product getProduct(final int number) {
-        return new Product("product" + number);
+        return new Product(getProductName(number));
+    }
+    
+    protected String getProductName(final int number) {
+    	return "product" + number;
     }
 
     protected Calendar getToday() {
