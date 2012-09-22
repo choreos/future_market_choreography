@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Product;
+import br.usp.ime.futuremarket.ProductList;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
 import br.usp.ime.futuremarket.ShopListItem;
@@ -46,9 +47,8 @@ public class PortalTest {
         // Building ShopList
         final Product product = new Product();
         product.setName(productName);
-        final ShopListItem item = new ShopListItem(product);
-        final ShopList list = new ShopList();
-        list.put(item);
+        final ProductList list = new ProductList();
+        list.put(productName, 1);
 
         // Searching for lowest price
         final ShopList cheapList = portal.getLowestPrice(list);

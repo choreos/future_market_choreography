@@ -10,6 +10,7 @@ import javax.jws.soap.SOAPBinding;
 
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.ProductList;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.ShopList;
 
@@ -18,7 +19,7 @@ import br.usp.ime.futuremarket.ShopList;
 public interface Portal {
 
     @WebMethod
-    ShopList getLowestPrice(ShopList list) throws IOException;
+    ShopList getLowestPrice(ProductList list) throws IOException;
 
     @WebMethod
     Delivery getDelivery(Purchase purchase) throws MalformedURLException;
