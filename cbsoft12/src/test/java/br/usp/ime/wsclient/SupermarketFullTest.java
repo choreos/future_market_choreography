@@ -41,22 +41,6 @@ public class SupermarketFullTest {
 		assertEquals("http://batcave:8080/supermarket1", response.getContent("seller"));
 	}
 	
-	@Test
-	public void supermarketPaymentInformationWhenSearchForAProduct() throws Exception {
-		WSClient client = new WSClient(SUPERMARKET1_WSDL);
-		Item requestRoot = getShopList("milk");
-		Item response = client.request("purchase", requestRoot);
-		
-		double actualPrice = response.getChild("return")
-									 .getChild("items")
-									 .getChild("entry")
-									 .getChild("value")
-									 .getChild("product")
-									 .getContentAsDouble("price");
-		
-		assertEquals(1.0, actualPrice, 0.00001 );
-	}
-	
 	private Item getShopList(String productName) {
 		Item shopList = new ItemImpl("getPrices");
 		Item arg0 = shopList.addChild("arg0");
