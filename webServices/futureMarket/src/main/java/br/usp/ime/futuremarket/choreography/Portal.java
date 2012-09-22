@@ -18,7 +18,7 @@ import br.usp.ime.futuremarket.ShopList;
 @SOAPBinding
 public interface Portal {
 
-    @WebMethod
+	@WebMethod
     ShopList getLowestPrice(ProductList list) throws IOException;
 
     @WebMethod
@@ -26,4 +26,12 @@ public interface Portal {
 
     @WebMethod
     Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
+    
+    @WebMethod
+    public void register() throws IOException;
+    
+    @WebMethod
+    public void unregister() throws IOException;
+    
+    
 }

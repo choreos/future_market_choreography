@@ -16,11 +16,23 @@ public abstract class AbstractPortalImpl implements Portal {
     protected final AbstractFutureMarket market;
 
     public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
-        final String name = getName();
         this.market = market;
-        market.register(name);
+        register();
     }
 
+    @Override
+    public void register() throws IOException {
+    	final String name = getName();
+    	market.register(name);
+    }
+    
+    @Override
+    public void unregister() throws IOException {
+    	final String name = getName();
+    	market.unregister(name);
+    	
+    }
+    
     @Override
     public ShopList getLowestPrice(final ProductList list) throws IOException {
         ShopList smList;
