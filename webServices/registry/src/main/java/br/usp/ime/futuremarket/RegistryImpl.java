@@ -76,11 +76,17 @@ public class RegistryImpl implements Registry {
 
     private String getNextService(final String role) {
         final List<String> roleServices = services.get(role);
-        final int index = getRoleIndex(role);
+        int index = getRoleIndex(role);
+        
+        index = checkListBound(index, roleServices);
 
         increaseRoleIndex(role, index, roleServices.size());
 
         return roleServices.get(index);
+    }
+    
+    private int checkListBound(int index, List list) {
+    	return (list.size() > index) ? index : 0;
     }
 
     private void increaseRoleIndex(final String role, final int value, final int size) {
