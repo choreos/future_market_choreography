@@ -48,26 +48,39 @@ public class ShipperIntegrationTest {
 	client.request("purchase", purchaseRequest);
 
 	Item message = interceptor.getMessages().get(0);
-
-	assertEquals("Delivery", message.getName());
+	
+	Item orderInfo = message.getChild("arg0");
+	Item customerInfo = orderInfo.getChild("customerInfo");
+	Item productInfo = orderInfo.getChild("shopList").getChild("items").getChild("entry").getChild("value").getChild("product");
+	
+	
+	assertEquals("deliver", message.getName());
+	
+	assertEquals("John Locke", customerInfo.getContent("name"));
+	assertEquals("Lost island", customerInfo.getContent("address"));
+	
+	assertEquals("milk",  productInfo.getContent("name"));
+	assertEquals("1.0", productInfo.getContent("price"));
     }
 
     private Item buildPurchaseRequest() throws Exception {
 	Item purchase = new ItemImpl("purchase");
 	Item arg1 = purchase.addChild("arg1");
 	arg1.addChild("creditCard").setContent("12344567789009877654");
-	arg1.addChild("address").setContent("Somewhere over the rainbow");
+	arg1.addChild("address").setContent("Lost island");
 	arg1.addChild("name").setContent("John Locke");
 	Item arg0 = purchase.addChild("arg0");
 	Item items = arg0.addChild("items");
 	Item entry = items.addChild("entry");
 	Item value = entry.addChild("value");
 	Item product = value.addChild("product");
-	product.addChild("price").setContent("12.00");
-	product.addChild("name").setContent("wine");
+	product.addChild("price").setContent("1.0");
+	product.addChild("name").setContent("milk");
 	value.addChild("quantity").setContent("1");
-	value.addChild("seller").setContent("http://localhost:8080/supermarket1/choreography?wsdl");
-	entry.addChild("key").setContent("wine");
+	value.addChild("seller").setContent("http://localhost:8080/supermarket1");
+	entry.addChild("key").setContent("milk");
+	
+	System.out.println(purchase.getElementAsString());
 
 	return purchase;
     }
