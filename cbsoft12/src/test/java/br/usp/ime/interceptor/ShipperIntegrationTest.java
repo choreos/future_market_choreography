@@ -1,0 +1,74 @@
+package br.usp.ime.interceptor;
+
+import static org.junit.Assert.*;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import eu.choreos.vv.clientgenerator.Item;
+import eu.choreos.vv.clientgenerator.ItemImpl;
+import eu.choreos.vv.clientgenerator.WSClient;
+import eu.choreos.vv.interceptor.MessageInterceptor;
+
+public class ShipperIntegrationTest {
+
+    private static final String SHIPPER_ENDPOINT = "http://localhost:8080/shipper";
+    private static final String SHIPPER_WSDL = "http://localhost:8080/shipper/choreography?wsdl";
+    private static final String SHIPPER_PROXY_ENDPOINT = "http://localhost:9009/shipper";
+    private static final String PORTAL_ENDPOINT = "http://localhost:8080/portal/choreography?wsdl";
+
+    private static Registry registry;
+    private static MessageInterceptor interceptor;
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+	interceptor = new MessageInterceptor("9009");
+	interceptor.setName("shipper");
+	interceptor.interceptTo(SHIPPER_WSDL);
+
+	registry = new Registry();
+	registry.removeService("shipper", "shipper");
+	registry.addService("shipper", "shipper", SHIPPER_PROXY_ENDPOINT);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception {
+	interceptor.stop();
+
+	registry.removeService("shipper", "shipper");
+	registry.addService("shipper", "shipper", SHIPPER_ENDPOINT);
+    }
+
+    @Test
+    public void shipperShouldReceiveADeliveryMessage() throws Exception {
+	WSClient client = new WSClient(PORTAL_ENDPOINT);
+
+	Item purchaseRequest = buildPurchaseRequest();
+	client.request("purchase", purchaseRequest);
+
+	Item message = interceptor.getMessages().get(0);
+
+	assertEquals("Delivery", message.getName());
+    }
+
+    private Item buildPurchaseRequest() throws Exception {
+	Item purchase = new ItemImpl("purchase");
+	Item arg1 = purchase.addChild("arg1");
+	arg1.addChild("creditCard").setContent("12344567789009877654");
+	arg1.addChild("address").setContent("Somewhere over the rainbow");
+	arg1.addChild("name").setContent("John Locke");
+	Item arg0 = purchase.addChild("arg0");
+	Item items = arg0.addChild("items");
+	Item entry = items.addChild("entry");
+	Item value = entry.addChild("value");
+	Item product = value.addChild("product");
+	product.addChild("price").setContent("12.00");
+	product.addChild("name").setContent("wine");
+	value.addChild("quantity").setContent("1");
+	value.addChild("seller").setContent("http://localhost:8080/supermarket1/choreography?wsdl");
+	entry.addChild("key").setContent("wine");
+
+	return purchase;
+    }
+}
