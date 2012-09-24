@@ -29,6 +29,12 @@
       <version>0.13</version>
       <scope>jar</scope>
     </dependency>
+    <dependency>
+      <groupId>eu.choreos.vv</groupId>
+      <artifactId>scalability_explorer</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <scope>jar</scope>
+    </dependency>
 
   </dependencies>
 
