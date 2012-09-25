@@ -24,11 +24,11 @@ public class SupermarketScalabilityTester extends ScalabilityTester {
 			"http://localhost:8080/portal5/choreography?wsdl" };
 
 	private static final String ENDPOINT = "/choreography?wsdl";
+	
+	private static final String[] productNames = {"bread", "milk", "beer", "butter", "juice", "ham", "wine", "jam", "sugar"};
 
 	private WSClient registry;
 	private WSClient client;
-
-	// private Item products;
 
 	private void includePortal(int index) throws WSDLException, XmlException,
 			IOException, FrameworkException, InvalidOperationNameException {
@@ -57,9 +57,7 @@ public class SupermarketScalabilityTester extends ScalabilityTester {
 
 	@Override
 	public void setUp() throws Exception {
-
 		removeAllPortals();
-//		includePortal(0);
 		registry = new WSClient(REGISTRY_WSDL);
 	}
 
@@ -72,43 +70,26 @@ public class SupermarketScalabilityTester extends ScalabilityTester {
 
 	@Override
 	public void test() throws Exception {
-//		getLowestPrice();
-		purchase();
+		Item returnItem = getLowestPrice();
+		purchase(returnItem.getChild("return").getChild("items"));
 	}
 	
-	private void getLowestPrice() throws InvalidOperationNameException, FrameworkException {
-		client.request("getLowestPrice", getProductList());
+	private Item getLowestPrice() throws InvalidOperationNameException, FrameworkException {
+		return client.request("getLowestPrice", getProductList());
 	}
 	
-	private void purchase() throws InvalidOperationNameException, FrameworkException {
-		client.request("purchase", getShopList());
+	private void purchase(Item items) throws InvalidOperationNameException, FrameworkException {
+		client.request("purchase", getShopList(items));
 	}
 	
-	private Item getShopList() {
+	private Item getShopList(Item purchaseItems) {
 		Item purchase = new ItemImpl("purchase");
 		Item arg1 = purchase.addChild("arg1");
 		arg1.addChild("creditCard").setContent("0000000000");
-		arg1.addChild("address").setContent("my home");
+		arg1.addChild("address").setContent("my home...");
 		arg1.addChild("name").setContent("john");
 		Item arg0 = purchase.addChild("arg0");
-		Item items = arg0.addChild("items");
-		Item entry = items.addChild("entry");
-		Item value = entry.addChild("value");
-		Item product = value.addChild("product");
-		product.addChild("price").setContent("1.0");
-		product.addChild("name").setContent("bread");
-		value.addChild("quantity").setContent("10");
-		value.addChild("seller").setContent("http://localhost:8080/supermarket1");
-		entry.addChild("key").setContent("bread");
-		
-//		entry = items.addChild("entry");
-//		value = entry.addChild("value");
-//		product = value.addChild("product");
-//		product.addChild("price").setContent("1.0");
-//		product.addChild("name").setContent("milk");
-//		value.addChild("quantity").setContent("10");
-//		value.addChild("seller").setContent("http://localhost:8080/supermarket2");
-//		entry.addChild("key").setContent("milk");
+		arg0.addChild(purchaseItems);
 		
 		return purchase;
 	}
@@ -118,26 +99,32 @@ public class SupermarketScalabilityTester extends ScalabilityTester {
 		Item arg0 = getLowestPrice.addChild("arg0");
 		Item items = arg0.addChild("items");
 		Item entry = items.addChild("entry");
-		entry.addChild("value").setContent("1");
-		entry.addChild("key").setContent("milk");
+		entry.addChild("value").setContent(someQuantity());
+		entry.addChild("key").setContent(someProduct());
 		
-		entry = items.addChild("entry");
-		entry.addChild("value").setContent("10");
-		entry.addChild("key").setContent("bread");
 		return getLowestPrice;
+	}
+	
+	private String someProduct() {
+		final int index = (int)Math.floor(Math.random() * productNames.length);
+		return productNames[index];
+	}
+	
+	private String someQuantity() {
+		return "" + Math.round(Math.random() * 10);
 	}
 
 	public static void main(String[] args) {
 		SupermarketScalabilityTester tester = new SupermarketScalabilityTester();
 		tester.setInitialRequestsPerMinute(300);
 		tester.setInititalResoucesQuantity(1);
-		tester.setNumberOfExecutionsPerTest(50);
+		tester.setNumberOfExecutionsPerTest(100);
 		tester.setNumberOfTestsToRun(5);
-		if (!tester.run("test1")) {
-			System.out.print("TEST ERROR! ");
-			tester.getLastException().printStackTrace();
-		} else {
-//			tester.showChart("supermarket choreography");
+		try {
+			tester.run("label");
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+		tester.showChart("supermarket choreography");
 	}
 }
