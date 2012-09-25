@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.xml.ws.Endpoint;
 
+import br.usp.ime.service.DeliverEverywhereWS;
 import br.usp.ime.service.SM1WS;
 
 public class ChoreographyManager {
@@ -18,6 +19,7 @@ public class ChoreographyManager {
 
 	private void addServices() {
 		services.put(ServiceEndpoints.SM1, Endpoint.create(new SM1WS()));
+		services.put(ServiceEndpoints.DELIVER_EVW, Endpoint.create(new DeliverEverywhereWS()));
 	}
 
 	public void start(ServiceEndpoints service) {

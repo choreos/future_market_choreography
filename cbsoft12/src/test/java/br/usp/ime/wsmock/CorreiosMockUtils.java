@@ -41,9 +41,9 @@ public class CorreiosMockUtils {
     public Item buildRequest(boolean withSedex) {
 	Item request = new ItemImpl("CalcPrecoPrazo");
 
-	String destination = withSedex ? "12345-678" : "99999-999";
+	String destination = withSedex ? "12345678" : "99999999";
 
-	request.addChild("sCepOrigem").setContent("11111-111");
+	request.addChild("sCepOrigem").setContent("11111111");
 	request.addChild("sCepDestino").setContent(destination);
 
 	request.addChild("nCdServico").setContent(SEDEX + "," + PAC);

@@ -115,16 +115,16 @@ public class SupermarketScalabilityTester extends ScalabilityTester {
 	}
 
 	public static void main(String[] args) {
-		SupermarketScalabilityTester tester = new SupermarketScalabilityTester();
-		tester.setInitialRequestsPerMinute(300);
-		tester.setInititalResoucesQuantity(1);
-		tester.setNumberOfExecutionsPerTest(100);
-		tester.setNumberOfTestsToRun(5);
-		try {
-			tester.run("label");
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		tester.showChart("supermarket choreography");
+//		SupermarketScalabilityTester tester = new SupermarketScalabilityTester();
+//		tester.setInitialRequestsPerMinute(300);
+//		tester.setInititalResoucesQuantity(1);
+//		tester.setNumberOfExecutionsPerTest(100);
+//		tester.setNumberOfTestsToRun(5);
+//		try {
+//			tester.run("label");
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		tester.showChart("supermarket choreography");
 	}
 }
