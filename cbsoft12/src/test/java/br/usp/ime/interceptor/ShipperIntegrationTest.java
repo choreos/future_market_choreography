@@ -17,7 +17,7 @@ public class ShipperIntegrationTest {
     private static final String SHIPPER_WSDL = SHIPPER_ENDPOINT + "/choreography?wsdl";
 
     private static final String SHIPPER_PROXY_ENDPOINT = "http://localhost:9009/shipper";
-    private static final String PORTAL_WSDL = "http://localhost:8080/portal/choreography?wsdl";
+    private static final String PORTAL_WSDL = "http://localhost:8080/portal1/choreography?wsdl";
 
     private static Registry registry;
     private static MessageInterceptor interceptor;
