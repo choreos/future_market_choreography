@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 
 @SuppressWarnings("PMD.MoreThanOneLogger")
 public final class FutureMarketLG {
-    private static final int START_ORCH = 100;
-    private static final int START_CHOR = 300;
+    private static final int START_ORCH = 1;
+    private static final int START_CHOR = 1;
     private static final int THREADS_TIMEOUT = 360;
 
     // Milliseconds

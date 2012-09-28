@@ -2,7 +2,9 @@ package br.usp.ime.futuremarket;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,7 +24,7 @@ public class FutureMarketClient implements Runnable {
     private static final ShopList SHOPLIST = getShopList();
 
     private static CountDownLatch latch;
-    private static AbstractPortalProxy portals;
+    private static List<Portal> portals;
 
     private static final Logger GRAPH = Logger.getLogger("graphsLogger");
     private static final Logger CONSOLE = Logger.getLogger(FutureMarketClient.class);
@@ -32,15 +34,26 @@ public class FutureMarketClient implements Runnable {
     private final CustomerInfo myInfo;
 
     public static void setUp(final long milliseconds, final AbstractPortalProxy portals)
-            throws IOException {
+            throws MalformedURLException {
         FutureMarketClient.timeout = milliseconds;
-        FutureMarketClient.portals = portals;
+        FutureMarketClient.portals = getPortalProxies(portals);
+    }
+
+    private static List<Portal> getPortalProxies(AbstractPortalProxy portals)
+            throws MalformedURLException {
+        final List<Portal> proxies = new ArrayList<Portal>();
+
+        for (int i = 0; i < portals.size(); i++) {
+            proxies.add(portals.getPortal(i));
+        }
+
+        return proxies;
     }
 
     public FutureMarketClient(final int threadNumber) throws MalformedURLException {
         CONSOLE.debug("Thread " + threadNumber + " has started.");
         this.threadNumber = threadNumber;
-        portal = portals.getPortal(threadNumber);
+        portal = portals.get(threadNumber % portals.size());
         myInfo = getCustomerInfo();
     }
 
