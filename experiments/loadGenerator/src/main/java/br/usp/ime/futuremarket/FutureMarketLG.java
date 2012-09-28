@@ -37,7 +37,7 @@ public final class FutureMarketLG {
         runSimulations();
     }
 
-    private static AbstractPortalProxy getPortalProxy() throws IOException {
+    private static AbstractPortalProxy getPortalProxies() throws IOException {
         AbstractPortalProxy proxies;
 
         if ("orch".equals(archType)) {
@@ -54,7 +54,7 @@ public final class FutureMarketLG {
     }
 
     private static void setUpClients() throws IOException {
-        final AbstractPortalProxy portals = getPortalProxy();
+        final AbstractPortalProxy portals = getPortalProxies();
         FutureMarketClient.setUp(TIMEOUT, portals);
     }
 
