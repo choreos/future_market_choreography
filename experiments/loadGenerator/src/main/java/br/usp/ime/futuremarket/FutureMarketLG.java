@@ -61,6 +61,7 @@ public final class FutureMarketLG {
     private static void runSimulations() throws MalformedURLException {
         // warm up
         runSimulation(start);
+        runSimulation(start);
 
         boolean timeout = false;
         int clients;

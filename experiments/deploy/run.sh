@@ -2,7 +2,7 @@
 
 MAX_THREADS=750
 
-echo 'Arch,Portals,Clients,Timestamp' >>graphs.log
+echo 'Arch,Portals,Clients,Timestamp' >>lg.csv
 
 while [ true ]; do
   for arch in orch chor; do

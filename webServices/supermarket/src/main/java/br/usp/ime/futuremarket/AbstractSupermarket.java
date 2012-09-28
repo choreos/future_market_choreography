@@ -12,7 +12,7 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     protected final ShopList shopList = new ShopList();
     protected final AbstractFutureMarket market;
-    private AtomicLong purchaseId = new AtomicLong(0);
+    private final AtomicLong purchaseId = new AtomicLong(0);
     private final Stock stock = new Stock();
 
     private final Properties properties;
@@ -44,6 +44,7 @@ public abstract class AbstractSupermarket implements Supermarket {
 
     abstract protected AbstractFutureMarket getFutureMarket();
 
+    // TODO Synchronized setter
     protected String getShipperBaseAddress() throws IOException {
         if (shipperBaseAddr == null) {
             final String name = properties.getProperty("shipper.name");
@@ -52,6 +53,7 @@ public abstract class AbstractSupermarket implements Supermarket {
         return shipperBaseAddr;
     }
 
+    // TODO Synchronized setter
     protected String getSellerBaseAddress() throws IOException {
         if (sellerBaseAddr == null) {
             final String name = properties.getProperty("seller.name");

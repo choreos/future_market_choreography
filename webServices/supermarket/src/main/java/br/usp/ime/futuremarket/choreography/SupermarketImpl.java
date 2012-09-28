@@ -1,6 +1,7 @@
 package br.usp.ime.futuremarket.choreography;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.jws.WebService;
 
@@ -19,7 +20,7 @@ import br.usp.ime.futuremarket.Supermarket;
         endpointInterface = "br.usp.ime.futuremarket.Supermarket")
 public class SupermarketImpl extends AbstractSupermarket {
 
-    private Bank bank = null;
+    private String bankBaseAddr = "";
 
     public SupermarketImpl() throws IOException, InterruptedException {
         super();
@@ -57,20 +58,21 @@ public class SupermarketImpl extends AbstractSupermarket {
     @Override
     public void reset() throws IOException, InterruptedException {
         super.reset();
-        bank = null;
+        bankBaseAddr = "";
     }
 
     private Bank getBank() throws IOException {
-        if (bank == null) {
-            createBank();
+        if (bankBaseAddr.isEmpty()) {
+            setBankBaseAddr();
         }
-        return bank;
+        return market.getClient(bankBaseAddr, Bank.class);
     }
 
-    private void createBank() throws IOException {
-        synchronized (this) {
-            if (bank == null) {
-                bank = market.getClientByRole(Role.BANK, Bank.class);
+    private void setBankBaseAddr() throws IOException {
+        synchronized (bankBaseAddr) {
+            if (bankBaseAddr.isEmpty()) {
+                final List<String> banks = market.getBaseAddresses(Role.BANK);
+                bankBaseAddr = banks.get(0);
             }
         }
     }

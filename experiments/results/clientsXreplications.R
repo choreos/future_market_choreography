@@ -1,6 +1,6 @@
 # Archs are hard coded to control plot params
 archs <- c("chor", "orch")
-results <- read.csv("graphs.log")
+results <- read.csv("lg.csv")
 # Removing Timestamp column
 results <- subset(results, select = -Timestamp)
 # Detecting how many portals were used
