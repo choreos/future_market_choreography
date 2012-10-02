@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -15,11 +14,6 @@ import br.usp.ime.futuremarket.choreography.Portal;
 
 @SuppressWarnings("PMD.MoreThanOneLogger")
 public class FutureMarketClient implements Runnable {
-
-    // Milliseconds
-    private static long timeout;
-    private static AtomicInteger successes;
-    private static AtomicInteger failures;
 
     private static final ShopList SHOPLIST = getShopList();
 
@@ -33,13 +27,11 @@ public class FutureMarketClient implements Runnable {
     private final int threadNumber;
     private final CustomerInfo myInfo;
 
-    public static void setUp(final long milliseconds, final AbstractPortalProxy portals)
-            throws MalformedURLException {
-        FutureMarketClient.timeout = milliseconds;
+    public static void setPortals(final AbstractPortalProxy portals) throws MalformedURLException {
         FutureMarketClient.portals = getPortalProxies(portals);
     }
 
-    private static List<Portal> getPortalProxies(AbstractPortalProxy portals)
+    private static List<Portal> getPortalProxies(final AbstractPortalProxy portals)
             throws MalformedURLException {
         final List<Portal> proxies = new ArrayList<Portal>();
 
@@ -57,21 +49,8 @@ public class FutureMarketClient implements Runnable {
         myInfo = getCustomerInfo();
     }
 
-    public static void resetStatistics() {
-        successes = new AtomicInteger(0);
-        failures = new AtomicInteger(0);
-    }
-
     public static void setCountDownLatch(final CountDownLatch latch) {
         FutureMarketClient.latch = latch;
-    }
-
-    public static int getFailures() {
-        return failures.get();
-    }
-
-    public static int getSuccesses() {
-        return successes.get();
     }
 
     private static ShopList getShopList() {
@@ -161,7 +140,6 @@ public class FutureMarketClient implements Runnable {
             simulate();
         } catch (IOException e) {
             logError("simulate()", e);
-            failures.addAndGet(1);
         }
     }
 
@@ -173,15 +151,7 @@ public class FutureMarketClient implements Runnable {
         requestDeliveries(purchases);
 
         final long end = Calendar.getInstance().getTimeInMillis();
-        checkResponseTime(end - start);
-    }
-
-    private void checkResponseTime(final long time) {
-        if (time < timeout) {
-            successes.addAndGet(1);
-        } else {
-            failures.addAndGet(1);
-        }
+        GRAPH.info(end - start);
     }
 
     private void logError(final String message) {

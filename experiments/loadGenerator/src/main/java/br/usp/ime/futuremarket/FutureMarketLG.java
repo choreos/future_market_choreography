@@ -15,9 +15,7 @@ public final class FutureMarketLG {
     private static final int START_ORCH = 1;
     private static final int START_CHOR = 1;
     private static final int THREADS_TIMEOUT = 360;
-
-    // Milliseconds
-    private static final int TIMEOUT = 5000;
+    private static final int MAX_TIME = 120000;
 
     private static String archType;
     private static int portals;
@@ -55,45 +53,47 @@ public final class FutureMarketLG {
 
     private static void setUpClients() throws IOException {
         final AbstractPortalProxy portals = getPortalProxies();
-        FutureMarketClient.setUp(TIMEOUT, portals);
+        FutureMarketClient.setPortals(portals);
     }
 
     private static void runSimulations() throws MalformedURLException {
-        // warm up
-        runSimulation(start);
-        runSimulation(start);
+        warmUp();
 
-        boolean timeout = false;
-        int clients;
-        for (clients = start; !timeout && clients <= max; clients += STEP) {
-            timeout = runSimulation(clients);
+        long startTime, finishTime;
+        for (int clients = start; clients <= max; clients += STEP) {
+            printHeader(clients);
+
+            startTime = Calendar.getInstance().getTimeInMillis();
+            runSimulation(clients);
+            finishTime = Calendar.getInstance().getTimeInMillis();
+
+            if (finishTime - startTime > MAX_TIME) {
+                break;
+            }
         }
-
-        final long timestamp = Calendar.getInstance().getTimeInMillis();
-        final String result = String.format("%s,%d,%d,%d", archType, portals, clients - 2 * STEP,
-                timestamp);
-        GRAPH.info(result);
     }
 
-    private static boolean runSimulation(final int clients) throws MalformedURLException {
-        final String result = String.format("started %s,%d,%d", archType, portals, clients);
-        CONSOLE.info(result);
+    private static void warmUp() throws MalformedURLException {
+        CONSOLE.info("warmup");
+        GRAPH.info("# warmup");
 
-        FutureMarketClient.resetStatistics();
+        runSimulation(1);
+        runSimulation(1);
+    }
+
+    private static void printHeader(final int clients) {
+        final long now = Calendar.getInstance().getTimeInMillis();
+        final String header = String.format("%s,%d,%d,%d", archType, portals, clients, now);
+
+        CONSOLE.info(header);
+        GRAPH.info("# " + header);
+    }
+
+    private static void runSimulation(final int clients) throws MalformedURLException {
         final CountDownLatch threadSync = new CountDownLatch(clients);
         FutureMarketClient.setCountDownLatch(threadSync);
 
         runThreads(clients);
-        return hasTimedOut();
-    }
-
-    private static boolean hasTimedOut() {
-        final int failures = FutureMarketClient.getFailures();
-        final int requests = failures + FutureMarketClient.getSuccesses();
-
-        final double percentage = ((double) failures * 100) / requests;
-        CONSOLE.info(percentage);
-        return (percentage >= 5.0);
     }
 
     private static void runThreads(final int totalThreads) throws MalformedURLException {
