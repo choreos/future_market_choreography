@@ -3,7 +3,6 @@ package br.usp.ime.futuremarket;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -13,22 +12,43 @@ import org.apache.log4j.Logger;
 import br.usp.ime.futuremarket.choreography.Portal;
 
 @SuppressWarnings("PMD.MoreThanOneLogger")
-public class FutureMarketClient implements Runnable {
+public abstract class AbstractClient {
 
+    protected static final Logger GRAPH = Logger.getLogger("graphsLogger");
+    protected static final Logger CONSOLE = Logger.getLogger(AbstractClient.class);
     private static final ShopList SHOPLIST = getShopList();
 
-    private static CountDownLatch latch;
     private static List<Portal> portals;
 
-    private static final Logger GRAPH = Logger.getLogger("graphsLogger");
-    private static final Logger CONSOLE = Logger.getLogger(FutureMarketClient.class);
+    protected static CountDownLatch latch;
+    protected final int threadNumber;
+    protected final Portal portal;
+    protected final CustomerInfo myInfo;
 
-    private final Portal portal;
-    private final int threadNumber;
-    private final CustomerInfo myInfo;
+    protected abstract void simulate() throws IOException;
+
+    public AbstractClient(final int threadNumber) {
+        CONSOLE.debug("Thread " + threadNumber + " has started.");
+        this.threadNumber = threadNumber;
+        portal = portals.get(threadNumber % portals.size());
+        myInfo = getCustomerInfo();
+    }
 
     public static void setPortals(final AbstractPortalProxy portals) throws MalformedURLException {
-        FutureMarketClient.portals = getPortalProxies(portals);
+        AbstractClient.portals = getPortalProxies(portals);
+    }
+
+    public static void setCountDownLatch(final CountDownLatch latch) {
+        AbstractClient.latch = latch;
+    }
+    
+    private CustomerInfo getCustomerInfo() {
+        final CustomerInfo info = new CustomerInfo();
+        info.setAddress("Rua do Matao");
+        info.setCreditCard("123 456 789");
+        info.setName("Thread" + threadNumber);
+
+        return info;
     }
 
     private static List<Portal> getPortalProxies(final AbstractPortalProxy portals)
@@ -40,17 +60,6 @@ public class FutureMarketClient implements Runnable {
         }
 
         return proxies;
-    }
-
-    public FutureMarketClient(final int threadNumber) throws MalformedURLException {
-        CONSOLE.debug("Thread " + threadNumber + " has started.");
-        this.threadNumber = threadNumber;
-        portal = portals.get(threadNumber % portals.size());
-        myInfo = getCustomerInfo();
-    }
-
-    public static void setCountDownLatch(final CountDownLatch latch) {
-        FutureMarketClient.latch = latch;
     }
 
     private static ShopList getShopList() {
@@ -77,7 +86,7 @@ public class FutureMarketClient implements Runnable {
         return item;
     }
 
-    private Set<Purchase> purchase(final ShopList list) throws IOException {
+    protected Set<Purchase> purchase(final ShopList list) throws IOException {
         final Set<Purchase> purchases = portal.purchase(list, myInfo);
         verifyPurchase(purchases);
         return purchases;
@@ -89,16 +98,7 @@ public class FutureMarketClient implements Runnable {
         }
     }
 
-    private CustomerInfo getCustomerInfo() {
-        final CustomerInfo info = new CustomerInfo();
-        info.setAddress("Rua do Matao");
-        info.setCreditCard("123 456 789");
-        info.setName("Thread" + threadNumber);
-
-        return info;
-    }
-
-    private void requestDeliveries(final Set<Purchase> purchases) throws MalformedURLException {
+    protected void requestDeliveries(final Set<Purchase> purchases) throws MalformedURLException {
         Delivery delivery;
 
         for (Purchase purchase : purchases) {
@@ -115,7 +115,7 @@ public class FutureMarketClient implements Runnable {
         }
     }
 
-    private ShopList getLowestPriceList() throws IOException {
+    protected ShopList getLowestPriceList() throws IOException {
         final ShopList list = portal.getLowestPrice(SHOPLIST);
         verifyLowestPriceList(list);
         return list;
@@ -127,40 +127,13 @@ public class FutureMarketClient implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
-        latch.countDown();
-        try {
-            latch.await();
-        } catch (InterruptedException e1) {
-            logError("CountDownLatch await error", e1);
-        }
-
-        try {
-            simulate();
-        } catch (IOException e) {
-            logError("simulate()", e);
-        }
-    }
-
-    private void simulate() throws IOException {
-        final long start = Calendar.getInstance().getTimeInMillis();
-
-        final ShopList list = getLowestPriceList();
-        final Set<Purchase> purchases = purchase(list);
-        requestDeliveries(purchases);
-
-        final long end = Calendar.getInstance().getTimeInMillis();
-        GRAPH.info(end - start);
-    }
-
-    private void logError(final String message) {
-        GRAPH.error("ERROR " + message);
+    protected void logError(final String message) {
+        GRAPH.error("# ERROR " + message);
         CONSOLE.error(message);
     }
 
-    private void logError(final String message, final Exception exception) {
-        GRAPH.error("ERROR " + message, exception);
+    protected void logError(final String message, final Exception exception) {
+        GRAPH.error("# ERROR " + message);
         CONSOLE.error(message, exception);
     }
 }

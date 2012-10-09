@@ -13,6 +13,7 @@ import java.util.Calendar;
 public class FrequencyHelper {
     // period, threadPeriod are in milliseconds.
     private double period, threadPeriod;
+    private int frequency;
     private int totalThreads;
     private final int maxThreads;
     private long startTime;
@@ -32,6 +33,7 @@ public class FrequencyHelper {
      * @throws TooSmallPeriodException
      */
     public void setFrequency(final int frequencyPerMin) {
+        this.frequency = frequencyPerMin;
         totalThreads = Math.min(maxThreads, frequencyPerMin);
         period = 60000.0 / frequencyPerMin;
         threadPeriod = totalThreads * period;
@@ -51,14 +53,19 @@ public class FrequencyHelper {
     }
 
     private long getEventDelay(final int threadNumber, final int iteration) {
-        final double firstThreadEvent = (threadNumber + 1) * period;
+        final double firstThreadEvent = threadNumber * period;
         final double iterationDelay = iteration * threadPeriod;
         return Math.round(firstThreadEvent + iterationDelay);
     }
 
     public int getTotalRequests(final int threadNumber) {
-        final double firstEvent = ((threadNumber + 1) * period);
-        return (int) ((60000 - firstEvent) / threadPeriod + 1);
+        double requests;
+        if (threadNumber < frequency % totalThreads) {
+            requests = frequency / totalThreads + 1;
+        } else {
+            requests = frequency / totalThreads;
+        }
+        return (int) Math.round(requests);
     }
 
     // Trivial setters & getters

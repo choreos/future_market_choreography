@@ -57,18 +57,19 @@ public class HelloWorldLG implements Runnable {
         runThreads(totalThreads);
     }
 
+    @SuppressWarnings("PMD.WhileLoopsMustUseBraces")
     private static void runThreads(final int totalThreads) {
         final ExecutorService executor = Executors.newFixedThreadPool(totalThreads);
 
         for (int threadNumber = 0; threadNumber < totalThreads; threadNumber++) {
-            final Runnable worker = new HelloWorldLG(threadNumber);
+            final Runnable worker = new HelloWorldLG(threadNumber); // NOPMD
             executor.execute(worker);
         }
 
         executor.shutdown();
         try {
             while (!executor.awaitTermination(THREADS_TIMEOUT, TimeUnit.SECONDS))
-                ;
+                ; // NOPMD
         } catch (InterruptedException e) {
             executor.shutdownNow();
         }
@@ -99,7 +100,6 @@ public class HelloWorldLG implements Runnable {
                 Thread.sleep(nextRequest - Calendar.getInstance().getTimeInMillis());
             } catch (InterruptedException e) {
                 HelloWorldLG.println(System.err, "ERROR on Thread.sleep");
-                e.printStackTrace();
             }
 
             name = String.valueOf(RANDOM.nextInt(60 * 1000 * 5));

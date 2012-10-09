@@ -26,7 +26,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>br.usp.ime.futuremarket.FutureMarketLG</mainClass>
+							<mainClass>br.usp.ime.futuremarket.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -45,7 +45,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
 				<configuration>
-					<mainClass>br.usp.ime.futuremarket.FutureMarketLG</mainClass>
+					<mainClass>br.usp.ime.futuremarket.Main</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

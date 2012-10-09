@@ -24,10 +24,10 @@ public class FrequencyHelperTest {
 
     /*-
      * 1000/min, 100 threads. Solution:
-     * t00: 00060, 06060, 12060, 18060, ..., 54060 (10)
-     * t01: 00120, 06120, 12120, 18120, ..., 54120 (10)
+     * t00: 00000, 06000, 12000, 18000, ..., 54000
+     * t01: 00060, 06060, 12060, 18060, ..., 54060 (10)
      * ...
-     * t99: 06000, 12000, 18000, 24000, ..., 60000 (10)
+     * t99: 05940, 11940, 17940, 23940, ..., 59940 (10)
      */
     @Test
     public void case1Test() {
@@ -39,17 +39,17 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 60, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 6060, freqHelper.getEventTime(0, 1));
-        assertEquals(startTime + 54060, freqHelper.getEventTime(0, 9));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 6000, freqHelper.getEventTime(0, 1));
+        assertEquals(startTime + 54000, freqHelper.getEventTime(0, 9));
 
-        assertEquals(startTime + 120, freqHelper.getEventTime(1, 0));
-        assertEquals(startTime + 6120, freqHelper.getEventTime(1, 1));
-        assertEquals(startTime + 54120, freqHelper.getEventTime(1, 9));
+        assertEquals(startTime + 60, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 6060, freqHelper.getEventTime(1, 1));
+        assertEquals(startTime + 54060, freqHelper.getEventTime(1, 9));
 
-        assertEquals(startTime + 6000, freqHelper.getEventTime(99, 0));
-        assertEquals(startTime + 12000, freqHelper.getEventTime(99, 1));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(99, 9));
+        assertEquals(startTime + 5940, freqHelper.getEventTime(99, 0));
+        assertEquals(startTime + 11940, freqHelper.getEventTime(99, 1));
+        assertEquals(startTime + 59940, freqHelper.getEventTime(99, 9));
 
         assertEquals(10, freqHelper.getTotalRequests(0));
         assertEquals(10, freqHelper.getTotalRequests(1));
@@ -58,7 +58,7 @@ public class FrequencyHelperTest {
 
     /*-
      * 4/min, 1 thread. Solution:
-     * t1: 15k, 30k, 45k, 60k
+     * t1: 0, 15k, 30k, 45k
      */
     @Test
     public void case2aTest() {
@@ -70,18 +70,18 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 30000, freqHelper.getEventTime(0, 1));
-        assertEquals(startTime + 45000, freqHelper.getEventTime(0, 2));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(0, 3));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 1));
+        assertEquals(startTime + 30000, freqHelper.getEventTime(0, 2));
+        assertEquals(startTime + 45000, freqHelper.getEventTime(0, 3));
 
         assertEquals(4, freqHelper.getTotalRequests(0));
     }
 
     /*-
      * 4/min, 2 threads. Solution:
-     * t1: 15k, 45k
-     * t2: 30k, 60k
+     * t1: 0, 30k
+     * t2: 15k, 45k
      */
     @Test
     public void case2bTest() {
@@ -93,11 +93,11 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 45000, freqHelper.getEventTime(0, 1));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 30000, freqHelper.getEventTime(0, 1));
 
-        assertEquals(startTime + 30000, freqHelper.getEventTime(1, 0));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(1, 1));
+        assertEquals(startTime + 15000, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 45000, freqHelper.getEventTime(1, 1));
 
         assertEquals(2, freqHelper.getTotalRequests(0));
         assertEquals(2, freqHelper.getTotalRequests(1));
@@ -105,9 +105,9 @@ public class FrequencyHelperTest {
 
     /*-
      * 4/min, 3 threads. Solution:
-     * t1: 15k, 60k
-     * t2: 30k
-     * t3: 45k
+     * t1: 0, 45k
+     * t2: 15k
+     * t3: 30k
      */
     @Test
     public void case2cTest() {
@@ -119,12 +119,12 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(0, 1));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 45000, freqHelper.getEventTime(0, 1));
 
-        assertEquals(startTime + 30000, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 15000, freqHelper.getEventTime(1, 0));
 
-        assertEquals(startTime + 45000, freqHelper.getEventTime(2, 0));
+        assertEquals(startTime + 30000, freqHelper.getEventTime(2, 0));
 
         assertEquals(2, freqHelper.getTotalRequests(0));
         assertEquals(1, freqHelper.getTotalRequests(1));
@@ -133,10 +133,10 @@ public class FrequencyHelperTest {
 
     /*-
      * 4/min, 4 threads. Solution:
-     * t1: 15k
-     * t2: 30k
-     * t3: 45k
-     * t4: 60k
+     * t1: 0
+     * t2: 15k
+     * t3: 30k
+     * t4: 45k
      */
     @Test
     public void case2dTest() {
@@ -148,10 +148,10 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 30000, freqHelper.getEventTime(1, 0));
-        assertEquals(startTime + 45000, freqHelper.getEventTime(2, 0));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(3, 0));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 15000, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 30000, freqHelper.getEventTime(2, 0));
+        assertEquals(startTime + 45000, freqHelper.getEventTime(3, 0));
 
         for (int i = 0; i < 4; i++) {
             assertEquals(1, freqHelper.getTotalRequests(i));
@@ -160,10 +160,10 @@ public class FrequencyHelperTest {
 
     /*-
      * 4/min, 5 threads. Solution:
-     * t1: 15k
-     * t2: 30k
-     * t3: 45k
-     * t4: 60k
+     * t1: 0k
+     * t2: 15k
+     * t3: 30k
+     * t4: 45k
      */
     @Test
     public void case2eTest() {
@@ -175,10 +175,10 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 15000, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 30000, freqHelper.getEventTime(1, 0));
-        assertEquals(startTime + 45000, freqHelper.getEventTime(2, 0));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(3, 0));
+        assertEquals(startTime, freqHelper.getEventTime(0, 0));
+        assertEquals(startTime + 15000, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 30000, freqHelper.getEventTime(2, 0));
+        assertEquals(startTime + 45000, freqHelper.getEventTime(3, 0));
 
         for (int i = 0; i < 4; i++) {
             assertEquals(1, freqHelper.getTotalRequests(i));
@@ -195,8 +195,8 @@ public class FrequencyHelperTest {
         startTime = getTime();
         freqHelper.setStartTime(startTime);
 
-        assertEquals(startTime + 4286, freqHelper.getEventTime(0, 0));
-        assertEquals(startTime + 8571, freqHelper.getEventTime(1, 0));
-        assertEquals(startTime + 60000, freqHelper.getEventTime(13, 0));
+        assertEquals(startTime + 4286, freqHelper.getEventTime(1, 0));
+        assertEquals(startTime + 8571, freqHelper.getEventTime(2, 0));
+        assertEquals(startTime + 60000, freqHelper.getEventTime(14, 0));
     }
 }
