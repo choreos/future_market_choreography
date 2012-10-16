@@ -20,7 +20,7 @@ restart: restart-registry
 	-$(call restart-hosts, $(hosts))
 
 restart-registry:
-	-ssh $(REGISTRY_HOST) "$(call restart-cleaned, $(REGISTRY_HOST)); \
+	-ssh $(REGISTRY_HOST) "$(call restart-noclean, $(REGISTRY_HOST)); \
 	  $(call wait, $(REGISTRY_HOST))"
 
 start = \
@@ -43,13 +43,38 @@ clean = \
 restart-cleaned = \
   $(call shutdown, $(1)); $(call clean, $(1)); $(call start, $(1))
 
+restart-noclean = \
+  $(call shutdown, $(1)); $(call start, $(1))
+
 restart-hosts = \
   for host in $(1); do \
-	  (ssh $$host "$(call restart-cleaned, $$host)")& \
+	  (ssh $$host "$(call restart-noclean, $$host)")& \
 	done; \
 	for host in $(1); do \
 		ssh $$host "$(call wait, $$host)"; \
 	done
+
+get-tomcat-log = \
+	(ssh $(1) "cd apache-tomcat*/logs/; tar c -I pbzip2 localhost_access_log*" > $(2).tar.bz2) &
+
+download-logs:
+	$(call get-tomcat-log, $(REGISTRY_HOST), registry)
+	$(call get-tomcat-log, $(BANK_HOST), bank)
+	$(call get-tomcat-log, $(MANUFACT_HOST), manufacturer)
+	$(call get-tomcat-log, $(SHIPPER1_HOST), shipper1)
+	$(call get-tomcat-log, $(SM1_HOST), supermarket1)
+	$(call get-tomcat-log, $(SM2_HOST), supermarket2)
+	$(call get-tomcat-log, $(SUPPLIER1_HOST), supplier1)
+	$(call get-tomcat-log, $(PORTAL1_HOST), portal1)
+	$(call get-tomcat-log, $(PORTAL2_HOST), portal2)
+	$(call get-tomcat-log, $(PORTAL3_HOST), portal3)
+	$(call get-tomcat-log, $(PORTAL4_HOST), portal4)
+	$(call get-tomcat-log, $(SHIPPER2_HOST), shipper2)
+	$(call get-tomcat-log, $(SM3_HOST), supermarket3)
+	$(call get-tomcat-log, $(SM4_HOST), supermarket4)
+	$(call get-tomcat-log, $(SM5_HOST), supermarket5)
+	$(call get-tomcat-log, $(SUPPLIER2_HOST), supplier2)
+	$(call get-tomcat-log, $(SUPPLIER3_HOST), supplier3)
 
 tomcat-reinstall:
 	-for host in $(WS_HOSTS); do \

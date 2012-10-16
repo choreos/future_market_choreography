@@ -10,7 +10,7 @@ public abstract class AbstractPortalProxy {
     public AbstractPortalProxy(final AbstractFutureMarket market) throws IOException {
         portals = market.getBaseAddresses(Role.PORTAL);
 
-        while (portals.size() == 0) {
+        while (portals.isEmpty()) {
             System.out.println("# WARNING: 0 portals in registry. Waiting 1 sec...");
             try {
                 Thread.sleep(1000);

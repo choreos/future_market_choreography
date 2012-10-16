@@ -1,6 +1,6 @@
-timeouts <- 1:10
-archs <- c("chor", "orch2", "orch")
-exp <- read.csv("graphs.csv")
+timeouts <- 1:20
+archs <- c("chor", "orch")
+exp <- read.csv("lg.csv")
 
 nrow <- nrow(unique(exp[,c("Arch", "Freq")]))
 # result is matrix with failure counts for each timeout.

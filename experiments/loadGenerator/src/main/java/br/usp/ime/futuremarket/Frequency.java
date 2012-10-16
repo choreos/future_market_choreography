@@ -48,6 +48,7 @@ public final class Frequency extends AbstractLoadGenerator {
     private void runSimulations() throws MalformedURLException {
         warmUp(minFreq);
 
+        String result;
         for (int frequency = minFreq; frequency <= maxFreq; frequency += step) {
             logTitle(frequency);
 
@@ -57,7 +58,9 @@ public final class Frequency extends AbstractLoadGenerator {
             runSimulation(freqHelper.getTotalThreads());
 
             if (hasTimedOut()) {
-                String.format("# result: %s,%d,%d ", archType, portals, frequency - step);
+                result = String.format("result: %s,%d,%d ", archType, portals, frequency - step);
+                CONSOLE.info(result);
+                GRAPH.info("# " + result);
                 break;
             }
         }
@@ -102,8 +105,7 @@ public final class Frequency extends AbstractLoadGenerator {
         final int successes = FrequencyClient.getSuccesses();
         final float successRatio = ((float) successes) / (successes + failures);
 
-        final String message = String.format(
-                "# failures: %d/%d (%.2f%%). Maximum time: %d. Mean: %.2f", failures,
+        final String message = String.format("# successes: %s/%s (%.2f%%)", successes,
                 (failures + successes), successRatio * 100);
         CONSOLE.info(message);
         GRAPH.info(message);

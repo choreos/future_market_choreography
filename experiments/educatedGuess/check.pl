@@ -1,18 +1,21 @@
 #!/usr/bin/perl
 
-my $type = "none";
-my $freq = 0;
-my $lines = 0;
+use strict;
+
+my ($arch, $portals, $clients, $lines) = ("none", 0, 0, 0);
+my $warmup = 0;
 
 while (<>) {
-  if ($_ =~ /^# (\w+) (\d+) reqs\/min/) {
-    if ($freq != $lines and $type ne "none") {
-      print "$type $freq reqs/min has $lines results\n";
+  if (/^# (\w+),(\d+),(\d+),(\d+)/) {
+    if ($clients != $lines and $arch ne "none") {
+      print "$arch,$portals,$clients has $lines results\n";
     }
-    $type = $1;
-    $freq = $2;
+    ($arch, $portals, $clients) = ($1, $2, $3);
     $lines = 0;
-  } else {
-    $lines += 1 if not /^#/;
+    $warmup = 0;
+  } elsif (/^# warmup$/) {
+    $warmup = 1;
+  } elsif (not /^#/ and not $warmup) {
+    $lines += 1;
   }
 }
