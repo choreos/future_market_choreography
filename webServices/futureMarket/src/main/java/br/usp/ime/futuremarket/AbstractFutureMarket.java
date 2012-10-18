@@ -102,8 +102,13 @@ public abstract class AbstractFutureMarket {
     private <T> T getClient(final Class<T> resultClass, final String baseAddress,
             final AbstractWSInfo info) throws MalformedURLException {
         final String wsdl = baseAddressToWsdl(baseAddress);
+
+        /*
         checkCache(info, wsdl);
         final Service service = serviceCache.get(wsdl);
+        */
+        final Service service = createService(info.getNamespace(), info.getServiceName(), wsdl);
+
         return service.getPort(resultClass);
     }
 

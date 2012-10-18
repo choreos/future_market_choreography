@@ -41,7 +41,7 @@ public abstract class AbstractClient {
     public static void setCountDownLatch(final CountDownLatch latch) {
         AbstractClient.latch = latch;
     }
-    
+
     private CustomerInfo getCustomerInfo() {
         final CustomerInfo info = new CustomerInfo();
         info.setAddress("Rua do Matao");
