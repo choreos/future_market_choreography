@@ -18,4 +18,7 @@ public interface Supermarket {
 
     @WebMethod
     void reset() throws IOException, InterruptedException;
+    
+    @WebMethod
+    String setInvocationAddress(String registerWsdl) throws IOException;
 }
