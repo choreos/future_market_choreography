@@ -28,14 +28,18 @@ public abstract class AbstractSupermarket implements Supermarket {
         myName = properties.getProperty("name");
         purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
-
         market = getFutureMarket();
-        market.register(myName);
+        
         myBaseAddr = market.getMyBaseAddress(myName);
 
         role = getRole(myName);
     }
 
+    public String setInvocationAddress(String registerWsdl) throws IOException {
+        market.register(myName,registerWsdl);
+        return "OK";
+    }
+    
     abstract protected void buy() throws IOException;
 
     abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;

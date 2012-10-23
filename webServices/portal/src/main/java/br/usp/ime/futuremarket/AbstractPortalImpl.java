@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import br.usp.ime.futuremarket.choreography.FutureMarket;
 import br.usp.ime.futuremarket.choreography.Portal;
 
 public abstract class AbstractPortalImpl implements Portal {
@@ -17,10 +18,14 @@ public abstract class AbstractPortalImpl implements Portal {
 
     public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
         this.market = market;
-        final String name = getName();
-        market.register(name);
     }
-
+    
+    @Override
+    public String setInvocationAddress(String registerWsdl) throws IOException {
+        this.market.register(getName(),registerWsdl);
+        return "OK";
+    }
+    
     @Override
     public ShopList getLowestPrice(final ShopList list) throws IOException {
         ShopList smList;
