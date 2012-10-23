@@ -1,5 +1,7 @@
 package br.usp.ime.futuremarket;
 
+import java.io.IOException;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -13,4 +15,7 @@ public interface Shipper {
 
     @WebMethod
     Delivery getDelivery(final Purchase purchase);
+    
+    @WebMethod
+    String setInvocationAddress(String registerWsdl) throws IOException;
 }

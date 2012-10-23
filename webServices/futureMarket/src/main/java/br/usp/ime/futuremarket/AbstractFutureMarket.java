@@ -17,19 +17,20 @@ import javax.xml.ws.Service;
 public abstract class AbstractFutureMarket {
     private static final String PORT = "8080";
     private static final Map<String, Service> serviceCache = new HashMap<String, Service>();
-
+    
+    private Registry registry = null;
     abstract protected String baseAddressToWsdl(final String baseAddress);
 
     abstract protected AbstractWSInfo getWSInfo();
 
     // Name is the name of the service == war file basename
     public void register(final String name) throws IOException {
-        Registry registry = getRegistryFromProperties();
+        registry = getRegistry();
         addServiceToRegistry(name, registry);
     }
 
     public void register(final String name, final String registerWsdl) throws IOException {
-        Registry registry = getRegistry(registerWsdl);
+        registry = getRegistry(registerWsdl);
         addServiceToRegistry(name, registry);
     }
 
@@ -41,7 +42,7 @@ public abstract class AbstractFutureMarket {
     }
 
     public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
-        final List<String> baseAddresses = getRegistryFromProperties().getServices(role.toString());
+        final List<String> baseAddresses = registry.getServices(role.toString());
 
         T client;
         final AbstractWSInfo info = getWSInfo();
@@ -56,7 +57,7 @@ public abstract class AbstractFutureMarket {
     }
 
     public <T> T getClientByRole(final Role role, final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistryFromProperties().getServiceByRole(role.toString());
+        final String baseAddress = registry.getServiceByRole(role.toString());
         final AbstractWSInfo info = getWSInfo();
         info.setBaseAddress(baseAddress);
 
@@ -64,7 +65,7 @@ public abstract class AbstractFutureMarket {
     }
 
     public <T> T getClientByName(final String name, final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistryFromProperties().getServiceByName(name);
+        final String baseAddress = registry.getServiceByName(name);
         final AbstractWSInfo info = getWSInfo();
         info.setName(name);
 
@@ -72,7 +73,7 @@ public abstract class AbstractFutureMarket {
     }
 
     public <T> T getClientRoundRobin(final Role role, final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistryFromProperties().getServiceRoundRobin(role.toString());
+        final String baseAddress = registry.getServiceRoundRobin(role.toString());
         final AbstractWSInfo info = getWSInfo();
         info.setRole(role);
 
@@ -86,11 +87,11 @@ public abstract class AbstractFutureMarket {
     }
 
     public String getBaseAddress(final String name) throws IOException {
-        return getRegistryFromProperties().getServiceByName(name);
+        return registry.getServiceByName(name);
     }
 
     public List<String> getBaseAddresses(final Role role) throws IOException {
-        return getRegistryFromProperties().getServices(role.toString());
+        return registry.getServices(role.toString());
     }
 
     public <T> T getClient(final String baseAddress, final Class<T> resultClass) throws MalformedURLException {
@@ -103,7 +104,7 @@ public abstract class AbstractFutureMarket {
     public void unregister(final String name) throws IOException {
         final AbstractWSInfo info = getWSInfo();
         info.setName(name);
-        getRegistryFromProperties().removeService(info.getRole().toString(), name);
+        registry.removeService(info.getRole().toString(), name);
     }
 
     private <T> T getClient(final Class<T> resultClass, final String baseAddress, final AbstractWSInfo info)
@@ -156,19 +157,25 @@ public abstract class AbstractFutureMarket {
      * @return Registry
      * @throws IOException
      */
-    public Registry getRegistryFromProperties() throws IOException {
-        final String wsdl = getRegistryWsdlFromProperties();
-        return getRegistry(wsdl);
+    public Registry getRegistry() throws IOException {
+        if(registry == null){
+            final String wsdl = getRegistryWsdlFromProperties();
+            registry = getRegistry(wsdl);
+        }
+        return registry;
     }
 
     private Registry getRegistry(final String wsdl) throws MalformedURLException {
-        final AbstractWSInfo info = getWSInfo();
-        info.setName("registry");
+        if(registry == null){
+            final AbstractWSInfo info = getWSInfo();
+            info.setName("registry");
 
-        checkCache(info, wsdl);
-        final Service service = serviceCache.get(wsdl);
+            checkCache(info, wsdl);
+            final Service service = serviceCache.get(wsdl);
 
-        return service.getPort(Registry.class);
+            registry =  service.getPort(Registry.class);
+        }
+        return registry;
     }
 
     private String getRegistryWsdlFromProperties() throws IOException {
