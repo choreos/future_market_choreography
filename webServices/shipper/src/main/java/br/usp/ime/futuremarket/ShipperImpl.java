@@ -17,16 +17,16 @@ public class ShipperImpl implements Shipper {
     private final Map<String, Delivery> deliveries;
 
     public ShipperImpl() throws IOException {
-        this(true);
-    }
-
-    // Unit tests won't register
-    public ShipperImpl(final boolean useRegistry) throws IOException {
         deliveries = new HashMap<String, Delivery>();
+    }
+    
+    @Override
+    public String setInvocationAddress(String registerWsdl) throws IOException {
+        final String name = getMyName();
+        final FutureMarket futureMarket = new FutureMarket();
 
-        if (useRegistry) {
-            register();
-        }
+        futureMarket.register(name,registerWsdl);
+        return "OK";
     }
 
     @WebMethod
@@ -72,12 +72,6 @@ public class ShipperImpl implements Shipper {
         return delivery;
     }
 
-    private void register() throws IOException {
-        final String name = getMyName();
-        final FutureMarket futureMarket = new FutureMarket();
-
-        futureMarket.register(name);
-    }
 
     private String getMyName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -87,4 +81,6 @@ public class ShipperImpl implements Shipper {
 
         return properties.getProperty("name");
     }
+
+
 }

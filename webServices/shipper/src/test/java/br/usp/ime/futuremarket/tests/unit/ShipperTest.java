@@ -23,7 +23,7 @@ public class ShipperTest {
 
     @Before
     public void createShipper() throws IOException {
-        shipper = new ShipperImpl(false);
+        shipper = new ShipperImpl();
     }
 
     @Test
