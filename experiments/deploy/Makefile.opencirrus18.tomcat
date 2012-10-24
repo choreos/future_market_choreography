@@ -37,7 +37,7 @@ shutdown = \
 	echo "Tomcat shutdown at $(1)."
 
 clean = \
-  rm -f $(CATALINA_HOME)/logs/*; \
+	ssh $(1) "rm -f $(CATALINA_HOME)/logs/*"; \
 	echo "Tomcat logs deleted at $(1)."
 
 restart-cleaned = \
