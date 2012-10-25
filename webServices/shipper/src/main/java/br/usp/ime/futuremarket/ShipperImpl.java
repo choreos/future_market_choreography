@@ -13,20 +13,11 @@ import br.usp.ime.futuremarket.choreography.FutureMarket;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/shipper",
         endpointInterface = "br.usp.ime.futuremarket.Shipper")
-public class ShipperImpl implements Shipper {
+public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
     private final Map<String, Delivery> deliveries;
 
     public ShipperImpl() throws IOException {
         deliveries = new HashMap<String, Delivery>();
-    }
-    
-    @Override
-    public String setInvocationAddress(String registerWsdl) throws IOException {
-        final String name = getMyName();
-        final FutureMarket futureMarket = new FutureMarket();
-
-        futureMarket.register(name,registerWsdl);
-        return "OK";
     }
 
     @WebMethod

@@ -7,46 +7,52 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AbstractSupermarket implements Supermarket {
+import javax.jws.WebMethod;
+
+import br.usp.ime.futuremarket.choreography.FutureMarket;
+
+public abstract class AbstractSupermarket extends EnactmentEngineImpl implements Supermarket {
     private static final int PRODUCTS = 10;
 
     protected final ShopList shopList = new ShopList();
-    protected final AbstractFutureMarket market;
     private final AtomicLong purchaseId = new AtomicLong(0);
     private final Stock stock = new Stock();
 
     private final Properties properties;
-    private final String myName, myBaseAddr;
+    private String myName, myBaseAddr;
     private final int purchaseTrigger, purchaseQuantity;
-    private final Role role;
+    private Role role;
     private String shipperBaseAddr, sellerBaseAddr;
 
-    public AbstractSupermarket() throws IOException, InterruptedException {
+    public AbstractSupermarket() throws IOException, InterruptedException{
         properties = readProperties();
         stock.loadProducts(properties, PRODUCTS);
 
         myName = properties.getProperty("name");
         purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
-        market = getFutureMarket();
-        
+
+    }
+    
+    @Override
+    @WebMethod
+    public String setInvocationAddress(final String role, final String registryEndpoint)
+            throws IOException {
+        final String wsdl = registryEndpoint + "?wsdl";
+        market = new FutureMarket(wsdl);
+        market.register(role);
         myBaseAddr = market.getMyBaseAddress(myName);
 
-        role = getRole(myName);
-    }
-
-    public String setInvocationAddress(String registerWsdl) throws IOException {
-        market.register(myName,registerWsdl);
+        this.role = getRole(myName);
         return "OK";
     }
+
     
     abstract protected void buy() throws IOException;
 
     abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
 
     abstract protected AbstractWSInfo getWSInfo();
-
-    abstract protected AbstractFutureMarket getFutureMarket();
 
     // TODO Synchronized setter
     protected String getShipperBaseAddress() throws IOException {

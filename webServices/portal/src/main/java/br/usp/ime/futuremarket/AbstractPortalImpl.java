@@ -13,17 +13,9 @@ import java.util.Set;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 import br.usp.ime.futuremarket.choreography.Portal;
 
-public abstract class AbstractPortalImpl implements Portal {
-    protected final AbstractFutureMarket market;
+public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements Portal {
 
-    public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
-        this.market = market;
-    }
-    
-    @Override
-    public String setInvocationAddress(String registerWsdl) throws IOException {
-        this.market.register(getName(),registerWsdl);
-        return "OK";
+    public AbstractPortalImpl() throws IOException {
     }
     
     @Override

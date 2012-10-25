@@ -21,7 +21,7 @@ public class PortalImpl extends AbstractPortalImpl implements Portal {
     private String bankBaseAddr = "";
 
     public PortalImpl() throws IOException {
-        super(new FutureMarket());
+        super();
     }
 
     @Override

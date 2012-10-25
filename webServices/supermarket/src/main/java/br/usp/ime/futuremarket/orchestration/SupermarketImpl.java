@@ -50,11 +50,6 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
-    protected AbstractFutureMarket getFutureMarket() {
-        return new FutureMarket();
-    }
-
-    @Override
     public void reset() throws IOException, InterruptedException {
         super.reset();
         synchronized (orchestrators) {

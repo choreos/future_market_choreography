@@ -15,7 +15,5 @@ public interface Shipper {
 
     @WebMethod
     Delivery getDelivery(final Purchase purchase);
-    
-    @WebMethod
-    String setInvocationAddress(String registerWsdl) throws IOException;
+
 }

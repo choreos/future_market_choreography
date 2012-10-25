@@ -25,7 +25,5 @@ public interface Portal {
 
     @WebMethod
     Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
-    
-    @WebMethod
-    String setInvocationAddress(String registerWsdl) throws IOException;
+
 }

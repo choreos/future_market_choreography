@@ -11,6 +11,6 @@ import br.usp.ime.futuremarket.AbstractPortalImpl;
 public class PortalImpl extends AbstractPortalImpl {
 
     public PortalImpl() throws IOException {
-        super(new FutureMarket());
+        super();
     }
 }
