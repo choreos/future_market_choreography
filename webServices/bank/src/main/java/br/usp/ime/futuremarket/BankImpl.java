@@ -6,6 +6,10 @@ import javax.jws.WebService;
         endpointInterface = "br.usp.ime.futuremarket.Bank")
 public class BankImpl extends EnactmentEngineImpl implements Bank {
 
+    public BankImpl() {
+        super("bank");
+    }
+
     @Override
     public boolean requestPayment(final double amount, final CustomerInfo customer) {
         return true;

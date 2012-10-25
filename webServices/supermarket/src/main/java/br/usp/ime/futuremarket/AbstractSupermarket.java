@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.jws.WebMethod;
 
-import br.usp.ime.futuremarket.choreography.FutureMarket;
-
 public abstract class AbstractSupermarket extends EnactmentEngineImpl implements Supermarket {
     private static final int PRODUCTS = 10;
 
@@ -18,36 +16,32 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
     private final AtomicLong purchaseId = new AtomicLong(0);
     private final Stock stock = new Stock();
 
-    private final Properties properties;
-    private String myName, myBaseAddr;
+    private static final Properties PROP = new Properties();
     private final int purchaseTrigger, purchaseQuantity;
     private Role role;
-    private String shipperBaseAddr, sellerBaseAddr;
+    private String myBaseAddr, shipperBaseAddr, sellerBaseAddr;
 
-    public AbstractSupermarket() throws IOException, InterruptedException{
-        properties = readProperties();
-        stock.loadProducts(properties, PRODUCTS);
+    public AbstractSupermarket() throws IOException, InterruptedException {
+        super(getServiceName());
 
-        myName = properties.getProperty("name");
-        purchaseTrigger = Integer.parseInt(properties.getProperty("purchase.trigger"));
-        purchaseQuantity = Integer.parseInt(properties.getProperty("purchase.quantity"));
+        purchaseTrigger = Integer.parseInt(PROP.getProperty("purchase.trigger"));
+        purchaseQuantity = Integer.parseInt(PROP.getProperty("purchase.quantity"));
 
+        stock.loadProducts(PROP, PRODUCTS);
     }
-    
+
     @Override
     @WebMethod
     public String setInvocationAddress(final String role, final String registryEndpoint)
             throws IOException {
-        final String wsdl = registryEndpoint + "?wsdl";
-        market = new FutureMarket(wsdl);
-        market.register(role);
-        myBaseAddr = market.getMyBaseAddress(myName);
+        super.setInvocationAddress(role, registryEndpoint);
 
-        this.role = getRole(myName);
+        myBaseAddr = market.getMyBaseAddress(serviceName);
+        this.role = Role.getByValue(role);
+
         return "OK";
     }
 
-    
     abstract protected void buy() throws IOException;
 
     abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
@@ -57,7 +51,7 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
     // TODO Synchronized setter
     protected String getShipperBaseAddress() throws IOException {
         if (shipperBaseAddr == null) {
-            final String name = properties.getProperty("shipper.name");
+            final String name = PROP.getProperty("shipper.name");
             shipperBaseAddr = market.getBaseAddress(name);
         }
         return shipperBaseAddr;
@@ -66,16 +60,10 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
     // TODO Synchronized setter
     protected String getSellerBaseAddress() throws IOException {
         if (sellerBaseAddr == null) {
-            final String name = properties.getProperty("seller.name");
+            final String name = PROP.getProperty("seller.name");
             sellerBaseAddr = market.getBaseAddress(name);
         }
         return sellerBaseAddr;
-    }
-
-    private Role getRole(final String name) {
-        final AbstractWSInfo info = getWSInfo();
-        info.setName(name);
-        return info.getRole();
     }
 
     @Override
@@ -110,7 +98,7 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
     public void reset() throws IOException, InterruptedException {
         synchronized (stock) {
             stock.reset();
-            stock.loadProducts(properties, PRODUCTS);
+            stock.loadProducts(PROP, PRODUCTS);
             shopList.clear();
         }
         shipperBaseAddr = null;
@@ -119,21 +107,20 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
 
     protected CustomerInfo getCostumerInfo() throws UnknownHostException {
         final CustomerInfo customer = new CustomerInfo();
-        customer.setName(myName);
+        customer.setName(serviceName);
         customer.setCreditCard("Visa 123 456");
         customer.setAddress("ZIP 12345-678");
 
         return customer;
     }
 
-    private Properties readProperties() throws IOException {
+    private static String getServiceName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("supermarket.properties");
-        final Properties properties = new Properties();
-        properties.load(propFile);
+        PROP.load(propFile);
         propFile.close();
 
-        return properties;
+        return PROP.getProperty("name");
     }
 
     private double getPrice(final Product product) {

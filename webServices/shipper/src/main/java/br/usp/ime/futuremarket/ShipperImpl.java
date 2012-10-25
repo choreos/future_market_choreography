@@ -9,14 +9,13 @@ import java.util.Properties;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import br.usp.ime.futuremarket.choreography.FutureMarket;
-
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/shipper",
         endpointInterface = "br.usp.ime.futuremarket.Shipper")
 public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
     private final Map<String, Delivery> deliveries;
 
     public ShipperImpl() throws IOException {
+        super(getServiceName());
         deliveries = new HashMap<String, Delivery>();
     }
 
@@ -63,8 +62,7 @@ public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
         return delivery;
     }
 
-
-    private String getMyName() throws IOException {
+    private static String getServiceName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final Properties properties = new Properties();
 
@@ -72,6 +70,5 @@ public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
 
         return properties.getProperty("name");
     }
-
 
 }

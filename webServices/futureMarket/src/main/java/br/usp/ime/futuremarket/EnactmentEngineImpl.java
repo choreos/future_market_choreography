@@ -9,6 +9,11 @@ import br.usp.ime.futuremarket.choreography.FutureMarket;
 public class EnactmentEngineImpl implements EnactmentEngine {
 
     protected FutureMarket market = null;
+    protected final String serviceName;
+
+    public EnactmentEngineImpl(final String serviceName) {
+        this.serviceName = serviceName;
+    }
 
     @Override
     @WebMethod
@@ -16,7 +21,7 @@ public class EnactmentEngineImpl implements EnactmentEngine {
             throws IOException {
         final String wsdl = registryEndpoint + "?wsdl";
         market = new FutureMarket(wsdl);
-        market.register(role);
+        market.register(role, this.serviceName);
         return "OK";
     }
 

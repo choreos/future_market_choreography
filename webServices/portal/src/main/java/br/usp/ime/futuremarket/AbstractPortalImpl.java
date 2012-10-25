@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import br.usp.ime.futuremarket.choreography.FutureMarket;
 import br.usp.ime.futuremarket.choreography.Portal;
 
 public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements Portal {
-
-    public AbstractPortalImpl() throws IOException {
-    }
     
+    public AbstractPortalImpl() throws IOException {
+        super(getServiceName());
+    }
+
     @Override
     public ShopList getLowestPrice(final ShopList list) throws IOException {
         ShopList smList;
@@ -57,7 +57,7 @@ public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements 
         return seller.purchase(list, customer);
     }
 
-    private String getName() throws IOException {
+    private static String getServiceName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("portal.properties");
         final Properties properties = new Properties();

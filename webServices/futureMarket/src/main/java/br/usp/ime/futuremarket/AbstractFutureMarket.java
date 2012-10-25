@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -27,22 +26,16 @@ public abstract class AbstractFutureMarket {
         this.registryWsdl = registryWsdl;
     }
 
-    public AbstractFutureMarket() throws IOException {
-        this(getRegistryWsdlFromProperties());
-    }
-
     /**
      * Use registry WSDL from properties file
      * 
-     * @param name
-     *            of the service == war file basename (e.g.: supermarket5)
+     * @param serviceName
+     *            war file basename (e.g.: supermarket5)
      * @throws IOException
      */
-    public void register(final String name) throws IOException {
-        final String baseAddr = getMyBaseAddress(name);
-        final AbstractWSInfo info = getWSInfo();
-        info.setName(name);
-        getRegistry().addService(info.getRole().toString(), name, baseAddr);
+    public void register(final String role, final String serviceName) throws IOException {
+        final String baseAddr = getMyBaseAddress(serviceName);
+        getRegistry().addService(role, serviceName, baseAddr);
     }
 
     public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
@@ -171,13 +164,4 @@ public abstract class AbstractFutureMarket {
         final Service service = serviceCache.get(registryWsdl);
         return service.getPort(Registry.class);
     }
-
-    private static String getRegistryWsdlFromProperties() throws IOException {
-        final Properties properties = new Properties();
-        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        properties.load(loader.getResourceAsStream("config.properties"));
-        return properties.getProperty("registry.wsdl");
-    }
-
 }

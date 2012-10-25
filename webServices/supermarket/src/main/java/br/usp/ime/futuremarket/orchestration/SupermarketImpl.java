@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.jws.WebService;
 
-import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.AbstractSupermarket;
 import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.CustomerInfo;
