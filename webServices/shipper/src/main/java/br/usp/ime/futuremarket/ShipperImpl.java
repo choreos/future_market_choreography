@@ -9,13 +9,16 @@ import java.util.Properties;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
+import br.usp.ime.futuremarket.choreography.FutureMarket;
+
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/shipper",
         endpointInterface = "br.usp.ime.futuremarket.Shipper")
 public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
     private final Map<String, Delivery> deliveries;
 
+    // TODO Remove architecture definition from FutureMarket import
     public ShipperImpl() throws IOException {
-        super(getServiceName());
+        super(getServiceName(), new FutureMarket());
         deliveries = new HashMap<String, Delivery>();
     }
 

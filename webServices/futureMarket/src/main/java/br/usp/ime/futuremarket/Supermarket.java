@@ -8,7 +8,7 @@ import javax.jws.soap.SOAPBinding;
 
 @WebService
 @SOAPBinding
-public interface Supermarket {
+public interface Supermarket extends EnactmentEngine {
 
     @WebMethod
     ShopList getPrices(ShopList shopList);

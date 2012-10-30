@@ -21,7 +21,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private Integer orchIndex;
 
     public SupermarketImpl() throws IOException, InterruptedException {
-        super();
+        super(new FutureMarket());
         orchestrators = new ArrayList<Portal>();
         orchIndex = 0;
     }

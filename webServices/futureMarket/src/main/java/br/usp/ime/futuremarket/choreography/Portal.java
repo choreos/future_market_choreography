@@ -10,12 +10,13 @@ import javax.jws.soap.SOAPBinding;
 
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
+import br.usp.ime.futuremarket.EnactmentEngine;
 import br.usp.ime.futuremarket.Purchase;
 import br.usp.ime.futuremarket.ShopList;
 
 @WebService
 @SOAPBinding
-public interface Portal {
+public interface Portal extends EnactmentEngine {
 
     @WebMethod
     ShopList getLowestPrice(ShopList list) throws IOException;

@@ -36,14 +36,24 @@ undeploy:
 	cd $(CATALINA_HOME)/webapps && \
 		rm -rf shipper* bank* supermarket* manufacturer* supplier* portal*
 
-deploy-registry:
+deploy:
 	make -C registry deploy
-
-deploy-others:
 	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f portals/*/portal1.war $(CATALINA_HOME)/webapps/
+
+sendContext: contextSender/target/contextSender-1.0-jar-with-dependencies.jar
+	@serviceNames="bank $$(grep ^name {portals,shippers,supermarkets}/*/*.properties | cut -f2 -d= | sort | xargs)"; \
+	for serviceName in $$serviceNames; do \
+		for arch in orchestration choreography; do \
+			echo "$$serviceName - $$arch"; \
+			java -jar contextSender/target/contextSender-1.0-jar-with-dependencies.jar http://127.0.0.1:8080/$$serviceName/$$arch registry http://127.0.0.1:8080/registry/endpoint; \
+		done; \
+	done
+
+contextSender/target/contextSender-1.0-jar-with-dependencies.jar: contextSender
+	mvn -pl contextSender package
 
 clean-all: clean-mvn clean-testCase clean-m2
 

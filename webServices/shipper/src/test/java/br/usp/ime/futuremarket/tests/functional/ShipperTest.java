@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Delivery;
 import br.usp.ime.futuremarket.Product;
@@ -24,6 +25,8 @@ public class ShipperTest {
     @BeforeClass
     public static void getShipper() throws IOException {
         final FutureMarket futureMarket = new FutureMarket();
+        final String registry = Configuration.getInstance().getRegistryWsdl();
+        futureMarket.setRegistryWsdl(registry);
         shipper = futureMarket.getClientByRole(Role.SHIPPER, Shipper.class);
     }
 

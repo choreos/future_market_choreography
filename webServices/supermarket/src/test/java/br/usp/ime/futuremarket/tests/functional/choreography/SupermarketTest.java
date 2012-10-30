@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.CustomerInfo;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Purchase;
@@ -23,6 +24,8 @@ public class SupermarketTest {
     @BeforeClass
     public static void setSupermarket() throws IOException {
         final FutureMarket market = new FutureMarket();
+        final String registry = Configuration.getInstance().getRegistryWsdl();
+        market.setRegistryWsdl(registry);
         supermarket = market.getClientByRole(Role.SUPERMARKET, Supermarket.class);
     }
 

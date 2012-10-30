@@ -10,7 +10,7 @@ import br.usp.ime.futuremarket.Role;
 public abstract class AbstractWSInfoTest {
     protected final AbstractWSInfo info = getWSInfo();
     private static final String SMSERVICENAME = "SupermarketImplService";
-    
+
     protected abstract AbstractWSInfo getWSInfo();
 
     @Test
@@ -30,6 +30,11 @@ public abstract class AbstractWSInfoTest {
         assertEquals(Role.SUPERMARKET, info.getRole());
         info.setName(Role.SUPERMARKET.toString() + 42);
         assertEquals(Role.SUPERMARKET, info.getRole());
+
+        info.setName(Role.PORTAL.toString());
+        assertEquals(Role.PORTAL, info.getRole());
+        info.setName(Role.PORTAL.toString() + 42);
+        assertEquals(Role.PORTAL, info.getRole());
     }
 
     @Test
@@ -56,12 +61,6 @@ public abstract class AbstractWSInfoTest {
     @Test
     public void testRoleFromBaseAddress() {
         info.setBaseAddress("http://example.com:8080/supermarket42");
-        assertEquals(Role.SUPERMARKET, info.getRole());
-    }
-
-    @Test
-    public void testRoleFromServiceName() {
-        info.setServiceName("SupermarketImplService");
         assertEquals(Role.SUPERMARKET, info.getRole());
     }
 }

@@ -6,7 +6,7 @@ import javax.jws.soap.SOAPBinding;
 
 @WebService
 @SOAPBinding
-public interface Shipper {
+public interface Shipper extends EnactmentEngine {
 
     @WebMethod
     boolean deliver(final Purchase purchase);

@@ -30,7 +30,7 @@ public abstract class AbstractAcceptanceTest {
     protected final static String ROLE = "portal";
 
     @Before
-    public void setPortal() throws IOException {
+    public void setUp() throws IOException {
         if (market == null) {
             market = getFutureMarket();
             portal = getPortal();
@@ -46,7 +46,7 @@ public abstract class AbstractAcceptanceTest {
 
     abstract protected AbstractFutureMarket getFutureMarket() throws IOException;
 
-    // There is no polimorfism in WS because of different package names
+    // There is no polymorphism in WS because of different package names
     abstract protected Portal getPortal() throws IOException;
 
     @Test
@@ -106,11 +106,12 @@ public abstract class AbstractAcceptanceTest {
     }
 
     protected String getShipper(final String seller) throws IOException {
-        final String sellerName = seller.substring(seller.lastIndexOf('/') + 1);
+        final String noEndSlash = seller.substring(0, seller.length() - 1);
+        final String sellerName = noEndSlash.substring(noEndSlash.lastIndexOf('/') + 1);
         final String sellerNumberStr = sellerName.substring(sellerName.length() - 1);
         final int sellerNumberInt = Integer.parseInt(sellerNumberStr);
 
-        final String shipperNumber = (sellerNumberInt % 2 == 0) ? "2" : "";
+        final String shipperNumber = (sellerNumberInt % 2 == 0) ? "2" : "1";
         final String shipperName = "shipper" + shipperNumber;
 
         return market.getBaseAddress(shipperName);

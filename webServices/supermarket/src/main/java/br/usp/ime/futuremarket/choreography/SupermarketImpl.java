@@ -22,7 +22,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private String bankBaseAddr = "";
 
     public SupermarketImpl() throws IOException, InterruptedException {
-        super();
+        super(new FutureMarket());
     }
 
     @Override

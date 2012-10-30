@@ -9,6 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.jws.WebMethod;
 
+import br.usp.ime.futuremarket.choreography.WSInfo;
+
 public abstract class AbstractSupermarket extends EnactmentEngineImpl implements Supermarket {
     private static final int PRODUCTS = 10;
 
@@ -21,14 +23,21 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
     private Role role;
     private String myBaseAddr, shipperBaseAddr, sellerBaseAddr;
 
-    public AbstractSupermarket() throws IOException, InterruptedException {
-        super(getServiceName());
+    public AbstractSupermarket(final AbstractFutureMarket market) throws IOException,
+            InterruptedException {
+        super(getServiceName(), market);
 
         purchaseTrigger = Integer.parseInt(PROP.getProperty("purchase.trigger"));
         purchaseQuantity = Integer.parseInt(PROP.getProperty("purchase.quantity"));
 
         stock.loadProducts(PROP, PRODUCTS);
     }
+
+    abstract protected void buy() throws IOException;
+
+    abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
+
+    abstract protected AbstractWSInfo getWSInfo();
 
     @Override
     @WebMethod
@@ -37,16 +46,16 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
         super.setInvocationAddress(role, registryEndpoint);
 
         myBaseAddr = market.getMyBaseAddress(serviceName);
-        this.role = Role.getByValue(role);
+        this.role = getRole(myBaseAddr);
 
         return "OK";
     }
 
-    abstract protected void buy() throws IOException;
-
-    abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
-
-    abstract protected AbstractWSInfo getWSInfo();
+    private Role getRole(final String myBaseAddr) {
+        final AbstractWSInfo info = new WSInfo();
+        info.setBaseAddress(myBaseAddr);
+        return info.getRole();
+    }
 
     // TODO Synchronized setter
     protected String getShipperBaseAddress() throws IOException {

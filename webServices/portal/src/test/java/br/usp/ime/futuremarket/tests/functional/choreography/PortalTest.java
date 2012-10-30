@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.Product;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.ShopList;
@@ -32,6 +33,7 @@ public class PortalTest {
     @BeforeClass
     public static void setPortal() throws IOException {
         market = new FutureMarket();
+        market.setRegistryWsdl(Configuration.getInstance().getRegistryWsdl());
         portal = market.getClientByRole(Role.PORTAL, Portal.class);
     }
 

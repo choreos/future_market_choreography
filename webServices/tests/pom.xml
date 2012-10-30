@@ -9,7 +9,8 @@
 	</parent>
 
 	<artifactId>tests</artifactId>
-	<description>Integration and acceptance tests</description>
+	<description>FutureMarket tests</description>
+  <packaging>jar</packaging>
 
 	<repositories>
 		<repository>

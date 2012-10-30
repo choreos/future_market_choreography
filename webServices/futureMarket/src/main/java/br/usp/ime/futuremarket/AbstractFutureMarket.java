@@ -15,15 +15,15 @@ import javax.xml.ws.Service;
 
 public abstract class AbstractFutureMarket {
     private static final String PORT = "8080";
-    private static final Map<String, Service> serviceCache = new HashMap<String, Service>();
-    private final String registryWsdl;
+    private static final Map<String, Service> CACHE = new HashMap<String, Service>();
+    private String registryWsdl;
 
     abstract protected String baseAddressToWsdl(final String baseAddress);
 
     abstract protected AbstractWSInfo getWSInfo();
 
-    public AbstractFutureMarket(final String registryWsdl) {
-        this.registryWsdl = registryWsdl;
+    public void setRegistryWsdl(final String wsdl) {
+        registryWsdl = wsdl;
     }
 
     /**
@@ -33,9 +33,16 @@ public abstract class AbstractFutureMarket {
      *            war file basename (e.g.: supermarket5)
      * @throws IOException
      */
-    public void register(final String role, final String serviceName) throws IOException {
+    public void register(final String serviceName) throws IOException {
         final String baseAddr = getMyBaseAddress(serviceName);
+        final String role = getRole(serviceName);
         getRegistry().addService(role, serviceName, baseAddr);
+    }
+
+    private String getRole(final String name) {
+        final AbstractWSInfo info = getWSInfo();
+        info.setName(name);
+        return info.getRole().toString();
     }
 
     public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
@@ -111,14 +118,14 @@ public abstract class AbstractFutureMarket {
         final String wsdl = baseAddressToWsdl(baseAddress);
 
         checkCache(info, wsdl);
-        final Service service = serviceCache.get(wsdl);
+        final Service service = CACHE.get(wsdl);
 
         return service.getPort(resultClass);
     }
 
     private void checkCache(final AbstractWSInfo info, final String wsdl)
             throws MalformedURLException {
-        if (!serviceCache.containsKey(wsdl)) {
+        if (!CACHE.containsKey(wsdl)) {
             final String namespace = info.getNamespace();
             final String serviceName = info.getServiceName();
             cacheService(namespace, serviceName, wsdl);
@@ -127,10 +134,10 @@ public abstract class AbstractFutureMarket {
 
     private void cacheService(final String namespace, final String serviceName, final String wsdl)
             throws MalformedURLException {
-        synchronized (serviceCache) {
-            if (!serviceCache.containsKey(wsdl)) {
+        synchronized (CACHE) {
+            if (!CACHE.containsKey(wsdl)) {
                 final Service service = createService(namespace, serviceName, wsdl);
-                serviceCache.put(wsdl, service);
+                CACHE.put(wsdl, service);
             }
         }
     }
@@ -155,13 +162,13 @@ public abstract class AbstractFutureMarket {
      * @throws IOException
      */
     public Registry getRegistry() throws IOException {
-        if (!serviceCache.containsKey(registryWsdl)) {
+        if (!CACHE.containsKey(registryWsdl)) {
             final AbstractWSInfo info = getWSInfo();
             info.setName("registry");
             checkCache(info, registryWsdl);
         }
 
-        final Service service = serviceCache.get(registryWsdl);
+        final Service service = CACHE.get(registryWsdl);
         return service.getPort(Registry.class);
     }
 }

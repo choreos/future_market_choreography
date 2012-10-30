@@ -13,9 +13,9 @@ import java.util.Set;
 import br.usp.ime.futuremarket.choreography.Portal;
 
 public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements Portal {
-    
-    public AbstractPortalImpl() throws IOException {
-        super(getServiceName());
+
+    public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
+        super(getServiceName(), market);
     }
 
     @Override
