@@ -1,25 +1,22 @@
 source('../functions.R')
 
 csv_archs <- c('orch', 'chor')
-file <- 'output.pdf'
 leg_arch_names <- c('Orch', 'Chor')
 colors <- c('red', 'blue')
-line_type <- 'l'
+cex <- 0.8
+lwd <- 2
 ylim <- c(0,20)
-
 xmax <- -1
-#xmax <- 250
-
 ymax <- -1
-#ymax <- 20
-#x_axis <- seq(25,550,25)
 
 # Global variables
 plot_is_run <- FALSE
-legpos <- NULL
-leg_line_names <- NULL
-leg_line_colors <- NULL
-leg_line_ltys <- NULL
+leg_colors <- NULL
+leg_ltys <- NULL
+leg_lwds <- NULL
+leg_names <- NULL
+leg_pchs <- NULL
+leg_pos <- NULL
 
 line_name <- function(csv_arch, num_portals) {
   leg_arch_name <- leg_arch_names[which(csv_archs == csv_arch)]
@@ -33,12 +30,12 @@ line_name <- function(csv_arch, num_portals) {
   return(name)
 }
 
-plot_line <- function(arch, portals, color, lty, x, means, ics) {
+plot_line <- function(arch, portals, color, lty, x, means, ics, type, pch) {
   if (xmax > 0) {
     x <- x[x <= xmax]
     range <- 1:length(x)
-    means <- means[,range]
-    ics <- ics[,range]
+    means <- means[range]
+    ics <- ics[range]
   }
 
   if (ymax > 0) {
@@ -50,23 +47,25 @@ plot_line <- function(arch, portals, color, lty, x, means, ics) {
 
   plot_setup(x)
 
-  lines(x, means, type=line_type, col=color, lty=lty)
+  lines(x, means, type=type, col=color, lty=lty, pch=pch, cex=cex, lwd=lwd)
   #error.bar(x, means, ics, "black")
-  leg_line_names  <<- c(leg_line_names, line_name(arch, portals))
-  leg_line_colors <<- c(leg_line_colors, color)
-  leg_line_ltys <<- c(leg_line_ltys, lty)
+  leg_colors <<- c(leg_colors, color)
+  leg_ltys <<- c(leg_ltys, lty)
+  leg_lwds <<- c(leg_lwds, lwd)
+  leg_names  <<- c(leg_names, line_name(arch, portals))
+  leg_pchs <<- c(leg_pchs, pch)
 }
 
 plot_setup <- function(x) {
   if (!plot_is_run) {
     plot(x, x, type='n', xaxt='no', ylim=ylim, xlab='Simultaneous Clients', ylab='Service time (sec)')
     axis(1,x)
-    legpos <<- c(275/256*max(x), ylim[2])
+    leg_pos <<- c(275/256*max(x), ylim[2])
     plot_is_run <<- TRUE
   }
 }
 
-plot_arch_portal <- function(arch, portals, lty) {
+plot_arch_portal <- function(arch, portals, lty, type='l', pch=-1) {
   df <- subset(df, Arch == arch & Portals == portals, select = c("Clients", "Time"))
 
   all_clients <- unique(df$Clients)
@@ -84,7 +83,7 @@ plot_arch_portal <- function(arch, portals, lty) {
   }
 
   color <- colors[which(csv_archs == arch)]
-  plot_line(arch, portals, color, lty, all_clients, means, ics)
+  plot_line(arch, portals, color, lty, all_clients, means, ics, type, pch)
   cat(paste('Plotted portal replications =', portals, '\n'))
 }
 
@@ -98,7 +97,7 @@ plot_start <- function() {
 }
 
 plot_end <- function() {
-  legend(legpos[1], legpos[2], leg_line_names, col=leg_line_colors, lty=leg_line_ltys)
+  legend(leg_pos[1], leg_pos[2], leg_names, col=leg_colors, lwd=leg_lwds, lty=leg_ltys, pch=leg_pchs)
 
   par(xpd=FALSE, mar=c(5, 4, 4, 2) + 0.1)
   dev.off()
@@ -106,12 +105,3 @@ plot_end <- function() {
 
 # df = Arch,Portals,Clients,Execution,Time[,Timestamp]
 #df <- read.csv('lg.csv')
-
-plot_start()
-plot_arch_portal('orch', 1, 'dotted')
-plot_arch_portal('orch', 2, 'dotdash')
-plot_arch_portal('orch', 3, 'dashed')
-plot_arch_portal('orch', 4, 'solid')
-plot_arch_portal('chor', 1, 'solid')
-plot_end()
-
