@@ -13,20 +13,13 @@ import br.usp.ime.futuremarket.choreography.FutureMarket;
 
 @WebService(targetNamespace = "http://futuremarket.ime.usp.br/shipper",
         endpointInterface = "br.usp.ime.futuremarket.Shipper")
-public class ShipperImpl implements Shipper {
+public class ShipperImpl extends EnactmentEngineImpl implements Shipper {
     private final Map<String, Delivery> deliveries;
 
+    // TODO Remove architecture definition from FutureMarket import
     public ShipperImpl() throws IOException {
-        this(true);
-    }
-
-    // Unit tests won't register
-    public ShipperImpl(final boolean useRegistry) throws IOException {
+        super(getServiceName(), new FutureMarket());
         deliveries = new HashMap<String, Delivery>();
-
-        if (useRegistry) {
-            register();
-        }
     }
 
     @WebMethod
@@ -72,14 +65,7 @@ public class ShipperImpl implements Shipper {
         return delivery;
     }
 
-    private void register() throws IOException {
-        final String name = getMyName();
-        final FutureMarket futureMarket = new FutureMarket();
-
-        futureMarket.register(name);
-    }
-
-    private String getMyName() throws IOException {
+    private static String getServiceName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final Properties properties = new Properties();
 
@@ -87,4 +73,5 @@ public class ShipperImpl implements Shipper {
 
         return properties.getProperty("name");
     }
+
 }

@@ -2,6 +2,7 @@ package br.usp.ime.futuremarket.tests.acceptance.choreography;
 
 import java.io.IOException;
 
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 import br.usp.ime.futuremarket.choreography.Portal;
@@ -18,7 +19,11 @@ public class AcceptanceTest extends AbstractAcceptanceTest {
 
     @Override
     public FutureMarket getFutureMarket() {
-        return new FutureMarket();
+        final FutureMarket market = new FutureMarket();
+        final String registry = Configuration.getInstance().getRegistryWsdl();
+        market.setRegistryWsdl(registry);
+
+        return market;
     }
 
     @Override

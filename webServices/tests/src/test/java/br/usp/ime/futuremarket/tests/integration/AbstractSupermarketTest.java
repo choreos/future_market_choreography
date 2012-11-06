@@ -87,7 +87,7 @@ public abstract class AbstractSupermarketTest {
         nameBak = name;
         baseAddrBak = market.getBaseAddress(name);
 
-        final String wsdl = baseAddrBak + "/" + getArchType() + "?wsdl";
+        final String wsdl = baseAddrBak + getArchType() + "?wsdl";
         interceptor = new MessageInterceptor("8081");
         interceptor.interceptTo(wsdl);
 

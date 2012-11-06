@@ -9,26 +9,40 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 public abstract class AbstractFutureMarket {
     private static final String PORT = "8080";
-    private static final Map<String, Service> serviceCache = new HashMap<String, Service>();
+    private static final Map<String, Service> CACHE = new HashMap<String, Service>();
+    private String registryWsdl;
 
     abstract protected String baseAddressToWsdl(final String baseAddress);
 
     abstract protected AbstractWSInfo getWSInfo();
 
-    // Name is the name of the service == war file basename
-    public void register(final String name) throws IOException {
-        final String baseAddr = getMyBaseAddress(name);
+    public void setRegistryWsdl(final String wsdl) {
+        registryWsdl = wsdl;
+    }
+
+    /**
+     * Use registry WSDL from properties file
+     * 
+     * @param serviceName
+     *            war file basename (e.g.: supermarket5)
+     * @throws IOException
+     */
+    public void register(final String serviceName) throws IOException {
+        final String baseAddr = getMyBaseAddress(serviceName);
+        final String role = getRole(serviceName);
+        getRegistry().addService(role, serviceName, baseAddr);
+    }
+
+    private String getRole(final String name) {
         final AbstractWSInfo info = getWSInfo();
         info.setName(name);
-
-        getRegistry().addService(info.getRole().toString(), name, baseAddr);
+        return info.getRole().toString();
     }
 
     public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
@@ -74,7 +88,7 @@ public abstract class AbstractFutureMarket {
     // Need to be suffixed by orchestration/choreography + ?wsdl
     public String getMyBaseAddress(final String name) throws UnknownHostException {
         final String hostName = getMyHostName();
-        return "http://" + hostName + ":" + PORT + "/" + name;
+        return "http://" + hostName + ":" + PORT + "/" + name + "/";
     }
 
     public String getBaseAddress(final String name) throws IOException {
@@ -103,18 +117,15 @@ public abstract class AbstractFutureMarket {
             final AbstractWSInfo info) throws MalformedURLException {
         final String wsdl = baseAddressToWsdl(baseAddress);
 
-        /*
         checkCache(info, wsdl);
-        final Service service = serviceCache.get(wsdl);
-        */
-        final Service service = createService(info.getNamespace(), info.getServiceName(), wsdl);
+        final Service service = CACHE.get(wsdl);
 
         return service.getPort(resultClass);
     }
 
     private void checkCache(final AbstractWSInfo info, final String wsdl)
             throws MalformedURLException {
-        if (!serviceCache.containsKey(wsdl)) {
+        if (!CACHE.containsKey(wsdl)) {
             final String namespace = info.getNamespace();
             final String serviceName = info.getServiceName();
             cacheService(namespace, serviceName, wsdl);
@@ -123,10 +134,10 @@ public abstract class AbstractFutureMarket {
 
     private void cacheService(final String namespace, final String serviceName, final String wsdl)
             throws MalformedURLException {
-        synchronized (serviceCache) {
-            if (!serviceCache.containsKey(wsdl)) {
+        synchronized (CACHE) {
+            if (!CACHE.containsKey(wsdl)) {
                 final Service service = createService(namespace, serviceName, wsdl);
-                serviceCache.put(wsdl, service);
+                CACHE.put(wsdl, service);
             }
         }
     }
@@ -151,21 +162,13 @@ public abstract class AbstractFutureMarket {
      * @throws IOException
      */
     public Registry getRegistry() throws IOException {
-        final String wsdl = getRegistryWsdl();
-        final AbstractWSInfo info = getWSInfo();
-        info.setName("registry");
+        if (!CACHE.containsKey(registryWsdl)) {
+            final AbstractWSInfo info = getWSInfo();
+            info.setName("registry");
+            checkCache(info, registryWsdl);
+        }
 
-        checkCache(info, wsdl);
-        final Service service = serviceCache.get(wsdl);
-
+        final Service service = CACHE.get(registryWsdl);
         return service.getPort(Registry.class);
-    }
-
-    private String getRegistryWsdl() throws IOException {
-        final Properties properties = new Properties();
-        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        properties.load(loader.getResourceAsStream("config.properties"));
-        return properties.getProperty("registry.wsdl");
     }
 }

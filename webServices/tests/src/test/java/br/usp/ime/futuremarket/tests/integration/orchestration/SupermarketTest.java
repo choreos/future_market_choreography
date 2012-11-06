@@ -9,6 +9,7 @@ import org.apache.xmlbeans.XmlException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.orchestration.FutureMarket;
 import br.usp.ime.futuremarket.orchestration.WSInfo;
 import br.usp.ime.futuremarket.tests.integration.AbstractSupermarketTest;
@@ -20,6 +21,8 @@ public class SupermarketTest extends AbstractSupermarketTest {
     @BeforeClass
     public static void setFutureMarket() {
         market = new FutureMarket();
+        final String registry = Configuration.getInstance().getRegistryWsdl();
+        market.setRegistryWsdl(registry);
     }
 
     @Override

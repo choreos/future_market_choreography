@@ -6,9 +6,8 @@ import javax.jws.soap.SOAPBinding;
 
 @WebService
 @SOAPBinding
-public interface Bank {
+public interface Bank extends EnactmentEngine {
 
     @WebMethod
     boolean requestPayment(double amount, CustomerInfo customer);
-
 }

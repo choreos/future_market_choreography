@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import br.usp.ime.futuremarket.Bank;
+import br.usp.ime.futuremarket.Configuration;
 import br.usp.ime.futuremarket.Role;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 
@@ -16,6 +17,9 @@ public class BankTest {
     @Test
     public void shouldBeRegisteredInRegistry() throws IOException {
         final FutureMarket futureMarket = new FutureMarket();
+        final String registry = Configuration.getInstance().getRegistryWsdl();
+        futureMarket.setRegistryWsdl(registry);
+
         bank = futureMarket.getClientByRole(Role.BANK, Bank.class);
 
         assertNotNull(bank);

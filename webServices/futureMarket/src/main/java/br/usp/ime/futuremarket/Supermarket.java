@@ -8,7 +8,7 @@ import javax.jws.soap.SOAPBinding;
 
 @WebService
 @SOAPBinding
-public interface Supermarket {
+public interface Supermarket extends EnactmentEngine {
 
     @WebMethod
     ShopList getPrices(ShopList shopList);
@@ -18,4 +18,5 @@ public interface Supermarket {
 
     @WebMethod
     void reset() throws IOException, InterruptedException;
+
 }

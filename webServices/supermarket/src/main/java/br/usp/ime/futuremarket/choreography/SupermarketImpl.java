@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.jws.WebService;
 
-import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.AbstractSupermarket;
 import br.usp.ime.futuremarket.AbstractWSInfo;
 import br.usp.ime.futuremarket.Bank;
@@ -23,7 +22,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private String bankBaseAddr = "";
 
     public SupermarketImpl() throws IOException, InterruptedException {
-        super();
+        super(new FutureMarket());
     }
 
     @Override
@@ -48,11 +47,6 @@ public class SupermarketImpl extends AbstractSupermarket {
     @Override
     protected AbstractWSInfo getWSInfo() {
         return new WSInfo();
-    }
-
-    @Override
-    protected AbstractFutureMarket getFutureMarket() {
-        return new FutureMarket();
     }
 
     @Override

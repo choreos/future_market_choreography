@@ -42,17 +42,15 @@ public abstract class AbstractWSInfo {
         this.role = role;
     }
 
+    /**
+     * 
+     * @param address http://ipOrHostName[:port]/name/
+     */
     public void setBaseAddress(final String address) {
-        final int lastSlash = address.lastIndexOf('/');
-        final String name = address.substring(lastSlash + 1);
+        final String noEndSlash = address.substring(0, address.length() - 1) ;
+        final int lastSlash = noEndSlash.lastIndexOf('/');
+        final String name = noEndSlash.substring(lastSlash + 1);
         setName(name);
-    }
-
-    public void setServiceName(final String serviceName) {
-        final int last = serviceName.indexOf("ImplService");
-        // The role based on service names. E.g.: supplier is supermarket
-        final String roleValue = serviceName.substring(0, last).toLowerCase(Locale.US);
-        role = Role.getByValue(roleValue);
     }
 
     public Role getRole() {

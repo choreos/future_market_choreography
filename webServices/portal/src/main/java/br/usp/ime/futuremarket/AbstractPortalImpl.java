@@ -12,13 +12,10 @@ import java.util.Set;
 
 import br.usp.ime.futuremarket.choreography.Portal;
 
-public abstract class AbstractPortalImpl implements Portal {
-    protected final AbstractFutureMarket market;
+public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements Portal {
 
     public AbstractPortalImpl(final AbstractFutureMarket market) throws IOException {
-        this.market = market;
-        final String name = getName();
-        market.register(name);
+        super(getServiceName(), market);
     }
 
     @Override
@@ -60,7 +57,7 @@ public abstract class AbstractPortalImpl implements Portal {
         return seller.purchase(list, customer);
     }
 
-    private String getName() throws IOException {
+    private static String getServiceName() throws IOException {
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final InputStream propFile = loader.getResourceAsStream("portal.properties");
         final Properties properties = new Properties();

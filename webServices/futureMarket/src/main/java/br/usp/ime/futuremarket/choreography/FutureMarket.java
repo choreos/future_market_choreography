@@ -4,9 +4,10 @@ import br.usp.ime.futuremarket.AbstractFutureMarket;
 import br.usp.ime.futuremarket.AbstractWSInfo;
 
 public class FutureMarket extends AbstractFutureMarket {
+
     @Override
     protected String baseAddressToWsdl(final String baseAddress) {
-        return baseAddress + "/choreography?wsdl";
+        return baseAddress + "choreography?wsdl";
     }
 
     @Override
