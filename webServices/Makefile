@@ -41,7 +41,7 @@ deploy:
 	cp -f shippers/*/*.war $(CATALINA_HOME)/webapps/
 	cp -f bank/target/bank.war $(CATALINA_HOME)/webapps/
 	cp -f supermarkets/*/*.war $(CATALINA_HOME)/webapps/
-	cp -f portals/*/portal1.war $(CATALINA_HOME)/webapps/
+	cp -f portals/*/*.war $(CATALINA_HOME)/webapps/
 
 sendContext: contextSender/target/contextSender-1.0-jar-with-dependencies.jar
 	@serviceNames="bank $$(grep ^name {portals,shippers,supermarkets}/*/*.properties | cut -f2 -d= | sort | xargs)"; \
