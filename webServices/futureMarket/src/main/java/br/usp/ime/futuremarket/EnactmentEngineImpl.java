@@ -15,11 +15,15 @@ public class EnactmentEngineImpl implements EnactmentEngine {
     @Override
     public String setInvocationAddress(final String registryRole, final String registryEndpoint)
             throws IOException {
-        final String wsdl = registryEndpoint + "?wsdl";
-
+        String wsdl = null;
+        if (registryEndpoint.endsWith("/"))
+        	wsdl = registryEndpoint.substring(0, registryEndpoint.length()-1) + "?wsdl";
+        else
+        	wsdl = registryEndpoint + "?wsdl";
         market.setRegistryWsdl(wsdl);
         market.register(this.serviceName);
 
         return "OK";
     }
+    
 }
