@@ -7,6 +7,8 @@ import org.ow2.choreos.enactment.datamodel.ChorServiceSpec;
 import org.ow2.choreos.enactment.datamodel.ChorSpec;
 import org.ow2.choreos.enactment.datamodel.Choreography;
 import org.ow2.choreos.enactment.datamodel.ServiceDependence;
+import org.ow2.choreos.servicedeployer.datamodel.ArtifactType;
+import org.ow2.choreos.servicedeployer.datamodel.Service;
 import org.ow2.choreos.servicedeployer.datamodel.ServiceType;
 
 import br.usp.ime.futuremarket.choreography.WSInfo;
@@ -14,7 +16,8 @@ import br.usp.ime.futuremarket.choreography.WSInfo;
 public class Enacter {
 
     private static final String EE_HOST = "http://localhost:9102/enactmentengine";
-    private static final String REPO = "http://www.linux.ime.usp.br/~cadu/futuremarket/";
+//    private static final String REPO = "http://www.linux.ime.usp.br/~cadu/futuremarket/";
+    private static final String REPO = "file://home/paulo/bin/apache-tomcat-7.0.25/webapps";
     private static final String REG_NAME = "registry";
     private static final String REG_ROLE = Role.REGISTRY.toString();
 
@@ -24,33 +27,35 @@ public class Enacter {
         final EnactEngClient eeClient = new EnactEngClient(EE_HOST);
         final String chorId = eeClient.createChoreography(chorSpec);
         final Choreography chor = eeClient.enact(chorId);
+        for(Service service: chor.getDeployedServices())
+    		System.out.println(service.getUri());
     }
 
     private ChorSpec getChorSpec() {
         final ChorSpec spec = new ChorSpec();
 
-        spec.addServiceSpec(getServiceSpec("bank"));
-
-        spec.addServiceSpec(getServiceSpec("manufacturer"));
-        spec.addServiceSpec(getServiceSpec("portal1"));
-        spec.addServiceSpec(getServiceSpec("portal2"));
-        spec.addServiceSpec(getServiceSpec("portal3"));
-        spec.addServiceSpec(getServiceSpec("portal4"));
-
+//        spec.addServiceSpec(getServiceSpec("bank"));
+//
+//        spec.addServiceSpec(getServiceSpec("manufacturer"));
+//        spec.addServiceSpec(getServiceSpec("portal1"));
+//        spec.addServiceSpec(getServiceSpec("portal2"));
+//        spec.addServiceSpec(getServiceSpec("portal3"));
+//        spec.addServiceSpec(getServiceSpec("portal4"));
+//
         spec.addServiceSpec(getServiceSpec("registry"));
-
-        spec.addServiceSpec(getServiceSpec("shipper1"));
-        spec.addServiceSpec(getServiceSpec("shipper2"));
-
-        spec.addServiceSpec(getServiceSpec("supermarket1"));
-        spec.addServiceSpec(getServiceSpec("supermarket2"));
-        spec.addServiceSpec(getServiceSpec("supermarket3"));
-        spec.addServiceSpec(getServiceSpec("supermarket4"));
-        spec.addServiceSpec(getServiceSpec("supermarket5"));
-
-        spec.addServiceSpec(getServiceSpec("supplier1"));
-        spec.addServiceSpec(getServiceSpec("supplier2"));
-        spec.addServiceSpec(getServiceSpec("supplier3"));
+//
+//        spec.addServiceSpec(getServiceSpec("shipper1"));
+//        spec.addServiceSpec(getServiceSpec("shipper2"));
+//
+//        spec.addServiceSpec(getServiceSpec("supermarket1"));
+//        spec.addServiceSpec(getServiceSpec("supermarket2"));
+//        spec.addServiceSpec(getServiceSpec("supermarket3"));
+//        spec.addServiceSpec(getServiceSpec("supermarket4"));
+//        spec.addServiceSpec(getServiceSpec("supermarket5"));
+//
+//        spec.addServiceSpec(getServiceSpec("supplier1"));
+//        spec.addServiceSpec(getServiceSpec("supplier2"));
+//        spec.addServiceSpec(getServiceSpec("supplier3"));
 
         return spec;
     }
@@ -61,7 +66,8 @@ public class Enacter {
         service.setCodeUri(REPO + name + ".war");
         service.setEndpointName(getEndpoint(name));
         service.setPort(8080);
-        service.setType(ServiceType.TOMCAT);
+        service.setType(ServiceType.SOAP);
+        service.setArtifactType(ArtifactType.TOMCAT);
         service.getRoles().add(getRole(name));
 
         addDependencies(name, service);
