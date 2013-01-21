@@ -20,7 +20,7 @@ public final class Simultaneous extends AbstractLoadGenerator {
     }
 
     public static String getHelpMessage() {
-        return "{chor,orch} minClients maxClients step maxTimeMili)";
+        return "{chor,orch} minClients maxClients step maxTimeMilli)";
     }
 
     private void readArgs(final String[] args, final int start) {
