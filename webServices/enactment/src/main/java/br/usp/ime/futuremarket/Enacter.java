@@ -1,30 +1,30 @@
 package br.usp.ime.futuremarket;
 
-import org.ow2.choreos.enactment.ChoreographyNotFoundException;
-import org.ow2.choreos.enactment.EnactmentException;
-import org.ow2.choreos.enactment.client.EnactEngClient;
-import org.ow2.choreos.enactment.datamodel.ChorServiceSpec;
-import org.ow2.choreos.enactment.datamodel.ChorSpec;
-import org.ow2.choreos.enactment.datamodel.Choreography;
-import org.ow2.choreos.enactment.datamodel.ServiceDependence;
-import org.ow2.choreos.servicedeployer.datamodel.ArtifactType;
-import org.ow2.choreos.servicedeployer.datamodel.Service;
-import org.ow2.choreos.servicedeployer.datamodel.ServiceType;
+import org.ow2.choreos.chors.ChoreographyNotFoundException;
+import org.ow2.choreos.chors.EnactmentException;
+import org.ow2.choreos.chors.client.ChorDeployerClient;
+import org.ow2.choreos.chors.datamodel.ChorServiceSpec;
+import org.ow2.choreos.chors.datamodel.ChorSpec;
+import org.ow2.choreos.chors.datamodel.Choreography;
+import org.ow2.choreos.chors.datamodel.ServiceDependency;
+import org.ow2.choreos.deployment.services.datamodel.ArtifactType;
+import org.ow2.choreos.deployment.services.datamodel.Service;
+import org.ow2.choreos.deployment.services.datamodel.ServiceType;
 
 import br.usp.ime.futuremarket.choreography.WSInfo;
 
 public class Enacter {
 
-    private static final String EE_HOST = "http://localhost:9102/enactmentengine";
+    private static final String EE_HOST = "http://localhost:9102/choreographydeployer";
 //    private static final String REPO = "http://www.linux.ime.usp.br/~cadu/futuremarket/";
-    private static final String REPO = "file://home/paulo/bin/apache-tomcat-7.0.25/webapps";
+    private static final String REPO = "http://www.ime.usp.br/~pbmoura/futureMarket/";
     private static final String REG_NAME = "registry";
     private static final String REG_ROLE = Role.REGISTRY.toString();
 
     public void enact() throws EnactmentException, ChoreographyNotFoundException {
         final ChorSpec chorSpec = getChorSpec();
 
-        final EnactEngClient eeClient = new EnactEngClient(EE_HOST);
+        final ChorDeployerClient eeClient = new ChorDeployerClient(EE_HOST);
         final String chorId = eeClient.createChoreography(chorSpec);
         final Choreography chor = eeClient.enact(chorId);
         for(Service service: chor.getDeployedServices())
@@ -34,25 +34,26 @@ public class Enacter {
     private ChorSpec getChorSpec() {
         final ChorSpec spec = new ChorSpec();
 
-//        spec.addServiceSpec(getServiceSpec("bank"));
-//
+        spec.addServiceSpec(getServiceSpec("bank"));
+
 //        spec.addServiceSpec(getServiceSpec("manufacturer"));
-//        spec.addServiceSpec(getServiceSpec("portal1"));
-//        spec.addServiceSpec(getServiceSpec("portal2"));
-//        spec.addServiceSpec(getServiceSpec("portal3"));
+        spec.addServiceSpec(getServiceSpec("portal1"));
+        spec.addServiceSpec(getServiceSpec("portal2"));
+        spec.addServiceSpec(getServiceSpec("portal3"));
 //        spec.addServiceSpec(getServiceSpec("portal4"));
-//
+//        spec.addServiceSpec(getServiceSpec("portal5"));
+
         spec.addServiceSpec(getServiceSpec("registry"));
-//
-//        spec.addServiceSpec(getServiceSpec("shipper1"));
+
+//        spec.addServiceSpec(getServiceSpec("shipper"));
 //        spec.addServiceSpec(getServiceSpec("shipper2"));
-//
-//        spec.addServiceSpec(getServiceSpec("supermarket1"));
-//        spec.addServiceSpec(getServiceSpec("supermarket2"));
-//        spec.addServiceSpec(getServiceSpec("supermarket3"));
+
+        spec.addServiceSpec(getServiceSpec("supermarket1"));
+        spec.addServiceSpec(getServiceSpec("supermarket2"));
+        spec.addServiceSpec(getServiceSpec("supermarket3"));
 //        spec.addServiceSpec(getServiceSpec("supermarket4"));
 //        spec.addServiceSpec(getServiceSpec("supermarket5"));
-//
+
 //        spec.addServiceSpec(getServiceSpec("supplier1"));
 //        spec.addServiceSpec(getServiceSpec("supplier2"));
 //        spec.addServiceSpec(getServiceSpec("supplier3"));
@@ -77,10 +78,10 @@ public class Enacter {
 
     private void addDependencies(final String name, final ChorServiceSpec service) {
         if (!REG_NAME.equals(name)) {
-            final ServiceDependence dep = new ServiceDependence();
+            final ServiceDependency dep = new ServiceDependency();
             dep.setServiceName(REG_NAME);
             dep.setServiceRole(REG_ROLE);
-            service.getDependences().add(dep);
+            service.getDependencies().add(dep);
         }
     }
 
@@ -91,12 +92,12 @@ public class Enacter {
     }
 
     private String getEndpoint(final String name) {
-        String endpoint = name;
+        String endpoint;
 
         if (REG_NAME.equals(name)) {
-            endpoint += "/endpoint";
+            endpoint = "endpoint";
         } else {
-            endpoint += "/choreography";
+            endpoint = "choreography";
         }
 
         return endpoint;

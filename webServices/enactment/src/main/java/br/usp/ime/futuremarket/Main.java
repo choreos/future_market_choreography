@@ -1,7 +1,7 @@
 package br.usp.ime.futuremarket;
 
-import org.ow2.choreos.enactment.ChoreographyNotFoundException;
-import org.ow2.choreos.enactment.EnactmentException;
+import org.ow2.choreos.chors.ChoreographyNotFoundException;
+import org.ow2.choreos.chors.EnactmentException;
 
 public class Main {
 

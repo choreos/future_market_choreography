@@ -51,7 +51,6 @@
 			<groupId>eu.choreos</groupId>
 			<artifactId>rehearsal</artifactId>
 			<version>0.13</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>eu.choreos.vv</groupId>
