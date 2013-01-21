@@ -89,7 +89,7 @@ public abstract class AbstractSupermarketTest {
 
         final String wsdl = baseAddrBak + getArchType() + "?wsdl";
         interceptor = new MessageInterceptor("8081");
-        interceptor.interceptTo(wsdl);
+        interceptor.interceptMessagesTo(wsdl);
 
         final String newBaseAddr = baseAddrBak.replaceFirst("8080", "8081");
         register(name, newBaseAddr);
