@@ -87,7 +87,7 @@ public abstract class AbstractFutureMarket {
 
     // Need to be suffixed by orchestration/choreography + ?wsdl
     public String getMyBaseAddress(final String name) throws UnknownHostException {
-        final String hostName = getMyHostName();
+    	final String hostName = getMyIPAddess();
         return "http://" + hostName + ":" + PORT + "/" + name + "/";
     }
 
@@ -150,9 +150,9 @@ public abstract class AbstractFutureMarket {
         return Service.create(url, qname);
     }
 
-    private String getMyHostName() throws UnknownHostException {
-        final InetAddress addr = InetAddress.getLocalHost();
-        return addr.getCanonicalHostName();
+    private String getMyIPAddess() throws UnknownHostException {
+    	final InetAddress addr = InetAddress.getLocalHost();
+        return addr.getHostAddress();
     }
 
     /**
