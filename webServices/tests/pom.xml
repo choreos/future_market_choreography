@@ -53,12 +53,6 @@
 			<version>0.13</version>
 		</dependency>
 		<dependency>
-			<groupId>eu.choreos.vv</groupId>
-			<artifactId>scalability_explorer</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.ow2.choreos</groupId>
 			<artifactId>ChoreographyDeployer</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
