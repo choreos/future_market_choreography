@@ -1,6 +1,7 @@
 package br.usp.ime.futuremarket;
 
 import java.io.IOException;
+import java.util.List;
 
 public class EnactmentEngineImpl implements EnactmentEngine {
 
@@ -15,8 +16,10 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 
 	@Override
 	public String setInvocationAddress(final String registryRole,
-			final String registryEndpoint) throws IOException {
+			final List<String> registryEndpoints) throws IOException {
 		String wsdl = null;
+		final String registryEndpoint = registryEndpoints.get(0);
+
 		if (registryEndpoint.endsWith("/"))
 			wsdl = registryEndpoint.substring(0, registryEndpoint.length() - 1)
 					+ "?wsdl";

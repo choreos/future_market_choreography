@@ -1,5 +1,7 @@
 package br.usp.ime.futuremarket;
 
+import java.util.Arrays;
+
 import org.ow2.choreos.chors.ChoreographyNotFoundException;
 import org.ow2.choreos.chors.EnactmentException;
 import org.ow2.choreos.chors.client.ChorDeployerClient;
@@ -26,8 +28,8 @@ public class Enacter {
         final ChorDeployerClient eeClient = new ChorDeployerClient(EE_HOST);
         final String chorId = eeClient.createChoreography(chorSpec);
         final Choreography chor = eeClient.enactChoreography(chorId);
-        for(DeployableService service: chor.getDeployableServices())
-			System.out.println(service.getUris().get(0));
+        for (DeployableService service : chor.getDeployableServices())
+            System.out.println(service.getUris().get(0));
     }
 
     private ChoreographySpec getChorSpec() {
