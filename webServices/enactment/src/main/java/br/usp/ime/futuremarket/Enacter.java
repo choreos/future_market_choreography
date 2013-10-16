@@ -43,7 +43,8 @@ public class Enacter {
 
         spec.addServiceSpec(getServiceSpec("registry"));
 
-        spec.addServiceSpec(getServiceSpec("shipper"));
+        spec.addServiceSpec(getServiceSpec("shipper1"));
+        spec.addServiceSpec(getServiceSpec("shipper2"));
 
         spec.addServiceSpec(getServiceSpec("supermarket1"));
         spec.addServiceSpec(getServiceSpec("supermarket2"));
@@ -66,7 +67,7 @@ public class Enacter {
         service.setPackageType(PackageType.TOMCAT);
         service.setNumberOfInstances(1);
         service.setEndpointName(getEndpoint(name));
-        service.getRoles().add(getRole(name));
+        service.setRoles(Arrays.asList(getRole(name)));
 
         addDependencies(name, service);
 
