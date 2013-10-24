@@ -8,11 +8,12 @@ If the project requires rehearsal, add it as a provided dependency, otherwise ja
 
 How to run use cases:
 
-- go to test/scripts/
+- cd useCases/
 - run:
   $ sh deploy_test.sh <Y/N> <number of use_case>
-  Y if you would like make backup of supermarkets and shippers and futureMarket properties
-- go to webServices folder
+  Answer Y if you would like make backup of supermarkets and shippers and
+    futureMarket properties
+- go back to webServices folder (cd ..)
 - start the tomcat
 - run in webServices:
   $ make deploy

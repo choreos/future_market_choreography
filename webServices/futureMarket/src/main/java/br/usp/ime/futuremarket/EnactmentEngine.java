@@ -12,6 +12,6 @@ import javax.jws.soap.SOAPBinding;
 public interface EnactmentEngine {
 
     @WebMethod
-    String setInvocationAddress(final String role, final List<String> endpoints)
+    String setInvocationAddress(final String role, final String name, final List<String> endpoints)
             throws IOException;
 }

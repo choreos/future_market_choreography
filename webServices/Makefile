@@ -55,12 +55,12 @@ sendContext: contextSender/target/contextSender-1.0-jar-with-dependencies.jar
 contextSender/target/contextSender-1.0-jar-with-dependencies.jar: contextSender
 	mvn -pl contextSender package
 
-clean-all: clean-mvn clean-testCase clean-m2
+clean-all: clean-mvn clean-useCase clean-m2
 
 clean-mvn:
 	mvn -pl futureMarket,registry,bank,shipper,supermarket,portal clean
 
-clean-testCase:
+clean-useCase:
 	cd shippers && ./clean.sh
 	cd supermarkets && ./clean.sh
 	cd portals && ./clean.sh

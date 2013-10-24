@@ -41,9 +41,9 @@ public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
 
     @Override
     @WebMethod
-    public String setInvocationAddress(final String role, final List<String> registryEndpoints)
+    public String setInvocationAddress(final String role, final String name, final List<String> registryEndpoints)
             throws IOException {
-        super.setInvocationAddress(role, registryEndpoints);
+        super.setInvocationAddress(role, name, registryEndpoints);
 
         myBaseAddr = market.getMyBaseAddress(serviceName);
         this.role = getRole(myBaseAddr);

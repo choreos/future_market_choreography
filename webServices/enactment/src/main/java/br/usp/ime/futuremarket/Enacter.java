@@ -1,6 +1,11 @@
 package br.usp.ime.futuremarket;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
+
+import javax.xml.namespace.QName;
+import javax.xml.ws.Service;
 
 import org.ow2.choreos.chors.ChoreographyNotFoundException;
 import org.ow2.choreos.chors.EnactmentException;
@@ -22,14 +27,51 @@ public class Enacter {
     private static final String REG_NAME = "registry";
     private static final String REG_ROLE = Role.REGISTRY.toString();
 
-    public void enact() throws EnactmentException, ChoreographyNotFoundException {
+    private Registry registry;
+
+    public Choreography enact() throws EnactmentException, ChoreographyNotFoundException {
         final ChoreographySpec chorSpec = getChorSpec();
 
         final ChorDeployerClient eeClient = new ChorDeployerClient(EE_HOST);
         final String chorId = eeClient.createChoreography(chorSpec);
         final Choreography chor = eeClient.enactChoreography(chorId);
-        for (DeployableService service : chor.getDeployableServices())
-            System.out.println(service.getUris().get(0));
+
+        return chor;
+    }
+
+    public void registerServices(final Choreography chor) throws MalformedURLException {
+        registry = getRegistryProxy(chor);
+
+        for (DeployableService service : chor.getDeployableServices()) {
+            final DeployableServiceSpec spec = service.getSpec();
+            final String role = spec.getRoles().get(0);
+            final String name = spec.getName();
+            final String uri = service.getUris().get(0);
+            register(role, name, uri);
+        }
+    }
+
+    private void register(final String role, final String name, final String uri) {
+        System.out.println(String.format("Registering role '%s', name '%s', uri '%s'", role, name,
+                uri));
+        registry.addService(role, name, uri);
+    }
+
+    private Registry getRegistryProxy(final Choreography chor) throws MalformedURLException {
+        final AbstractWSInfo wsInfo = new WSInfo();
+        wsInfo.setName("registry");
+        final String namespace = wsInfo.getNamespace();
+        final String serviceName = wsInfo.getServiceName();
+        final String wsdl = getRegistryWsdl(chor);
+        final QName qname = new QName(namespace, serviceName);
+        final URL url = new URL(wsdl);
+        final Service service = Service.create(url, qname);
+        return service.getPort(Registry.class);
+    }
+
+    private String getRegistryWsdl(final Choreography chor) {
+        final DeployableService registry = chor.getDeployableServiceBySpecName("registry");
+        return registry.getUris().get(0);
     }
 
     private ChoreographySpec getChorSpec() {
