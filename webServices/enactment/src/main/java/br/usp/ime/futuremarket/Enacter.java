@@ -9,7 +9,7 @@ import javax.xml.ws.Service;
 
 import org.ow2.choreos.chors.ChoreographyNotFoundException;
 import org.ow2.choreos.chors.EnactmentException;
-import org.ow2.choreos.chors.client.ChorDeployerClient;
+import org.ow2.choreos.chors.client.EEClient;
 import org.ow2.choreos.chors.datamodel.Choreography;
 import org.ow2.choreos.chors.datamodel.ChoreographySpec;
 import org.ow2.choreos.services.datamodel.DeployableService;
@@ -22,7 +22,7 @@ import br.usp.ime.futuremarket.choreography.WSInfo;
 
 public class Enacter {
 
-    private static final String EE_HOST = "http://localhost:9102/choreographydeployer/";
+    private static final String EE_HOST = "http://localhost:9100/enactmentengine/";
     private static final String REPO = "http://www.linux.ime.usp.br/~cadu/futuremarket/";
     private static final String REG_NAME = "registry";
     private static final String REG_ROLE = Role.REGISTRY.toString();
@@ -32,7 +32,7 @@ public class Enacter {
     public Choreography enact() throws EnactmentException, ChoreographyNotFoundException {
         final ChoreographySpec chorSpec = getChorSpec();
 
-        final ChorDeployerClient eeClient = new ChorDeployerClient(EE_HOST);
+        final EEClient eeClient = new EEClient(EE_HOST);
         final String chorId = eeClient.createChoreography(chorSpec);
         final Choreography chor = eeClient.enactChoreography(chorId);
 
