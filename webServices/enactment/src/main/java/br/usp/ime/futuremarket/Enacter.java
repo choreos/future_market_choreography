@@ -29,14 +29,6 @@ public class Enacter {
 			ChoreographyNotFoundException {
 		final ChoreographySpec chorSpec = getChorSpec();
 		
-		try {
-			System.out.println("Há iéié");
-			System.in.read();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		final EEClient eeClient = new EEClient(EE_HOST);
 		final String chorId = eeClient.createChoreography(chorSpec);
 		final Choreography chor = eeClient.enactChoreography(chorId);
@@ -55,20 +47,20 @@ public class Enacter {
 		spec.addServiceSpec(getServiceSpec("manufacturer"));
 
 		spec.addServiceSpec(getServiceSpec("portal1"));
-	//	spec.addServiceSpec(getServiceSpec("portal2"));
+		spec.addServiceSpec(getServiceSpec("portal2"));
 
 		spec.addServiceSpec(getServiceSpec("shipper1"));
-	//	spec.addServiceSpec(getServiceSpec("shipper2"));
+		spec.addServiceSpec(getServiceSpec("shipper2"));
 
 		spec.addServiceSpec(getServiceSpec("supermarket1"));
-	//	spec.addServiceSpec(getServiceSpec("supermarket2"));
-	//	spec.addServiceSpec(getServiceSpec("supermarket3"));
-	//	spec.addServiceSpec(getServiceSpec("supermarket4"));
-	//	spec.addServiceSpec(getServiceSpec("supermarket5"));
+		spec.addServiceSpec(getServiceSpec("supermarket2"));
+		spec.addServiceSpec(getServiceSpec("supermarket3"));
+		spec.addServiceSpec(getServiceSpec("supermarket4"));
+		spec.addServiceSpec(getServiceSpec("supermarket5"));
 
 		spec.addServiceSpec(getServiceSpec("supplier1"));
-	//	spec.addServiceSpec(getServiceSpec("supplier2"));
-	//	spec.addServiceSpec(getServiceSpec("supplier3"));
+		spec.addServiceSpec(getServiceSpec("supplier2"));
+		spec.addServiceSpec(getServiceSpec("supplier3"));
 
 		return spec;
 	}
@@ -100,7 +92,6 @@ public class Enacter {
 			regDep.setServiceSpecName(name);
 			regDep.setServiceSpecRole(service.getRoles().get(0));
 			registrySpec.addDependency(regDep);
-			System.out.println(registrySpec.getName() + " -> " + regDep);
 		}
 	}
 

@@ -27,7 +27,7 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 		}
 
 		market.setRegistryWsdl(wsdl);
-
+		market.clearCache();
 		/*
 		 * Now done by the Registry.setInvocationAddress()
 		 */
