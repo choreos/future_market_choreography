@@ -48,9 +48,9 @@ public abstract class AbstractSupermarketTest {
     @Before
     public void setUp() throws IOException, InterruptedException {
         if (supermarket == null) {
-            supermarket = market.getClientByName(NAME, Supermarket.class);
-            supplier = market.getClientByName(SHIPPER, Supermarket.class);
-            manufacturer = market.getClientByName(MANUFAC, Supermarket.class);
+            supermarket = market.getDependency(NAME, Supermarket.class);
+            supplier = market.getDependency(SHIPPER, Supermarket.class);
+            manufacturer = market.getDependency(MANUFAC, Supermarket.class);
         }
         supermarket.reset();
         supplier.reset();
@@ -85,7 +85,7 @@ public abstract class AbstractSupermarketTest {
     protected void intercept(final String name) throws WSDLException, MockDeploymentException,
             XmlException, IOException {
         nameBak = name;
-        baseAddrBak = market.getBaseAddress(name);
+        //baseAddrBak = market.getBaseAddress(name);
 
         final String wsdl = baseAddrBak + getArchType() + "?wsdl";
         interceptor = new MessageInterceptor("8081");
@@ -100,7 +100,7 @@ public abstract class AbstractSupermarketTest {
         info.setName(name);
 
         final Registry registry = market.getRegistry();
-        registry.addService(info.getRole().toString(), name, baseAddr);
+        // TODO: setInvAddress registry.addInstance(info.getRole().toString(), name, baseAddr);
     }
 
     @Test

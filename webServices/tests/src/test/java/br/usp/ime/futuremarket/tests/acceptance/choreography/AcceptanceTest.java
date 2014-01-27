@@ -28,6 +28,6 @@ public class AcceptanceTest extends AbstractAcceptanceTest {
 
     @Override
     protected Portal getPortal() throws IOException {
-        return market.getClientByRole(Role.PORTAL, Portal.class);
+        return market.getDependencyByRole(Role.PORTAL, Portal.class).get(0);
     }
 }

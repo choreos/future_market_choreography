@@ -1,7 +1,5 @@
 package br.usp.ime.futuremarket;
 
-import java.io.IOException;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -14,9 +12,9 @@ public interface Supermarket extends EnactmentEngine {
     ShopList getPrices(ShopList shopList);
 
     @WebMethod
-    Purchase purchase(ShopList shopList, CustomerInfo customerInfo) throws IOException;
+    Purchase purchase(ShopList shopList, CustomerInfo customerInfo);
 
     @WebMethod
-    void reset() throws IOException, InterruptedException;
+    void reset();
 
 }

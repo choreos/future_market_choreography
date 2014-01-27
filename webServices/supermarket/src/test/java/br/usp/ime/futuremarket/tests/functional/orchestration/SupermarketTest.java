@@ -18,7 +18,7 @@ public class SupermarketTest {
         final String registry = Configuration.getInstance().getRegistryWsdl();
         market.setRegistryWsdl(registry);
 
-        final Supermarket sm = market.getClientByRole(Role.SUPERMARKET, Supermarket.class);
+        final Supermarket sm = market.getDependencyByRole(Role.SUPERMARKET, Supermarket.class).get(0);
         assertNotNull(sm);
     }
 }

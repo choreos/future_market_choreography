@@ -26,7 +26,7 @@ public class SupermarketTest {
         final FutureMarket market = new FutureMarket();
         final String registry = Configuration.getInstance().getRegistryWsdl();
         market.setRegistryWsdl(registry);
-        supermarket = market.getClientByRole(Role.SUPERMARKET, Supermarket.class);
+        supermarket = market.getDependencyByRole(Role.SUPERMARKET, Supermarket.class).get(0);
     }
 
     @Test

@@ -1,174 +1,153 @@
 package br.usp.ime.futuremarket;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 public abstract class AbstractFutureMarket {
-    private static final String PORT = "8080";
-    private static final Map<String, Service> CACHE = new HashMap<String, Service>();
-    private String registryWsdl;
+	private static final Map<String, Service> CACHE = new HashMap<String, Service>();
+	private String registryWsdl;
 
-    abstract protected String baseAddressToWsdl(final String baseAddress);
+	private static final Map<String, List<String>> ENDPOINTS = new HashMap<String, List<String>>();
+	private static final Map<String, Integer> INDEXES = new HashMap<String, Integer>();
 
-    abstract protected AbstractWSInfo getWSInfo();
+	abstract protected String baseAddressToWsdl(final String baseAddress);
 
-    public void setRegistryWsdl(final String wsdl) {
-        registryWsdl = wsdl;
-    }
+	abstract protected AbstractWSInfo getWSInfo();
 
-    /**
-     * Use registry WSDL from properties file
-     * 
-     * @param serviceName
-     *            war file basename (e.g.: supermarket5)
-     * @throws IOException
-     */
-    public void register(final String serviceName) throws IOException {
-        final String baseAddr = getMyBaseAddress(serviceName);
-        final String role = getRole(serviceName);
-        getRegistry().addService(role, serviceName, baseAddr);
-    }
+	public void setRegistryWsdl(final String wsdl) {
+		registryWsdl = wsdl;
+	}
 
-    private String getRole(final String name) {
-        final AbstractWSInfo info = getWSInfo();
-        info.setName(name);
-        return info.getRole().toString();
-    }
+	private <T> Map<String, List<T>> getClients(final Role role,
+			final Class<T> resultClass) throws IOException {
+		final Map<String, List<String>> baseAddresses = getRegistry()
+				.getServices(role.toString());
+		Map<String, List<T>> clients = new HashMap<String, List<T>>();
 
-    public <T> List<T> getClients(final Role role, final Class<T> resultClass) throws IOException {
-        final List<String> baseAddresses = getRegistry().getServices(role.toString());
+		for (Entry<String, List<String>> serviceBaseAddresses : baseAddresses
+				.entrySet()) {
+			String service = serviceBaseAddresses.getKey();
+			clients.put(service, new ArrayList<T>());
+			for (String baseAddress : serviceBaseAddresses.getValue()) {
+				final AbstractWSInfo info = getWSInfo();
+				info.setBaseAddress(baseAddress);
+				clients.get(service).add(
+						getClient(resultClass, baseAddress, info));
+			}
+		}
+		return clients;
+	}
 
-        T client;
-        final AbstractWSInfo info = getWSInfo();
-        final List<T> clients = new ArrayList<T>();
-        for (String baseAddress : baseAddresses) {
-            info.setRole(role);
-            client = getClient(resultClass, baseAddress, info);
-            clients.add(client);
-        }
+	private <T> T getClient(final String baseAddress, final Class<T> resultClass)
+			throws MalformedURLException {
+		final AbstractWSInfo info = getWSInfo();
+		info.setBaseAddress(baseAddress);
 
-        return clients;
-    }
+		return getClient(resultClass, baseAddress, info);
+	}
 
-    public <T> T getClientByRole(final Role role, final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistry().getServiceByRole(role.toString());
-        final AbstractWSInfo info = getWSInfo();
-        info.setBaseAddress(baseAddress);
+	// Esse era private desde o começo
+	private <T> T getClient(final Class<T> resultClass,
+			final String baseAddress, final AbstractWSInfo info)
+			throws MalformedURLException {
+		final String wsdl = baseAddressToWsdl(baseAddress);
 
-        return getClient(resultClass, baseAddress, info);
-    }
+		checkCache(info, wsdl);
+		final Service service = CACHE.get(wsdl);
 
-    public <T> T getClientByName(final String name, final Class<T> resultClass) throws IOException {
-        final String baseAddress = getRegistry().getServiceByName(name);
-        final AbstractWSInfo info = getWSInfo();
-        info.setName(name);
+		return service.getPort(resultClass);
+	}
 
-        return getClient(resultClass, baseAddress, info);
-    }
+	public <T> T getDependency(String service, Class<T> resultClass)
+			throws IOException {
+		return nextRoundRobinInstance(service, resultClass);
+	}
 
-    public <T> T getClientRoundRobin(final Role role, final Class<T> resultClass)
-            throws IOException {
-        final String baseAddress = getRegistry().getServiceRoundRobin(role.toString());
-        final AbstractWSInfo info = getWSInfo();
-        info.setRole(role);
+	public <T> List<T> getDependencyByRole(Role role, Class<T> resultClass)
+			throws IOException {
+		List<T> resultClients = new ArrayList<T>();
 
-        return getClient(resultClass, baseAddress, info);
-    }
+		Map<String, List<T>> clients = getClients(role, resultClass);
+		for (Entry<String, List<T>> service : clients.entrySet()) {
+			resultClients.add(nextRoundRobinInstance(service.getKey(),
+					resultClass));
+		}
+		return resultClients;
+	}
 
-    // Need to be suffixed by orchestration/choreography + ?wsdl
-    public String getMyBaseAddress(final String name) throws UnknownHostException {
-    	final String hostName = getMyIPAddess();
-        return "http://" + hostName + ":" + PORT + "/" + name + "/";
-    }
+	private <T> T nextRoundRobinInstance(String service, Class<T> resultClass)
+			throws IOException {
+		return getClient(
+				ENDPOINTS.get(service).get(getIndexAndIncrement(service)),
+				resultClass);
+	}
 
-    public String getBaseAddress(final String name) throws IOException {
-        return getRegistry().getServiceByName(name);
-    }
+	private Integer getIndexAndIncrement(String service) {
+		if (!INDEXES.containsKey(service)) {
+			INDEXES.put(service, 0);
+		}
+		return INDEXES.put(service,
+				(INDEXES.get(service) + 1) % ENDPOINTS.get(service).size());
+	}
 
-    public List<String> getBaseAddresses(final Role role) throws IOException {
-        return getRegistry().getServices(role.toString());
-    }
+	protected void clearCache() {
+		synchronized (CACHE) {
+			CACHE.clear();
+		}
+	}
 
-    public <T> T getClient(final String baseAddress, final Class<T> resultClass)
-            throws MalformedURLException {
-        final AbstractWSInfo info = getWSInfo();
-        info.setBaseAddress(baseAddress);
+	private void checkCache(final AbstractWSInfo info, final String wsdl)
+			throws MalformedURLException {
+		if (!CACHE.containsKey(wsdl)) {
+			final String namespace = info.getNamespace();
+			final String serviceName = info.getServiceName();
+			cacheService(namespace, serviceName, wsdl);
+		}
+	}
 
-        return getClient(resultClass, baseAddress, info);
-    }
+	private void cacheService(final String namespace, final String serviceName,
+			final String wsdl) throws MalformedURLException {
+		synchronized (CACHE) {
+			if (!CACHE.containsKey(wsdl)) {
+				final Service service = createService(namespace, serviceName,
+						wsdl);
+				CACHE.put(wsdl, service);
+			}
+		}
+	}
 
-    public void unregister(final String name) throws IOException {
-        final AbstractWSInfo info = getWSInfo();
-        info.setName(name);
-        getRegistry().removeService(info.getRole().toString(), name);
-    }
+	/* Slow */
+	private Service createService(final String namespace,
+			final String serviceName, final String wsdl)
+			throws MalformedURLException {
+		final QName qname = new QName(namespace, serviceName);
+		final URL url = new URL(wsdl);
+		return Service.create(url, qname);
+	}
 
-    private <T> T getClient(final Class<T> resultClass, final String baseAddress,
-            final AbstractWSInfo info) throws MalformedURLException {
-        final String wsdl = baseAddressToWsdl(baseAddress);
+	/**
+	 * Public for testing purposes.
+	 * 
+	 * @return Registry
+	 * @throws IOException
+	 */
+	public Registry getRegistry() throws IOException {
+		if (!CACHE.containsKey(registryWsdl)) {
+			final AbstractWSInfo info = getWSInfo();
+			info.setName("registry");
+			checkCache(info, registryWsdl);
+		}
 
-        checkCache(info, wsdl);
-        final Service service = CACHE.get(wsdl);
-
-        return service.getPort(resultClass);
-    }
-
-    private void checkCache(final AbstractWSInfo info, final String wsdl)
-            throws MalformedURLException {
-        if (!CACHE.containsKey(wsdl)) {
-            final String namespace = info.getNamespace();
-            final String serviceName = info.getServiceName();
-            cacheService(namespace, serviceName, wsdl);
-        }
-    }
-
-    private void cacheService(final String namespace, final String serviceName, final String wsdl)
-            throws MalformedURLException {
-        synchronized (CACHE) {
-            if (!CACHE.containsKey(wsdl)) {
-                final Service service = createService(namespace, serviceName, wsdl);
-                CACHE.put(wsdl, service);
-            }
-        }
-    }
-
-    /* Slow */
-    private Service createService(final String namespace, final String serviceName,
-            final String wsdl) throws MalformedURLException {
-        final QName qname = new QName(namespace, serviceName);
-        final URL url = new URL(wsdl);
-        return Service.create(url, qname);
-    }
-
-    private String getMyIPAddess() throws UnknownHostException {
-    	final InetAddress addr = InetAddress.getLocalHost();
-        return addr.getHostAddress();
-    }
-
-    /**
-     * Public for testing purposes.
-     * 
-     * @return Registry
-     * @throws IOException
-     */
-    public Registry getRegistry() throws IOException {
-        if (!CACHE.containsKey(registryWsdl)) {
-            final AbstractWSInfo info = getWSInfo();
-            info.setName("registry");
-            checkCache(info, registryWsdl);
-        }
-
-        final Service service = CACHE.get(registryWsdl);
-        return service.getPort(Registry.class);
-    }
+		final Service service = CACHE.get(registryWsdl);
+		return service.getPort(Registry.class);
+	}
 }

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "PurchaseClass")
 public class Purchase {
     private long number;
-    private String shipper;
+    private String shipper; // Must be the shipper name in this version
     private ShopList shopList;
     private CustomerInfo customerInfo;
     private boolean isPaid = false;

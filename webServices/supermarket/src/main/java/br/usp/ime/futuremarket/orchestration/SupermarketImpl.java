@@ -27,10 +27,18 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
-    public Purchase purchase(final ShopList list, final CustomerInfo customer) throws IOException {
-        final Portal orch = getOrchestrator();
+    public Purchase purchase(final ShopList list, final CustomerInfo customer) {
+        Portal orch = null;
+		try {
+			orch = getOrchestrator();
+		} catch (IOException e) {
+		}
         final boolean isPaid = orch.requestPayment(list.getPrice(), customer);
-        final Purchase purchase = getFromStock(list, customer);
+        Purchase purchase = null;
+		try {
+			purchase = getFromStock(list, customer);
+		} catch (IOException e) {
+		}
         purchase.setIsPaid(isPaid);
         orch.deliver(purchase);
 
@@ -49,7 +57,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     }
 
     @Override
-    public void reset() throws IOException, InterruptedException {
+    public void reset() {
         super.reset();
         synchronized (orchestrators) {
             orchestrators.clear();
@@ -67,7 +75,7 @@ public class SupermarketImpl extends AbstractSupermarket {
     private void createOrchestrators() throws IOException {
         synchronized (orchestrators) {
             if (orchestrators.isEmpty()) {
-                orchestrators.addAll(market.getClients(Role.PORTAL, Portal.class));
+                orchestrators.addAll(market.getDependencyByRole(Role.PORTAL, Portal.class));
             }
         }
     }

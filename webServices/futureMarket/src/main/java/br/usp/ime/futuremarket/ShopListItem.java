@@ -3,7 +3,7 @@ package br.usp.ime.futuremarket;
 public class ShopListItem {
     private Product product;
     private int quantity = -1;
-    private String seller;
+    private String seller; // Must be the seller name in this version
 
     public ShopListItem() {
         // Avoiding IllegalAnnotationExceptions

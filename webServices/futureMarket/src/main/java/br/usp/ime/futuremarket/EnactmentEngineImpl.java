@@ -1,6 +1,5 @@
 package br.usp.ime.futuremarket;
 
-import java.io.IOException;
 import java.util.List;
 
 public class EnactmentEngineImpl implements EnactmentEngine {
@@ -16,8 +15,7 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 
 	@Override
 	public String setInvocationAddress(final String registryRole,
-			final String name, final List<String> registryEndpoints)
-			throws IOException {
+			final String name, final List<String> registryEndpoints) {
 		String wsdl = null;
 		final String registryEndpoint = registryEndpoints.get(0);
 
@@ -31,7 +29,7 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 		market.setRegistryWsdl(wsdl);
 
 		/*
-		 * Now done by the Enacter market.register(this.serviceName);
+		 * Now done by the Registry.setInvocationAddress()
 		 */
 
 		return "OK";

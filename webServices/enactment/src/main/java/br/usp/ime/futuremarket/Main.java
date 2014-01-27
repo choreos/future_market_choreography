@@ -8,11 +8,13 @@ import org.ow2.choreos.chors.datamodel.Choreography;
 
 public class Main {
 
-    public static void main(final String[] args) throws EnactmentException,
-            ChoreographyNotFoundException, MalformedURLException {
-        final Enacter enacter = new Enacter();
-        final Choreography chor = enacter.enact();
-        enacter.registerServices(chor);
-    }
+	public static void main(final String[] args) throws EnactmentException,
+			ChoreographyNotFoundException, MalformedURLException {
+		final Enacter enacter = new Enacter();
+		final Choreography chor = enacter.enact();
+		/*
+		 * Now done when Enactment Engine setInvocationAddress is called enacter.registerServices(chor);
+		 */
+	}
 
 }

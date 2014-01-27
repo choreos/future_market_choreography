@@ -61,7 +61,7 @@
 			<groupId>com.sun.xml.ws</groupId>
 			<artifactId>jaxws-rt</artifactId>
 			<version>2.1.4</version>
-			<scope>provided</scope>
+			<!-- Causing ClassNotFound error <scope>provided</scope> -->
 		</dependency>
 	</dependencies>
 

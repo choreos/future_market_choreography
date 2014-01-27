@@ -18,42 +18,56 @@ import br.usp.ime.futuremarket.ShopList;
         endpointInterface = "br.usp.ime.futuremarket.orchestration.Portal")
 public class PortalImpl extends AbstractPortalImpl implements Portal {
 
-    private String bankBaseAddr = "";
+    private String bankName = "";
 
     public PortalImpl() throws IOException {
         super(new FutureMarket());
     }
 
     @Override
-    public boolean deliver(final Purchase purchase) throws MalformedURLException {
-        final String baseAddr = purchase.getShipper();
-        final Shipper shipper = market.getClient(baseAddr, Shipper.class);
+    public boolean deliver(final Purchase purchase) {
+        final String shipperName = purchase.getShipper();
+        Shipper shipper = null;
+		try {
+			shipper = market.getDependency(shipperName, Shipper.class);
+		} catch (IOException e) {
+		}
         return shipper.deliver(purchase);
     }
 
     @Override
-    public Purchase smPurchase(final ShopList list, final CustomerInfo customer) throws IOException {
-        return super.purchaseFromOneStore(list, customer);
+    public Purchase smPurchase(final ShopList list, final CustomerInfo customer){
+        Purchase purchaseFromOneStore = null;
+		try {
+			purchaseFromOneStore = super.purchaseFromOneStore(list, customer);
+		} catch (IOException e) {
+		}
+		return purchaseFromOneStore;
     }
 
     @Override
-    public boolean requestPayment(final double amount, final CustomerInfo customer)
-            throws IOException {
-        return getBank().requestPayment(amount, customer);
+    public boolean requestPayment(final double amount, final CustomerInfo customer) {
+        boolean requestPayment = false;
+		try {
+			requestPayment = getBank().requestPayment(amount, customer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return requestPayment;
     }
 
     private Bank getBank() throws IOException {
-        if (bankBaseAddr.isEmpty()) {
-            setBankBaseAddr();
+        if (bankName.isEmpty()) {
+            setBankName();
         }
-        return market.getClient(bankBaseAddr, Bank.class);
+        return market.getDependency(bankName, Bank.class);
     }
 
-    private void setBankBaseAddr() throws IOException {
-        synchronized (bankBaseAddr) {
-            if (bankBaseAddr.isEmpty()) {
-                final List<String> banks = market.getBaseAddresses(Role.BANK);
-                bankBaseAddr = banks.get(0);
+    private void setBankName() throws IOException {
+        synchronized (bankName) {
+            if (bankName.isEmpty()) {
+                bankName = "bank"; // TODO: get available bank from market
             }
         }
     }

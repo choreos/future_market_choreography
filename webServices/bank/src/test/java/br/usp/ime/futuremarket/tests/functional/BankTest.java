@@ -20,7 +20,7 @@ public class BankTest {
         final String registry = Configuration.getInstance().getRegistryWsdl();
         futureMarket.setRegistryWsdl(registry);
 
-        bank = futureMarket.getClientByRole(Role.BANK, Bank.class);
+        bank = futureMarket.getDependencyByRole(Role.BANK, Bank.class).get(0);
 
         assertNotNull(bank);
     }

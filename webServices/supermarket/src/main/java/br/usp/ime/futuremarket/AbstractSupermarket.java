@@ -7,168 +7,151 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
-import javax.jws.WebMethod;
+public abstract class AbstractSupermarket extends EnactmentEngineImpl implements
+		Supermarket {
+	private static final int PRODUCTS = 10;
 
-import br.usp.ime.futuremarket.choreography.WSInfo;
+	protected final ShopList shopList = new ShopList();
+	private final AtomicLong purchaseId = new AtomicLong(0);
+	private final Stock stock = new Stock();
 
-public abstract class AbstractSupermarket extends EnactmentEngineImpl implements Supermarket {
-    private static final int PRODUCTS = 10;
+	private static final Properties PROP = new Properties();
+	private final int purchaseTrigger, purchaseQuantity;
+	private Role role;
+	private String myBaseAddr, shipperName, sellerName;
 
-    protected final ShopList shopList = new ShopList();
-    private final AtomicLong purchaseId = new AtomicLong(0);
-    private final Stock stock = new Stock();
+	public AbstractSupermarket(final AbstractFutureMarket market)
+			throws IOException, InterruptedException {
+		super(getServiceName(), market);
 
-    private static final Properties PROP = new Properties();
-    private final int purchaseTrigger, purchaseQuantity;
-    private Role role;
-    private String myBaseAddr, shipperBaseAddr, sellerBaseAddr;
+		purchaseTrigger = Integer
+				.parseInt(PROP.getProperty("purchase.trigger"));
+		purchaseQuantity = Integer.parseInt(PROP
+				.getProperty("purchase.quantity"));
 
-    public AbstractSupermarket(final AbstractFutureMarket market) throws IOException,
-            InterruptedException {
-        super(getServiceName(), market);
+		stock.loadProducts(PROP, PRODUCTS);
+	}
 
-        purchaseTrigger = Integer.parseInt(PROP.getProperty("purchase.trigger"));
-        purchaseQuantity = Integer.parseInt(PROP.getProperty("purchase.quantity"));
+	abstract protected void buy() throws IOException;
 
-        stock.loadProducts(PROP, PRODUCTS);
-    }
+	abstract public Purchase purchase(ShopList list, CustomerInfo customer);
 
-    abstract protected void buy() throws IOException;
+	abstract protected AbstractWSInfo getWSInfo();
 
-    abstract public Purchase purchase(ShopList list, CustomerInfo customer) throws IOException;
+	// TODO Synchronized setter
+	protected String getShipperName() throws IOException {
+		if (shipperName == null) {
+			shipperName = PROP.getProperty("shipper.name");
+		}
+		return shipperName;
+	}
 
-    abstract protected AbstractWSInfo getWSInfo();
+	// TODO Synchronized setter
+	protected String getSellerName() throws IOException {
+		if (sellerName == null) {
+			sellerName = PROP.getProperty("seller.name");
+		}
+		return sellerName;
+	}
 
-    @Override
-    @WebMethod
-    public String setInvocationAddress(final String role, final String name, final List<String> registryEndpoints)
-            throws IOException {
-        super.setInvocationAddress(role, name, registryEndpoints);
+	@Override
+	public ShopList getPrices(final ShopList shopList) {
+		double price;
+		Product product;
 
-        myBaseAddr = market.getMyBaseAddress(serviceName);
-        this.role = getRole(myBaseAddr);
+		for (ShopListItem item : shopList.getShopListItems()) {
+			product = item.getProduct();
+			price = getPrice(product);
+			product.setPrice(price);
+			item.setSeller(myBaseAddr);
+		}
 
-        return "OK";
-    }
+		return shopList;
+	}
 
-    private Role getRole(final String myBaseAddr) {
-        final AbstractWSInfo info = new WSInfo();
-        info.setBaseAddress(myBaseAddr);
-        return info.getRole();
-    }
+	protected Purchase getFromStock(final ShopList list,
+			final CustomerInfo customer) throws IOException {
+		// Manufacturers have infinite resources
+		if (!Role.MANUFACTURER.equals(role)) {
+			synchronized (stock) {
+				removeFromStock(list);
+				supplyStock();
+			}
+		}
 
-    // TODO Synchronized setter
-    protected String getShipperBaseAddress() throws IOException {
-        if (shipperBaseAddr == null) {
-            final String name = PROP.getProperty("shipper.name");
-            shipperBaseAddr = market.getBaseAddress(name);
-        }
-        return shipperBaseAddr;
-    }
+		return new Purchase(purchaseId.getAndIncrement(), getShipperName(),
+				list, customer);
+	}
 
-    // TODO Synchronized setter
-    protected String getSellerBaseAddress() throws IOException {
-        if (sellerBaseAddr == null) {
-            final String name = PROP.getProperty("seller.name");
-            sellerBaseAddr = market.getBaseAddress(name);
-        }
-        return sellerBaseAddr;
-    }
+	@Override
+	public void reset() {
+		synchronized (stock) {
+			stock.reset();
+			stock.loadProducts(PROP, PRODUCTS);
+			shopList.clear();
+		}
+		shipperName = null;
+		sellerName = null;
+	}
 
-    @Override
-    public ShopList getPrices(final ShopList shopList) {
-        double price;
-        Product product;
+	protected CustomerInfo getCostumerInfo() throws UnknownHostException {
+		final CustomerInfo customer = new CustomerInfo();
+		customer.setName(serviceName);
+		customer.setCreditCard("Visa 123 456");
+		customer.setAddress("ZIP 12345-678");
 
-        for (ShopListItem item : shopList.getShopListItems()) {
-            product = item.getProduct();
-            price = getPrice(product);
-            product.setPrice(price);
-            item.setSeller(myBaseAddr);
-        }
+		return customer;
+	}
 
-        return shopList;
-    }
+	private static String getServiceName() throws IOException {
+		final ClassLoader loader = Thread.currentThread()
+				.getContextClassLoader();
+		final InputStream propFile = loader
+				.getResourceAsStream("supermarket.properties");
+		PROP.load(propFile);
+		propFile.close();
 
-    protected Purchase getFromStock(final ShopList list, final CustomerInfo customer)
-            throws IOException {
-        // Manufacturers have infinite resources
-        if (!Role.MANUFACTURER.equals(role)) {
-            synchronized (stock) {
-                removeFromStock(list);
-                supplyStock();
-            }
-        }
+		return PROP.getProperty("name");
+	}
 
-        return new Purchase(purchaseId.getAndIncrement(), getShipperBaseAddress(), list, customer);
-    }
+	private double getPrice(final Product product) {
+		final Product myProduct = stock.search(product);
+		return myProduct.getPrice();
+	}
 
-    @Override
-    public void reset() throws IOException, InterruptedException {
-        synchronized (stock) {
-            stock.reset();
-            stock.loadProducts(PROP, PRODUCTS);
-            shopList.clear();
-        }
-        shipperBaseAddr = null;
-        sellerBaseAddr = null;
-    }
+	private void supplyStock() throws IOException {
+		final List<Product> productsToBuy = stock
+				.getProductsLowInStock(purchaseTrigger);
+		for (Product product : productsToBuy) {
+			addToShopList(product);
+		}
 
-    protected CustomerInfo getCostumerInfo() throws UnknownHostException {
-        final CustomerInfo customer = new CustomerInfo();
-        customer.setName(serviceName);
-        customer.setCreditCard("Visa 123 456");
-        customer.setAddress("ZIP 12345-678");
+		if (!shopList.isEmpty()) {
+			buy();
+			addPurchaseToStock();
+			shopList.clear();
+		}
+	}
 
-        return customer;
-    }
+	private void addPurchaseToStock() {
+		for (Product product : shopList.getProducts()) {
+			stock.add(product, purchaseQuantity);
+		}
+	}
 
-    private static String getServiceName() throws IOException {
-        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        final InputStream propFile = loader.getResourceAsStream("supermarket.properties");
-        PROP.load(propFile);
-        propFile.close();
+	private void addToShopList(final Product product) throws IOException {
+		final ShopListItem item = new ShopListItem(product);
 
-        return PROP.getProperty("name");
-    }
+		item.setProduct(product);
+		item.setQuantity(purchaseQuantity);
+		item.setSeller(getSellerName());
 
-    private double getPrice(final Product product) {
-        final Product myProduct = stock.search(product);
-        return myProduct.getPrice();
-    }
+		shopList.put(item);
+	}
 
-    private void supplyStock() throws IOException {
-        final List<Product> productsToBuy = stock.getProductsLowInStock(purchaseTrigger);
-        for (Product product : productsToBuy) {
-            addToShopList(product);
-        }
-
-        if (!shopList.isEmpty()) {
-            buy();
-            addPurchaseToStock();
-            shopList.clear();
-        }
-    }
-
-    private void addPurchaseToStock() {
-        for (Product product : shopList.getProducts()) {
-            stock.add(product, purchaseQuantity);
-        }
-    }
-
-    private void addToShopList(final Product product) throws IOException {
-        final ShopListItem item = new ShopListItem(product);
-
-        item.setProduct(product);
-        item.setQuantity(purchaseQuantity);
-        item.setSeller(getSellerBaseAddress());
-
-        shopList.put(item);
-    }
-
-    private void removeFromStock(final ShopList shopList) {
-        for (ShopListItem item : shopList.getShopListItems()) {
-            stock.remove(item.getProduct(), item.getQuantity());
-        }
-    }
+	private void removeFromStock(final ShopList shopList) {
+		for (ShopListItem item : shopList.getShopListItems()) {
+			stock.remove(item.getProduct(), item.getQuantity());
+		}
+	}
 }

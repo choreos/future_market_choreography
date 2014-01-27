@@ -39,7 +39,7 @@ public class ShopList {
 
     /**
      * 
-     * @return Seller base address of the first item or "".
+     * @return Seller name of the first item or "".
      */
     public String getSeller() {
         final Iterator<ShopListItem> items = this.items.values().iterator();

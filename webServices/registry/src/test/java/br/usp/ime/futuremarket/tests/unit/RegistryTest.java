@@ -3,6 +3,7 @@ package br.usp.ime.futuremarket.tests.unit;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -29,35 +30,16 @@ public class RegistryTest {
         endpoints.clear();
     }
 
-    @Test
-    public void shouldRoundRobin() {
-        addEndpoint(ROLE, "TestName1", "TestEndpoint1");
-        addEndpoint(ROLE, "TestName2", "TestEndpoint2");
-
-        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
-        assertEquals(endpoints.get(1), registry.getServiceRoundRobin(ROLE));
-    }
-
-    private void addEndpoint(final String role, final String name, final String endpoint) {
-        endpoints.add(endpoint);
-        registry.addService(role, name, endpoint);
-    }
-
-    @Test
-    public void shouldCicleServicesOnRoundRobin() {
-        addEndpoint(ROLE, "Foo1", "Bar1");
-        addEndpoint(ROLE, "Foo2", "Bar2");
-
-        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
-        assertEquals(endpoints.get(1), registry.getServiceRoundRobin(ROLE));
-        assertEquals(endpoints.get(0), registry.getServiceRoundRobin(ROLE));
+    private void setServiceEndpoints(final String role, final String name, final String... endpoint) {
+    	endpoints = Arrays.asList(endpoint);
+        registry.setInvocationAddress(role, name, Arrays.asList(endpoint));
     }
 
     @Test
     public void testUpdateByName() {
-        addEndpoint(ROLE, NAME, "oldValue");
-        addEndpoint(ROLE, NAME, "newValue");
+        setServiceEndpoints(ROLE, NAME, "oldValue1", "oldValue2");
+        setServiceEndpoints(ROLE, NAME, "newValue1", "newValue2");
 
-        assertEquals(endpoints.get(1), registry.getServiceByName(NAME));
+        assertEquals(endpoints.get(1), registry.getInstances(NAME).get(1));
     }
 }

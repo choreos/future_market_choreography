@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,32 +22,32 @@ import br.usp.ime.futuremarket.ShopListItem;
 import br.usp.ime.futuremarket.choreography.FutureMarket;
 
 public class ShipperTest {
-    private static Shipper shipper;
+    private static List<Shipper> shippers;
 
     @BeforeClass
     public static void getShipper() throws IOException {
         final FutureMarket futureMarket = new FutureMarket();
         final String registry = Configuration.getInstance().getRegistryWsdl();
         futureMarket.setRegistryWsdl(registry);
-        shipper = futureMarket.getClientByRole(Role.SHIPPER, Shipper.class);
+        shippers = futureMarket.getDependencyByRole(Role.SHIPPER, Shipper.class);
     }
 
     @Test
     public void shouldExistAShipperInRegistry() throws IOException {
-        assertNotNull(shipper);
+        assertNotNull(shippers);
     }
 
     @Test
     public void shouldReturnTrueOnSetDelivery() {
         final Purchase purchase = getPurchase(1);
-        assertEquals(true, shipper.deliver(purchase));
+        assertEquals(true, shippers.get(0).deliver(purchase));
     }
 
     @Test
     public void deliveryShouldPreservePurchaseInfo() {
         final Purchase purchase = getPurchase(2);
-        shipper.deliver(purchase);
-        final Delivery delivery = shipper.getDelivery(purchase);
+        shippers.get(0).deliver(purchase);
+        final Delivery delivery = shippers.get(0).getDelivery(purchase);
 
         assertNotNull(delivery);
         assertNotNull(delivery.getPurchase());

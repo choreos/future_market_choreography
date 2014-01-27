@@ -1,7 +1,5 @@
 package br.usp.ime.futuremarket.choreography;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Set;
 
 import javax.jws.WebMethod;
@@ -19,12 +17,12 @@ import br.usp.ime.futuremarket.ShopList;
 public interface Portal extends EnactmentEngine {
 
     @WebMethod
-    ShopList getLowestPrice(ShopList list) throws IOException;
+    ShopList getLowestPrice(ShopList list);
 
     @WebMethod
-    Delivery getDelivery(Purchase purchase) throws MalformedURLException;
+    Delivery getDelivery(Purchase purchase);
 
     @WebMethod
-    Set<Purchase> purchase(ShopList list, CustomerInfo customer) throws IOException;
+    Set<Purchase> purchase(ShopList list, CustomerInfo customer);
 
 }
