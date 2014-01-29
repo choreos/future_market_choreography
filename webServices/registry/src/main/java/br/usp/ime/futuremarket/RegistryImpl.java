@@ -20,8 +20,11 @@ public class RegistryImpl implements Registry {
 	@Override
 	public String setInvocationAddress(String role, String service,
 			List<String> endpoints) {
+		System.out.println("setInvocationAddress " + "role: " + role + " service: " +service + " endpo"
+				+ "ints: " + endpoints);
 		initializeRole(role);
 		mServices.get(role).put(service, endpoints);
+		System.out.println(mServices);
 		return "OK";
 	}
 

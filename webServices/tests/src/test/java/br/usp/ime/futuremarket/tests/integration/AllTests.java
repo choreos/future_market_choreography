@@ -4,8 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import br.usp.ime.futuremarket.tests.servicestarters.TestChoreographyEnacter;
+
 @RunWith(Suite.class)
 @SuiteClasses({ br.usp.ime.futuremarket.tests.integration.choreography.SupermarketTest.class,
         br.usp.ime.futuremarket.tests.integration.orchestration.SupermarketTest.class })
 public class AllTests {
+	
 }

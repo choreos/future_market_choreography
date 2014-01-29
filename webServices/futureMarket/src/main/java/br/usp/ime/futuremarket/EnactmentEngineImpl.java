@@ -12,6 +12,10 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 		this.serviceName = serviceName;
 		this.market = market;
 	}
+	
+	//public void setServiceName(final String serviceName) {
+	//	this.serviceName = serviceName;
+	//}
 
 	@Override
 	public String setInvocationAddress(final String registryRole,
@@ -26,8 +30,8 @@ public class EnactmentEngineImpl implements EnactmentEngine {
 			wsdl = registryEndpoint + "?wsdl";
 		}
 
-		market.setRegistryWsdl(wsdl);
 		market.clearCache();
+		market.setRegistryWsdl(wsdl);
 		/*
 		 * Now done by the Registry.setInvocationAddress()
 		 */

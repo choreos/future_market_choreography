@@ -47,19 +47,18 @@ public abstract class AbstractFutureMarket {
 		return clients;
 	}
 
-	private <T> T getClient(final String baseAddress, final Class<T> resultClass)
+	private <T> T getClient(final String endpoint, final Class<T> resultClass)
 			throws MalformedURLException {
 		final AbstractWSInfo info = getWSInfo();
-		info.setBaseAddress(baseAddress);
+		info.setBaseAddress(endpoint);
 
-		return getClient(resultClass, baseAddress, info);
+		return getClient(resultClass, endpoint, info);
 	}
 
-	// Esse era private desde o começo
 	private <T> T getClient(final Class<T> resultClass,
-			final String baseAddress, final AbstractWSInfo info)
+			final String endpoint, final AbstractWSInfo info)
 			throws MalformedURLException {
-		final String wsdl = baseAddressToWsdl(baseAddress);
+		final String wsdl = endpoint + "?wsdl";
 
 		checkCache(info, wsdl);
 		final Service service = CACHE.get(wsdl);
@@ -69,11 +68,28 @@ public abstract class AbstractFutureMarket {
 
 	public <T> T getDependency(String service, Class<T> resultClass)
 			throws IOException {
+		initializeEndpoints(service);
+		System.out.println("Available endpoints: " + ENDPOINTS);
 		return nextRoundRobinInstance(service, resultClass);
+	}
+
+	private void initializeEndpoints(String service) throws IOException {
+		if (!ENDPOINTS.containsKey(service) || ENDPOINTS.get(service) == null) {
+			ENDPOINTS.put(service, getRegistry().getInstances(service));
+			INDEXES.put(service, 0);
+		}
 	}
 
 	public <T> List<T> getDependencyByRole(Role role, Class<T> resultClass)
 			throws IOException {
+		HashMap<String, List<String>> services = getRegistry().getServices(role.toString());
+		
+		System.out.println("With role " + role + ": " + services);
+		
+		for (Entry<String, List<String>> service : services.entrySet()) {
+			initializeEndpoints(service.getKey());
+		}
+		
 		List<T> resultClients = new ArrayList<T>();
 
 		Map<String, List<T>> clients = getClients(role, resultClass);
@@ -92,16 +108,22 @@ public abstract class AbstractFutureMarket {
 	}
 
 	private Integer getIndexAndIncrement(String service) {
-		if (!INDEXES.containsKey(service)) {
-			INDEXES.put(service, 0);
+		Integer currentIndex = INDEXES.get(service);
+		List<String> serviceEndpoints = ENDPOINTS.get(service);
+		int numberOfServiceEndpoints = serviceEndpoints.size();
+		try {			
+			Integer currentIndexValue = INDEXES.put(service,
+					(currentIndex.intValue() + 1) % numberOfServiceEndpoints);
+			return currentIndexValue;
+		} catch (Exception e) {
 		}
-		return INDEXES.put(service,
-				(INDEXES.get(service) + 1) % ENDPOINTS.get(service).size());
+		return -1;
 	}
 
 	protected void clearCache() {
 		synchronized (CACHE) {
 			CACHE.clear();
+			ENDPOINTS.clear();
 		}
 	}
 

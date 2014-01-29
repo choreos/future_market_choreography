@@ -1,6 +1,5 @@
 package br.usp.ime.futuremarket;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.ow2.choreos.chors.ChoreographyNotFoundException;
