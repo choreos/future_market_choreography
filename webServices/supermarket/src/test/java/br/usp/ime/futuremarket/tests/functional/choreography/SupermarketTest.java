@@ -41,6 +41,7 @@ public class SupermarketTest {
         final ShopListItem item = new ShopListItem(product);
         final ShopList list = new ShopList(item);
 
+        assertNotNull(supermarket);
         final Purchase purchase = supermarket.purchase(list, info);
         assertNotNull(purchase);
         assertEquals(true, purchase.isPaid());

@@ -1,6 +1,5 @@
 package br.usp.ime.futuremarket;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -17,8 +16,12 @@ public interface Registry {
 	@WebMethod
 	String setInvocationAddress(String role, String service, List<String> endpoints); 
 	
+	/*
+	 * Due to Map does not is supported by jaxb, we return a list. The list contains
+	 * a Map abstraction in that way: [servicename,instance1,instance2,service2name,instance1,...].
+	 */
     @WebMethod
-    HashMap<String, List<String>> getServices(String role);
+    List<String> getServices(String role);
 
     @WebMethod
     List<String> getInstances(String service);

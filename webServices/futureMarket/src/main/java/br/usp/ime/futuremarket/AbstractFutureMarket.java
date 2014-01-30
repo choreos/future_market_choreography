@@ -29,35 +29,41 @@ public abstract class AbstractFutureMarket {
 
 	private <T> Map<String, List<T>> getClients(final Role role,
 			final Class<T> resultClass) throws IOException {
-		final Map<String, List<String>> baseAddresses = getRegistry()
-				.getServices(role.toString());
+		
+		final Map<String, List<String>> roleServices = RegistryUtils
+				.toMap(getRegistry().getServices(role.toString()));
+		
 		Map<String, List<T>> clients = new HashMap<String, List<T>>();
 
-		for (Entry<String, List<String>> serviceBaseAddresses : baseAddresses
+		for (Entry<String, List<String>> service : roleServices
 				.entrySet()) {
-			String service = serviceBaseAddresses.getKey();
-			clients.put(service, new ArrayList<T>());
-			for (String baseAddress : serviceBaseAddresses.getValue()) {
+
+			String serviceName = service.getKey();
+			clients.put(serviceName, new ArrayList<T>());
+			
+			for (String endpoint : service.getValue()) {
+				
 				final AbstractWSInfo info = getWSInfo();
-				info.setBaseAddress(baseAddress);
-				clients.get(service).add(
-						getClient(resultClass, baseAddress, info));
+				info.setEndpoint(endpoint);
+				info.setRole(role);
+				
+				clients.get(serviceName).add(
+						getClient(resultClass, endpoint, info));
 			}
 		}
 		return clients;
 	}
 
-	private <T> T getClient(final String endpoint, final Class<T> resultClass)
+	private <T> T getClient(final String serviceName, final String endpoint, final Class<T> resultClass)
 			throws MalformedURLException {
 		final AbstractWSInfo info = getWSInfo();
-		info.setBaseAddress(endpoint);
-
+		info.setEndpoint(endpoint);
+		info.setName(serviceName);
 		return getClient(resultClass, endpoint, info);
 	}
 
-	private <T> T getClient(final Class<T> resultClass,
-			final String endpoint, final AbstractWSInfo info)
-			throws MalformedURLException {
+	private <T> T getClient(final Class<T> resultClass, final String endpoint,
+			final AbstractWSInfo info) throws MalformedURLException {
 		final String wsdl = endpoint + "?wsdl";
 
 		checkCache(info, wsdl);
@@ -66,11 +72,10 @@ public abstract class AbstractFutureMarket {
 		return service.getPort(resultClass);
 	}
 
-	public <T> T getDependency(String service, Class<T> resultClass)
+	public <T> T getDependency(String serviceName, Class<T> resultClass)
 			throws IOException {
-		initializeEndpoints(service);
-		System.out.println("Available endpoints: " + ENDPOINTS);
-		return nextRoundRobinInstance(service, resultClass);
+		initializeEndpoints(serviceName);
+		return nextRoundRobinInstance(serviceName, resultClass);
 	}
 
 	private void initializeEndpoints(String service) throws IOException {
@@ -82,17 +87,15 @@ public abstract class AbstractFutureMarket {
 
 	public <T> List<T> getDependencyByRole(Role role, Class<T> resultClass)
 			throws IOException {
-		HashMap<String, List<String>> services = getRegistry().getServices(role.toString());
-		
-		System.out.println("With role " + role + ": " + services);
-		
+		List<T> resultClients = new ArrayList<T>();
+		Map<String, List<String>> services = RegistryUtils.toMap(getRegistry()
+				.getServices(role.toString()));
+		Map<String, List<T>> clients = getClients(role, resultClass);
+
 		for (Entry<String, List<String>> service : services.entrySet()) {
 			initializeEndpoints(service.getKey());
 		}
-		
-		List<T> resultClients = new ArrayList<T>();
 
-		Map<String, List<T>> clients = getClients(role, resultClass);
 		for (Entry<String, List<T>> service : clients.entrySet()) {
 			resultClients.add(nextRoundRobinInstance(service.getKey(),
 					resultClass));
@@ -102,7 +105,7 @@ public abstract class AbstractFutureMarket {
 
 	private <T> T nextRoundRobinInstance(String service, Class<T> resultClass)
 			throws IOException {
-		return getClient(
+		return getClient(service,
 				ENDPOINTS.get(service).get(getIndexAndIncrement(service)),
 				resultClass);
 	}
@@ -111,7 +114,7 @@ public abstract class AbstractFutureMarket {
 		Integer currentIndex = INDEXES.get(service);
 		List<String> serviceEndpoints = ENDPOINTS.get(service);
 		int numberOfServiceEndpoints = serviceEndpoints.size();
-		try {			
+		try {
 			Integer currentIndexValue = INDEXES.put(service,
 					(currentIndex.intValue() + 1) % numberOfServiceEndpoints);
 			return currentIndexValue;
@@ -170,6 +173,7 @@ public abstract class AbstractFutureMarket {
 		}
 
 		final Service service = CACHE.get(registryWsdl);
-		return service.getPort(Registry.class);
+		Registry reg = service.getPort(Registry.class);
+		return reg;
 	}
 }

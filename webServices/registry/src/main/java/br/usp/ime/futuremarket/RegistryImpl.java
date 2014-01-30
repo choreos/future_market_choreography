@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.jws.WebService;
 
@@ -20,27 +21,32 @@ public class RegistryImpl implements Registry {
 	@Override
 	public String setInvocationAddress(String role, String service,
 			List<String> endpoints) {
-		System.out.println("setInvocationAddress " + "role: " + role + " service: " +service + " endpo"
-				+ "ints: " + endpoints);
 		initializeRole(role);
 		mServices.get(role).put(service, endpoints);
-		System.out.println(mServices);
 		return "OK";
 	}
 
 	@Override
-	public HashMap<String, List<String>> getServices(final String role) {
-		HashMap<String, List<String>> roleServices;
-
-		synchronized (this) {
-			if (mServices.containsKey(role)) {
-				roleServices = mServices.get(role);
-			} else {
-				roleServices = new HashMap<String, List<String>>();
+	public List<String> getServices(final String role) {
+		if (mServices.containsKey(role)) {
+			ArrayList<String> result = new ArrayList<String>();
+			
+			for (Entry<String, List<String>> service : mServices.get(role).entrySet()) {
+				String serviceName = service.getKey();
+				List<String> instances = service.getValue();
+				
+				ArrayList<String> serviceRepr = new ArrayList<String>();
+				
+				serviceRepr.add("sName:" +serviceName);
+				serviceRepr.addAll(instances);
+				
+				result.addAll(serviceRepr);
 			}
+			
+			return result;
+		} else {
+			return new ArrayList<String>();
 		}
-
-		return roleServices;
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.usp.ime.futuremarket.Registry;
+import br.usp.ime.futuremarket.RegistryUtils;
 
 public class RegistryTest {
 	private static final String ROLE = "TestRole";
@@ -72,7 +73,7 @@ public class RegistryTest {
 	public void shouldAddASupermarket() {
 		registry.setInvocationAddress(ROLE, NAME, Arrays.asList(ENDPOINT));
 
-		wsdls = registry.getServices(ROLE);
+		wsdls = RegistryUtils.toMap(registry.getServices(ROLE));
 
 		assertEquals(1, wsdls.size());
 		assertEquals(ENDPOINT, wsdls.values().iterator().next().get(0));
@@ -83,10 +84,11 @@ public class RegistryTest {
 	}
 
 	@Test
-	public void shouldAddASecondSupermarket() {
-		registry.setInvocationAddress(ROLE, NAME + "2", Arrays.asList(ENDPOINT + "2"));
+	public void shouldAddTwoSupermarkets() {
+		registry.setInvocationAddress(ROLE, NAME + "2", Arrays.asList(ENDPOINT, ENDPOINT + "2"));
+		registry.setInvocationAddress(ROLE, NAME, Arrays.asList(ENDPOINT + "2"));
 
-		wsdls = registry.getServices(ROLE);
+		wsdls = RegistryUtils.toMap(registry.getServices(ROLE));
 
 		assertEquals(2, wsdls.size());
 		assertEquals(ENDPOINT + "2", wsdls.values().iterator().next().get(1));

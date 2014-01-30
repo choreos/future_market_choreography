@@ -46,7 +46,7 @@ public abstract class AbstractWSInfo {
      * 
      * @param address http://ipOrHostName[:port]/name/
      */
-    public void setBaseAddress(final String address) {
+    public void setEndpoint(final String address) {
         final String noEndSlash = address.substring(0, address.length() - 1) ;
         final int lastSlash = noEndSlash.lastIndexOf('/');
         final String name = noEndSlash.substring(lastSlash + 1);
