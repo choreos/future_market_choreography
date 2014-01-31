@@ -105,8 +105,11 @@ public abstract class AbstractFutureMarket {
 
 	private <T> T nextRoundRobinInstance(String service, Class<T> resultClass)
 			throws IOException {
+		Integer index = getIndexAndIncrement(service);
+		if (index == -1)
+			return null;
 		return getClient(service,
-				ENDPOINTS.get(service).get(getIndexAndIncrement(service)),
+				ENDPOINTS.get(service).get(index),
 				resultClass);
 	}
 
@@ -118,9 +121,9 @@ public abstract class AbstractFutureMarket {
 			Integer currentIndexValue = INDEXES.put(service,
 					(currentIndex.intValue() + 1) % numberOfServiceEndpoints);
 			return currentIndexValue;
-		} catch (Exception e) {
+		} catch (ArithmeticException e) {
+			return -1;
 		}
-		return -1;
 	}
 
 	protected void clearCache() {
