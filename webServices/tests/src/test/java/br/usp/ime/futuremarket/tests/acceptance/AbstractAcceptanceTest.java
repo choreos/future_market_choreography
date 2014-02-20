@@ -63,8 +63,6 @@ public abstract class AbstractAcceptanceTest {
         for (ShopListItem item : cheapList.getShopListItems()) {	
             cheapestSm = getCheapestSm(item.getProduct());
             
-            System.out.println(item.getSeller());
-            
             assertEquals(cheapestSm, item.getSeller());
         }
     }
@@ -78,7 +76,7 @@ public abstract class AbstractAcceptanceTest {
         final Set<Purchase> purchases = portal.purchase(list, customer);
         assertEquals(5, purchases.size());
 
-        // Each purchase should have a different seller by definition
+        // Each purchase should have a different seller by getShopList
         int numberOfProducts;
         for (Purchase purchase : purchases) {
             // Seller uniqueness
@@ -109,12 +107,10 @@ public abstract class AbstractAcceptanceTest {
     }
 
     protected String getShipper(final String seller) throws IOException {
-        final String noEndSlash = seller.substring(0, seller.length() - 1);
-        final String sellerName = noEndSlash.substring(noEndSlash.lastIndexOf('/') + 1);
-        final String sellerNumberStr = sellerName.substring(sellerName.length() - 1);
-        final int sellerNumberInt = Integer.parseInt(sellerNumberStr);
+        final String sellerNumberStr = seller.substring(seller.length() - 1);
+        final int sellerNumber = Integer.parseInt(sellerNumberStr);
 
-        final String shipperNumber = (sellerNumberInt % 2 == 0) ? "2" : "1";
+        final String shipperNumber = (sellerNumber % 2 == 0) ? "2" : "1";
         final String shipperName = "shipper" + shipperNumber;
 
         return shipperName;
