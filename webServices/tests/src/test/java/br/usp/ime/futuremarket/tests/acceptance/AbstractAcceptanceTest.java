@@ -1,12 +1,10 @@
 package br.usp.ime.futuremarket.tests.acceptance;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.AfterClass;
@@ -28,6 +26,8 @@ public abstract class AbstractAcceptanceTest {
     private static Portal portal;
     protected static AbstractFutureMarket market;
     protected final static String ROLE = "portal";
+    private static final String SM_SHIPPER = "shipper1";
+    private static final String SM_NAME = "supermarket1";
 
     @Before
     public void setUp() throws IOException {
@@ -59,11 +59,8 @@ public abstract class AbstractAcceptanceTest {
 
         // Checking the seller. productX is supermarketX by definition of
         // properties files
-        String cheapestSm;
-        for (ShopListItem item : cheapList.getShopListItems()) {	
-            cheapestSm = getCheapestSm(item.getProduct());
-            
-            assertEquals(cheapestSm, item.getSeller());
+        for (ShopListItem item : cheapList.getShopListItems()) {
+            assertEquals(SM_NAME, item.getSeller());
         }
     }
 
@@ -71,24 +68,16 @@ public abstract class AbstractAcceptanceTest {
     public void testPurchase() throws IOException {
         final CustomerInfo customer = getCustomerInfo();
         final ShopList list = getShopList(true);
-        final Set<String> supermarkets = new HashSet<String>();
 
         final Set<Purchase> purchases = portal.purchase(list, customer);
-        assertEquals(5, purchases.size());
+        assertEquals(1, purchases.size());
+        final Purchase purchase = purchases.iterator().next();
 
-        // Each purchase should have a different seller by getShopList
-        int numberOfProducts;
-        for (Purchase purchase : purchases) {
-            // Seller uniqueness
-            assertFalse(supermarkets.contains(purchase.getSeller()));
-            supermarkets.add(purchase.getSeller());
+        final int numberOfProducts = purchase.getShopList().getProducts().size();
+        assertEquals(5, numberOfProducts);
 
-            numberOfProducts = purchase.getShopList().getProducts().size();
-            assertEquals(1, numberOfProducts);
-
-            assertTrue(purchase.isPaid());
-            assertEquals(getShipper(purchase.getSeller()), purchase.getShipper());
-        }
+        assertTrue(purchase.isPaid());
+        assertEquals(SM_SHIPPER, purchase.getShipper());
     }
 
     @Test
@@ -104,16 +93,6 @@ public abstract class AbstractAcceptanceTest {
             assertEquals("delivered", delivery.getStatus());
             checkPurchase(purchase, delivery.getPurchase());
         }
-    }
-
-    protected String getShipper(final String seller) throws IOException {
-        final String sellerNumberStr = seller.substring(seller.length() - 1);
-        final int sellerNumber = Integer.parseInt(sellerNumberStr);
-
-        final String shipperNumber = (sellerNumber % 2 == 0) ? "2" : "1";
-        final String shipperName = "shipper" + shipperNumber;
-
-        return shipperName;
     }
 
     protected void checkPurchase(final Purchase expected, final Purchase actual) {
@@ -133,11 +112,6 @@ public abstract class AbstractAcceptanceTest {
         return customer;
     }
 
-    protected String getCheapestSm(final Product product) {
-        final String prodName = product.getName();
-        return prodName.replaceFirst("product", "supermarket");
-    }
-
     protected ShopList getShopList(final boolean setLowestPriceSm) throws IOException {
         final ShopList list = new ShopList();
         Product product;
@@ -147,7 +121,7 @@ public abstract class AbstractAcceptanceTest {
             product = getProduct(i);
             item = getItem(product);
             if (setLowestPriceSm) {
-                item.setSeller(getCheapestSm(product));
+                item.setSeller(SM_NAME);
             }
             list.put(item);
         }
