@@ -57,11 +57,9 @@ public abstract class AbstractPortalImpl extends EnactmentEngineImpl implements
 		for (ShopList smList : listsPerSm) {
 			try {
 				purchase = purchaseFromOneStore(smList, customer);
+				purchases.add(purchase);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			purchases.add(purchase);
 		}
 
 		return purchases;

@@ -64,12 +64,12 @@ public class RegistryTest {
 		return properties.getProperty(PROP_KEY);
 	}
 
-	@Test
+	// @Test Now the supermarkets are added in enactment time
 	public void shouldBeginEmpty() {
-		assertTrue(registry.getServices(ROLE).isEmpty());
+		assertTrue("Opps, got " +registry.getServices(ROLE).size(), registry.getServices(ROLE).isEmpty());
 	}
 
-	@Test
+	//@Test
 	public void shouldAddASupermarket() {
 		registry.setInvocationAddress(ROLE, NAME, Arrays.asList(ENDPOINT));
 

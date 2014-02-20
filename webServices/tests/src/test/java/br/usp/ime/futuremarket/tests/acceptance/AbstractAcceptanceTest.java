@@ -60,9 +60,12 @@ public abstract class AbstractAcceptanceTest {
         // Checking the seller. productX is supermarketX by definition of
         // properties files
         String cheapestSm;
-        for (ShopListItem item : cheapList.getShopListItems()) {
+        for (ShopListItem item : cheapList.getShopListItems()) {	
             cheapestSm = getCheapestSm(item.getProduct());
-            // TODO assertEquals(market.getBaseAddress(cheapestSm), item.getSeller());
+            
+            System.out.println(item.getSeller());
+            
+            assertEquals(cheapestSm, item.getSeller());
         }
     }
 
@@ -114,7 +117,7 @@ public abstract class AbstractAcceptanceTest {
         final String shipperNumber = (sellerNumberInt % 2 == 0) ? "2" : "1";
         final String shipperName = "shipper" + shipperNumber;
 
-        return "";// TODO market.getBaseAddress(shipperName);
+        return shipperName;
     }
 
     protected void checkPurchase(final Purchase expected, final Purchase actual) {
@@ -148,7 +151,7 @@ public abstract class AbstractAcceptanceTest {
             product = getProduct(i);
             item = getItem(product);
             if (setLowestPriceSm) {
-                // TODO item.setSeller(market.getBaseAddress(getCheapestSm(product)));
+                item.setSeller(getCheapestSm(product));
             }
             list.put(item);
         }
